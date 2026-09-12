@@ -1,9 +1,12 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 import type { GetDashboardResult } from "@mirror/api-client";
-import { Pressable, Text, View } from "react-native";
-import Animated, { FadeIn, FadeInDown, ReduceMotion } from "react-native-reanimated";
-import Check from "lucide-react-native/icons/check";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import Animated, { FadeInDown, ReduceMotion } from "react-native-reanimated";
+import ShieldCheck from "lucide-react-native/icons/shield-check";
+import CalendarDays from "lucide-react-native/icons/calendar-days";
+import Clock3 from "lucide-react-native/icons/clock-3";
+import RefreshCw from "lucide-react-native/icons/refresh-cw";
 import ChevronRight from "lucide-react-native/icons/chevron-right";
 import LogOut from "lucide-react-native/icons/log-out";
 import Info from "lucide-react-native/icons/info";
@@ -14,7 +17,6 @@ import { useSession } from "../../platform/session/session-provider";
 import { Screen } from "../../design-system/layout/screen";
 import { PageHeader } from "../../design-system/layout/page-header";
 import { AppText } from "../../design-system/primitives/app-text";
-import { Button } from "../../design-system/primitives/button";
 import { InlineNotice } from "../../design-system/feedback/inline-notice";
 import { LoadingSkeleton } from "../../design-system/feedback/loading-skeleton";
 import { useThemeColors } from "../../design-system/theme/use-theme-colors";
@@ -27,7 +29,6 @@ type ReadyForecast = Extract<
   { readonly availability: "ready" }
 >;
 const overviewEntrance = FadeInDown.duration(300).reduceMotion(ReduceMotion.System);
-const scenarioEntrance = FadeIn.duration(180).reduceMotion(ReduceMotion.System);
 const financialLabels: Record<ReadyForecast["financialStatus"], string> = {
   protected: "Pagos y colchón cubiertos",
   cushion_shortfall: "Falta completar el colchón",
@@ -166,9 +167,9 @@ function ForecastSummary({ forecast }: { readonly forecast: ReadyForecast }): Re
       </View>
       <View className="gap-4 rounded-[28px] bg-auth-background p-5">
         <View className="gap-1.5">
-          <View className="flex-row items-center gap-2">
+          <View className="flex-row items-center gap-2.5 rounded-2xl bg-auth-canvas px-3 py-3">
             {protectedStatus ? (
-              <Check size={17} strokeWidth={2} color={colors.accent} />
+              <ShieldCheck size={19} strokeWidth={1.7} color={colors.accent} />
             ) : (
               <Info size={17} color={colors.danger} />
             )}
@@ -189,17 +190,33 @@ function ForecastSummary({ forecast }: { readonly forecast: ReadyForecast }): Re
             </Text>
           ) : null}
         </View>
-        <View accessibilityRole="tablist" className="flex-row gap-1 rounded-2xl bg-auth-canvas p-1">
+        <View
+          accessibilityRole="tablist"
+          className="flex-row gap-1.5 rounded-[18px] bg-auth-canvas p-1.5"
+        >
           {forecast.scenarios.map((scenario) => (
             <Pressable
               key={scenario.id}
               accessibilityRole="tab"
               accessibilityState={{ selected: selected?.id === scenario.id }}
               onPress={() => setSelectedId(scenario.id)}
-              className={`min-h-11 flex-1 items-center justify-center rounded-xl px-2 py-2 ${selected?.id === scenario.id ? "bg-auth-background shadow-sm shadow-auth-action/5" : "active:bg-auth-background/60"}`}
+              className={`min-h-11 flex-1 flex-row items-center justify-center gap-2 rounded-[13px] px-2 py-2 ${selected?.id === scenario.id ? "bg-auth-action shadow-sm shadow-auth-action/15 active:opacity-80" : "active:bg-auth-background/60"}`}
             >
+              {scenario.id === "base" ? (
+                <CalendarDays
+                  size={16}
+                  strokeWidth={1.7}
+                  color={selected?.id === scenario.id ? colors.surface : colors.muted}
+                />
+              ) : (
+                <Clock3
+                  size={16}
+                  strokeWidth={1.7}
+                  color={selected?.id === scenario.id ? colors.surface : colors.muted}
+                />
+              )}
               <Text
-                className={`text-[13px] leading-5 ${selected?.id === scenario.id ? "font-semibold text-auth-foreground" : "text-auth-muted"}`}
+                className={`text-[13px] leading-5 ${selected?.id === scenario.id ? "font-semibold text-auth-action-foreground" : "text-auth-muted"}`}
               >
                 {scenario.id === "base" ? "Esperado" : "Cobros tarde"}
               </Text>
@@ -207,14 +224,16 @@ function ForecastSummary({ forecast }: { readonly forecast: ReadyForecast }): Re
           ))}
         </View>
         {selected ? (
-          <Animated.View key={selected.id} entering={scenarioEntrance} className="gap-3">
+          <View key={selected.id} className="gap-3">
             {selected.id === "collection_delay" ? (
               <Text className="text-[12px] leading-[18px] text-auth-muted">
-                Cobros con {selected.delayDays} días de retraso.
+                {selected.delayDays === 0
+                  ? "Sin retraso de cobros."
+                  : `Cobros con ${selected.delayDays} días de retraso.`}
               </Text>
             ) : null}
             <ForecastTrend scenario={selected} />
-          </Animated.View>
+          </View>
         ) : (
           <AppText tone="muted">No hay escenarios disponibles.</AppText>
         )}
@@ -280,20 +299,33 @@ export function LiquidityScreen(): ReactElement {
           />
         </>
       ) : null}
-      <View className="gap-1">
-        <Button
-          label="Volver a consultar"
-          variant="ghost"
-          busy={query.isFetching}
-          busyLabel="Consultando…"
-          onPress={() => {
-            void query.refetch();
-          }}
-        />
-        <Text className="text-center text-[12px] leading-[18px] text-auth-muted">
-          Consultar no actualiza la fuente bancaria.
-        </Text>
-      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Volver a consultar"
+        accessibilityHint="Consulta los datos sin actualizar la fuente bancaria"
+        accessibilityState={{ busy: query.isFetching, disabled: query.isFetching }}
+        disabled={query.isFetching}
+        onPress={() => {
+          void query.refetch();
+        }}
+        className="min-h-20 flex-row items-center gap-3 rounded-[24px] border border-auth-border/15 bg-auth-background p-4 active:opacity-60"
+      >
+        <View className="h-11 w-11 items-center justify-center rounded-2xl bg-auth-canvas">
+          {query.isFetching ? (
+            <ActivityIndicator size="small" color={colors.accent} />
+          ) : (
+            <RefreshCw size={20} strokeWidth={1.7} color={colors.accent} />
+          )}
+        </View>
+        <View className="flex-1 gap-1">
+          <Text className="text-[14px] font-semibold text-auth-foreground">
+            {query.isFetching ? "Consultando…" : "Volver a consultar"}
+          </Text>
+          <Text className="text-[12px] leading-[18px] text-auth-muted">
+            No actualiza la fuente bancaria.
+          </Text>
+        </View>
+      </Pressable>
     </Screen>
   );
 }

@@ -266,6 +266,8 @@ Keep amounts as canonical decimal strings throughout form submission, query cach
 
 The money formatter preserves exact values and the backend's currency/scale policy. Numeric conversion for bounded chart coordinates is presentation only; labels come from the original decimal values. Do not derive reserves, required advances, feasibility, or protected capacity from chart coordinates.
 
+The implemented liquidity overview leads with unconditional capacity and its date, keeping observed cash and the reserve target distinct. Provenance and freshness remain visible while detailed source assumptions live in a native sheet. Scenario charts plot returned daily closing balances as steps, with exact labels and a daily disclosure. The projected closing amount and the intraday minimum before receipts are separate measures; an intraday minimum must not be inserted into the daily-closing line. Consultation remains a read-only refetch.
+
 Calendar due dates remain calendar dates interpreted in the business timezone. Do not display `new Date("YYYY-MM-DD")` as a device-local instant and accidentally shift the day. Synchronization/calculation timestamps are instants and are formatted separately. Native date-picker adapters must round-trip the intended calendar day. [Expo date picker](https://docs.expo.dev/versions/latest/sdk/date-time-picker/).
 
 Every financial result must keep these independent dimensions visible:

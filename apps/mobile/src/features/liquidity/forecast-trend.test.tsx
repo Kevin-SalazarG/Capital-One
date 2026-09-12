@@ -46,6 +46,7 @@ describe("forecast daily balance presentation", () => {
       "--border": "#000000",
       "--danger": "#000000",
       "--auth-canvas": "#ffffff",
+      "--auth-art-base": "#ffffff",
     });
   });
 
@@ -53,10 +54,12 @@ describe("forecast daily balance presentation", () => {
     const view = await render(<ForecastTrend scenario={scenario(["100.00", "-100.00", "0.00"])} />);
     expect(view.getByTestId("forecast-closing-line")).toHaveProp(
       "d",
-      "M 4 12 H 160 V 124 H 316 V 68",
+      "M 8 12 H 160 V 124 H 312 V 68",
     );
     expect(view.getByTestId("forecast-zero-line")).toHaveProp("y1", 68);
     expect(view.getByText("-$250.00")).toBeDefined();
+    expect(view.getByLabelText("Cierre proyectado: $0.00 MXN al 3 oct 2026")).toBeDefined();
+    expect(view.queryByText("Cierre del período")).toBeNull();
     expect(view.getByLabelText(/Mínimo del escenario -\$250\.00 MXN el 2 oct 2026/)).toBeDefined();
     expect(
       view.getByLabelText("Extremo superior de la escala de cierres: $100.00 MXN"),
@@ -72,7 +75,7 @@ describe("forecast daily balance presentation", () => {
     { balance: "0.00", zeroVisible: true },
   ])("renders an honest flat series for $balance", async ({ balance, zeroVisible }) => {
     const view = await render(<ForecastTrend scenario={scenario([balance, balance])} />);
-    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 4 68 H 316 V 68");
+    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 8 68 H 312 V 68");
     expect(view.queryByTestId("forecast-zero-line") !== null).toBe(zeroVisible);
     expect(view.getByLabelText(/^Cierre constante:/)).toBeDefined();
     expect(view.queryByLabelText(/^Extremo inferior/)).toBeNull();
@@ -82,7 +85,7 @@ describe("forecast daily balance presentation", () => {
     const view = await render(
       <ForecastTrend scenario={scenario(["9999999999999999.98", "9999999999999999.99"])} />,
     );
-    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 4 124 H 316 V 12");
+    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 8 124 H 312 V 12");
     expect(
       view.getByLabelText(
         "Extremo superior de la escala de cierres: $9,999,999,999,999,999.99 MXN",
@@ -99,7 +102,7 @@ describe("forecast daily balance presentation", () => {
     const view = await render(
       <ForecastTrend scenario={scenario(["-9999999999999999.99", "9999999999999999.99"])} />,
     );
-    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 4 124 H 316 V 12");
+    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 8 124 H 312 V 12");
     expect(view.getByTestId("forecast-zero-line")).toHaveProp("y1", 68);
     expect(
       view.getByLabelText(
@@ -131,7 +134,7 @@ describe("forecast daily balance presentation", () => {
     );
     expect(view.getByLabelText("1 oct 2026: saldo al cierre -$10.00 MXN")).toBeDefined();
     expect(view.queryByLabelText("1 oct 2026: saldo al cierre $100.00 MXN")).toBeNull();
-    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 4 124 H 316 V 12");
+    expect(view.getByTestId("forecast-closing-line")).toHaveProp("d", "M 8 124 H 312 V 12");
   });
 
   it.each([0, 32])("does not invent or silently truncate a %i-day series", async (length) => {

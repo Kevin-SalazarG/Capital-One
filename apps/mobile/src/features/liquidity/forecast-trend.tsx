@@ -1,8 +1,24 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { GetDashboardResult } from "@mirror/api-client";
 import { Pressable, Text, View } from "react-native";
-import Svg, { Circle, Line, Path, Text as SvgText } from "react-native-svg";
+import CalendarDays from "lucide-react-native/icons/calendar-days";
+import ChevronDown from "lucide-react-native/icons/chevron-down";
+import Animated, {
+  FadeIn,
+  ReduceMotion,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import Svg, {
+  Circle,
+  Defs,
+  Line,
+  LinearGradient,
+  Path,
+  Stop,
+  Text as SvgText,
+} from "react-native-svg";
 import { useCSSVariable } from "uniwind";
 import { AppText } from "../../design-system/primitives/app-text";
 import { useThemeColors } from "../../design-system/theme/use-theme-colors";
@@ -13,6 +29,8 @@ type ForecastScenario = Extract<
   GetDashboardResult["liquidity"]["forecast"],
   { readonly availability: "ready" }
 >["scenarios"][number];
+
+const chartEntrance = FadeIn.duration(220).reduceMotion(ReduceMotion.System);
 
 function chartGeometry(daily: ForecastScenario["daily"]): {
   readonly line: string;
@@ -45,7 +63,7 @@ function chartGeometry(daily: ForecastScenario["daily"]): {
   const y = (value: bigint): number =>
     span === 0n ? 68 : 124 - (Number(value - lower.cents) / Number(span)) * 112;
   const points = balances.map((value, index) => ({
-    x: balances.length === 1 ? 160 : 4 + (index / (balances.length - 1)) * 312,
+    x: balances.length === 1 ? 160 : 8 + (index / (balances.length - 1)) * 304,
     y: y(value.cents),
   }));
   const first = points[0];
@@ -68,9 +86,30 @@ function chartGeometry(daily: ForecastScenario["daily"]): {
 
 export function ForecastTrend({ scenario }: { readonly scenario: ForecastScenario }): ReactElement {
   const [expanded, setExpanded] = useState(false);
+  const gradientId = useId();
   const colors = useThemeColors();
-  const canvas = useCSSVariable("--auth-canvas");
-  if (typeof canvas !== "string" || canvas.length === 0)
+  const paints = useCSSVariable(["--auth-canvas", "--auth-art-base"]);
+  const canvas = paints[0];
+  const blue = paints[1];
+  const chevronStyle = useAnimatedStyle(
+    () => ({
+      transform: [
+        {
+          rotate: withTiming(expanded ? "180deg" : "0deg", {
+            duration: 180,
+            reduceMotion: ReduceMotion.System,
+          }),
+        },
+      ],
+    }),
+    [expanded],
+  );
+  if (
+    typeof canvas !== "string" ||
+    canvas.length === 0 ||
+    typeof blue !== "string" ||
+    blue.length === 0
+  )
     throw new Error("Missing resolved forecast canvas color");
   const geometry = chartGeometry(scenario.daily);
   const first = scenario.daily[0];
@@ -87,113 +126,163 @@ export function ForecastTrend({ scenario }: { readonly scenario: ForecastScenari
   const closing = formatMoney(scenario.metrics.closingBalance);
 
   return (
-    <View className="gap-2">
-      <AppText variant="caption" tone="muted">
-        Cierres diarios · MXN
-      </AppText>
-      <Text
-        accessibilityLabel={`${geometry.flat ? "Cierre constante" : "Extremo superior de la escala de cierres"}: ${formatMoney(geometry.highestClosing)}`}
-        className="text-xs tabular-nums text-auth-muted"
-      >
-        {geometry.flat ? "Cierre constante · " : ""}
-        {formatMoneyAmount(geometry.highestClosing)}
-      </Text>
-      <Svg
-        width="100%"
-        height={136}
-        viewBox="0 0 320 136"
-        accessibilityRole="image"
-        accessibilityLabel={`Saldos proyectados al cierre del ${firstDate} al ${lastDate}. Mínimo del escenario ${minimum} el ${minimumDate}, considerando pagos antes de cobros. Cierre del período ${closing}.`}
-      >
-        <Path d={geometry.area} fill={canvas} />
-        {!geometry.flat ? (
-          <Path
-            d="M 4 12 H 316 M 4 124 H 316"
-            stroke={colors.border}
-            strokeOpacity={0.5}
-            strokeWidth={1}
-          />
-        ) : null}
-        {geometry.zeroY !== null ? (
-          <>
-            <Line
-              testID="forecast-zero-line"
-              x1={4}
-              x2={316}
-              y1={geometry.zeroY}
-              y2={geometry.zeroY}
+    <Animated.View entering={chartEntrance} className="gap-4">
+      <View className="gap-1">
+        <View className="flex-row flex-wrap items-center justify-between gap-x-3 gap-y-1">
+          <AppText variant="caption" tone="muted">
+            Cierre proyectado
+          </AppText>
+          <AppText variant="caption" tone="muted">
+            {lastDate}
+          </AppText>
+        </View>
+        <Text
+          accessibilityLabel={`Cierre proyectado: ${closing} al ${lastDate}`}
+          className="text-[32px] leading-10 font-semibold tracking-tight tabular-nums text-auth-foreground"
+        >
+          {formatMoneyAmount(scenario.metrics.closingBalance)}
+          <Text className="text-sm font-medium tracking-normal text-auth-muted"> MXN</Text>
+        </Text>
+      </View>
+      <View className="gap-1">
+        <View className="flex-row flex-wrap items-center justify-between gap-x-3 gap-y-1">
+          <AppText variant="caption" tone="muted">
+            Cierres diarios
+          </AppText>
+          <Text
+            accessibilityLabel={`${geometry.flat ? "Cierre constante" : "Extremo superior de la escala de cierres"}: ${formatMoney(geometry.highestClosing)}`}
+            className="text-xs tabular-nums text-auth-muted"
+          >
+            {geometry.flat ? "Constante · " : ""}
+            {formatMoneyAmount(geometry.highestClosing)}
+          </Text>
+        </View>
+        <Svg
+          width="100%"
+          height={136}
+          viewBox="0 0 320 136"
+          accessibilityRole="image"
+          accessibilityLabel={`Saldos proyectados al cierre del ${firstDate} al ${lastDate}. Mínimo del escenario ${minimum} el ${minimumDate}, considerando pagos antes de cobros. Cierre del período ${closing}.`}
+        >
+          <Defs>
+            <LinearGradient id={gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
+              <Stop offset="0%" stopColor={blue} stopOpacity={0.95} />
+              <Stop offset="65%" stopColor={canvas} stopOpacity={0.7} />
+              <Stop offset="100%" stopColor={canvas} stopOpacity={0.08} />
+            </LinearGradient>
+          </Defs>
+          <Path d={geometry.area} fill={`url(#${gradientId})`} />
+          {!geometry.flat ? (
+            <Path
+              d="M 8 12 H 312 M 8 124 H 312"
               stroke={colors.border}
-              strokeDasharray="4 4"
+              strokeOpacity={0.45}
+              strokeDasharray="3 5"
               strokeWidth={1}
             />
-            <SvgText
-              x={314}
-              y={Math.max(11, geometry.zeroY - 5)}
-              textAnchor="end"
-              fill={colors.muted}
-              fontSize={11}
-            >
-              0
-            </SvgText>
-          </>
+          ) : null}
+          {geometry.zeroY !== null ? (
+            <>
+              <Line
+                testID="forecast-zero-line"
+                x1={8}
+                x2={312}
+                y1={geometry.zeroY}
+                y2={geometry.zeroY}
+                stroke={colors.border}
+                strokeDasharray="4 4"
+                strokeWidth={1}
+              />
+              <SvgText
+                x={310}
+                y={Math.max(11, geometry.zeroY - 5)}
+                textAnchor="end"
+                fill={colors.muted}
+                fontSize={11}
+              >
+                0
+              </SvgText>
+            </>
+          ) : null}
+          <Path
+            testID="forecast-closing-line"
+            d={geometry.line}
+            fill="none"
+            stroke={colors.accent}
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <Circle
+            cx={geometry.lastX}
+            cy={geometry.lastY}
+            r={8}
+            fill={colors.accent}
+            fillOpacity={0.08}
+          />
+          <Circle
+            cx={geometry.lastX}
+            cy={geometry.lastY}
+            r={4}
+            fill={colors.accent}
+            stroke={colors.surface}
+            strokeWidth={2}
+          />
+        </Svg>
+        {!geometry.flat ? (
+          <Text
+            accessibilityLabel={`Extremo inferior de la escala de cierres: ${formatMoney(geometry.lowestClosing)}`}
+            className="text-right text-xs tabular-nums text-auth-muted"
+          >
+            {formatMoneyAmount(geometry.lowestClosing)}
+          </Text>
         ) : null}
-        <Path
-          testID="forecast-closing-line"
-          d={geometry.line}
-          fill="none"
-          stroke={colors.accent}
-          strokeWidth={2}
-          strokeLinejoin="round"
-        />
-        <Circle cx={geometry.lastX} cy={geometry.lastY} r={3} fill={colors.accent} />
-      </Svg>
-      {!geometry.flat ? (
-        <Text
-          accessibilityLabel={`Extremo inferior de la escala de cierres: ${formatMoney(geometry.lowestClosing)}`}
-          className="text-xs tabular-nums text-auth-muted"
-        >
-          {formatMoneyAmount(geometry.lowestClosing)}
-        </Text>
-      ) : null}
-      <View className="flex-row flex-wrap justify-between gap-x-4 gap-y-1">
-        <AppText variant="caption" tone="muted">
-          {firstDate}
-        </AppText>
-        <AppText variant="caption" tone="muted">
-          {lastDate}
-        </AppText>
+        <View className="flex-row flex-wrap justify-between gap-x-4 gap-y-1 pt-1">
+          <AppText variant="caption" tone="muted">
+            {firstDate}
+          </AppText>
+          <AppText variant="caption" tone="muted">
+            {lastDate}
+          </AppText>
+        </View>
       </View>
-      <View className="flex-row flex-wrap gap-x-4 gap-y-2 pt-1">
+      <View className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-auth-border/20 pt-3">
         <View className="min-w-32 flex-1 gap-0.5">
           <AppText variant="caption" tone="muted">
             Mínimo antes de cobros
           </AppText>
-          <Text className="text-base font-semibold tabular-nums text-auth-foreground">
-            {formatMoneyAmount(scenario.metrics.minimumBalance)}
-          </Text>
           <AppText variant="caption" tone="muted">
             {minimumDate}
           </AppText>
         </View>
-        <View className="min-w-32 flex-1 gap-0.5">
-          <AppText variant="caption" tone="muted">
-            Cierre del período
-          </AppText>
-          <Text className="text-base font-semibold tabular-nums text-auth-foreground">
-            {formatMoneyAmount(scenario.metrics.closingBalance)}
-          </Text>
-        </View>
+        <Text className="shrink text-xl font-semibold tabular-nums text-auth-foreground">
+          {formatMoneyAmount(scenario.metrics.minimumBalance)}
+        </Text>
       </View>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={expanded ? "Contraer saldos diarios" : "Ver saldos diarios"}
         accessibilityState={{ expanded }}
         onPress={() => setExpanded((current) => !current)}
-        className="min-h-12 justify-center rounded-xl active:bg-auth-canvas"
+        className="min-h-14 flex-row items-center gap-3 rounded-xl border-t border-auth-border/20 px-1 py-2 active:bg-auth-canvas"
       >
-        <Text className="text-base font-semibold text-auth-action underline">
+        <View
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          className="h-8 w-8 items-center justify-center rounded-full bg-auth-canvas"
+        >
+          <CalendarDays size={18} strokeWidth={1.7} color={colors.accent} />
+        </View>
+        <Text className="flex-1 text-sm font-semibold text-auth-action">
           {expanded ? "Contraer saldos diarios" : "Ver saldos diarios"}
         </Text>
+        <Animated.View
+          style={chevronStyle}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        >
+          <ChevronDown size={18} strokeWidth={1.8} color={colors.muted} />
+        </Animated.View>
       </Pressable>
       {expanded ? (
         <View className="gap-1 border-t border-auth-border/30 pt-2">
@@ -214,6 +303,6 @@ export function ForecastTrend({ scenario }: { readonly scenario: ForecastScenari
           ))}
         </View>
       ) : null}
-    </View>
+    </Animated.View>
   );
 }
