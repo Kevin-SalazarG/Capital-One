@@ -40,6 +40,7 @@ export class OrganizationsRepository {
         currency: input.currency ?? "MXN",
         time_zone: input.timeZone ?? "America/Mexico_City",
         minimum_cash_reserve: input.minimumCashReserve ?? "0.00",
+        daily_operating_expense: input.dailyOperatingExpense ?? "0.00",
         created_by: userId,
       });
     if (organizationError) {
@@ -132,6 +133,9 @@ export class OrganizationsRepository {
     input: UpdateOrganizationDto,
   ): Promise<OrganizationRow> {
     const updates = {
+      ...(input.dailyOperatingExpense !== undefined
+        ? { daily_operating_expense: input.dailyOperatingExpense }
+        : {}),
       ...(input.name !== undefined ? { name: input.name } : {}),
       ...(input.legalName !== undefined ? { legal_name: input.legalName } : {}),
       ...(input.rfc !== undefined ? { rfc: input.rfc } : {}),

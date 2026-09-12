@@ -10,6 +10,13 @@ export class ApiError extends Error {
 }
 
 const MESSAGES: Record<string, string> = {
+  PLAN_STALE:
+    "Tus datos cambiaron. Actualiza la proyección y vuelve a comparar antes de guardar.",
+  PLAN_UNAVAILABLE:
+    "Este plan ya no es viable con los datos actuales. Actualiza la proyección.",
+  VALIDATION_ERROR:
+    "Revisa las fechas, los montos y las condiciones del acuerdo.",
+  INVALID_TIME_ZONE: "Revisa la zona horaria de tu empresa en Configuración.",
   EXTERNAL_PROVIDER_UNAVAILABLE:
     "El proveedor no está disponible. Intenta sincronizar de nuevo en un momento.",
   EXTERNAL_PROVIDER_ERROR:
@@ -20,7 +27,7 @@ const MESSAGES: Record<string, string> = {
   ORG_ACCESS_DENIED: "Tu acceso no permite realizar esta acción.",
   FORBIDDEN: "No pudimos completar esta acción con tu acceso actual.",
   FORECAST_INPUTS_INCOMPLETE:
-    "Conecta una cuenta bancaria para preparar tu proyección.",
+    "Conecta una cuenta de débito o ahorro en la misma moneda de tu empresa y sincroniza sus saldos.",
   VALIDATION_FAILED: "Revisa los campos e intenta de nuevo.",
   CONFLICT:
     "No pudimos guardar el cambio. Actualiza la información y vuelve a intentarlo.",

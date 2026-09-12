@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { DEMO_DATA, DEMO_ORGANIZATION } from "../src/demo/fixtures";
+import { DEMO_ORGANIZATION } from "../src/demo/fixtures";
 
 test("all demo routes render without external API requests", async ({
   page,
@@ -10,15 +10,10 @@ test("all demo routes render without external API requests", async ({
     await route.abort();
   });
   for (const [path, title] of [
-    ["dashboard", "Tu caja, a futuro."],
+    ["dashboard", "Tu nómina necesita un plan."],
+    ["commitments", "Los pagos que importan."],
     ["invoices", "Tus cobros y pagos."],
     ["bank", "Tu actividad bancaria."],
-    ["settings/company", "Todo en su lugar."],
-    ["settings/connections", "Todo en su lugar."],
-    ["settings/team", "Todo en su lugar."],
-    ["settings/obligations", "Todo en su lugar."],
-    ["onboarding", "Prepara tu primera proyección."],
-    ["help", "Tu caja, con claridad."],
   ]) {
     await page.goto(`/demo/${path}`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
@@ -119,6 +114,7 @@ test("invoice rows and mobile cards open from outside the name and preserve keyb
     page.getByText("CFDI-ENCINO-i-1", { exact: true }),
   ).toBeVisible();
 
+  await page.goBack();
   await expect(
     page.getByRole("searchbox", { name: "Buscar", exact: true }),
   ).toBeVisible();
@@ -202,24 +198,22 @@ test("viewer cannot reach privileged views or issue writes", async ({
               },
             ],
           }
-        : path.endsWith("/dashboard")
-          ? DEMO_DATA.dashboard
-          : null;
+        : null;
     await route.fulfill({ json: { data, meta: { requestId: "test-viewer" } } });
   });
   await page.goto(`/app/${DEMO_ORGANIZATION.id}/dashboard`);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Tu caja, a futuro.",
-  );
+  await expect(
+    page.getByRole("heading", { name: "Tu acceso es de consulta" }),
+  ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Actualizar proyección" }),
   ).toHaveCount(0);
-  await page.goto(`/app/${DEMO_ORGANIZATION.id}/settings/team`);
+  await page.goto(`/app/${DEMO_ORGANIZATION.id}/settings/connections`);
   await expect(
     page.getByRole("heading", { name: "Esta vista necesita otro acceso" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Invitar persona" }),
+    page.getByRole("button", { name: "Agregar conexión" }),
   ).toHaveCount(0);
   expect(writes).toEqual([]);
 });
@@ -259,7 +253,9 @@ test("company validation blocks empty names and displays backend failures", asyn
     .getByLabel("Nombre de la empresa", { exact: true })
     .fill("Empresa editada");
   await page.getByRole("button", { name: "Guardar cambios" }).click();
-  await expect(page.getByRole("alert")).toContainText("No pudimos");
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "No pudimos",
+  );
   await expect(
     page.getByLabel("Nombre de la empresa", { exact: true }),
   ).toHaveValue("Empresa editada");

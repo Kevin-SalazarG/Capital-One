@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import { treasurySchema } from "@colchon/treasury/treasury-contract";
 import { ArrowRight, Check, FileText, Landmark } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
@@ -52,17 +53,15 @@ export function OnboardingPage() {
     can("cfdi:read"),
   );
   const latest = useResource(
-    "forecasts/latest",
-    z.object({ id: z.string(), status: z.string() }).nullable(),
-    can("forecast:read"),
+    "treasury",
+    treasurySchema,
+    can("forecast:read") &&
+      can("bank-account:read") &&
+      Boolean(accounts.data?.length),
   );
   const forecast = useCommand(
     () =>
-      apiRequest(
-        `/organizations/${organization.id}/forecasts/runs`,
-        acknowledgmentSchema,
-        { method: "POST", body: { horizonDays: 30 } },
-      ),
+      apiRequest(`/organizations/${organization.id}/treasury`, treasurySchema),
     "Tu proyección está lista",
     () => router.push(`${basePath}/dashboard`),
   );
@@ -86,7 +85,7 @@ export function OnboardingPage() {
   );
   const readyBank = Boolean(accounts.data?.length);
   const readyInvoices = Boolean(invoices.data?.length);
-  const readyForecast = latest.data?.status === "completed";
+  const readyForecast = Boolean(latest.data);
   return (
     <div className="page-container">
       <PageHeader

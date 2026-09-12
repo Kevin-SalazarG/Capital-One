@@ -33,7 +33,7 @@ export class ForecastingService {
       resourceId: result.run.id,
       metadata: {
         horizonDays,
-        algorithmVersion: "rules-v1",
+        algorithmVersion: "treasury-v2",
         hasGap: result.persisted.gap !== null,
       },
     });

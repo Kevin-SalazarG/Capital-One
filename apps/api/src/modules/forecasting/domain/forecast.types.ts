@@ -10,6 +10,11 @@ export interface ForecastEvent {
   readonly sourceId: string;
   readonly label: string;
   readonly confidence: ForecastConfidence;
+  readonly category?: "payroll" | "tax" | "rent" | "supplier" | "other";
+  readonly critical?: boolean;
+  readonly earliestDate?: string | null;
+  readonly latestDate?: string | null;
+  readonly negotiationCost?: string;
 }
 
 export interface ForecastInput {
@@ -21,6 +26,8 @@ export interface ForecastInput {
   readonly variableOutflowPerDay: Decimal;
   readonly events: readonly ForecastEvent[];
   readonly confidence: ForecastConfidence;
+  readonly currency?: string;
+  readonly warnings?: readonly string[];
 }
 
 export interface ForecastPoint {
@@ -56,7 +63,7 @@ export interface ForecastRecommendation {
 }
 
 export interface ForecastOutput {
-  readonly algorithmVersion: "rules-v1";
+  readonly algorithmVersion: "treasury-v2";
   readonly safetyThreshold: Decimal;
   readonly points: readonly ForecastPoint[];
   readonly firstGap: LiquidityGap | null;

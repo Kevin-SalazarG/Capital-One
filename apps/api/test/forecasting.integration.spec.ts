@@ -88,7 +88,7 @@ test("GenerateForecastUseCase persists a completed 30-day forecast", async () =>
 
   assert.equal(result.run.id, run.id);
   assert.deepEqual(result.output, {
-    algorithmVersion: "rules-v1",
+    algorithmVersion: "treasury-v2",
     confidence: "high",
     firstGap: null,
     recommendation: null,

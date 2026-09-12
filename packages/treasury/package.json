@@ -1,0 +1,54 @@
+{
+  "name": "@colchon/treasury",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./treasury-contract": {
+      "types": "./dist/treasury-contract.d.ts",
+      "default": "./dist/treasury-contract.js"
+    },
+    "./treasury-engine": {
+      "types": "./dist/treasury-engine.d.ts",
+      "default": "./dist/treasury-engine.js"
+    },
+    "./treasury-demo": {
+      "types": "./dist/treasury-demo.d.ts",
+      "default": "./dist/treasury-demo.js"
+    },
+    "./treasury-date": {
+      "types": "./dist/treasury-date.d.ts",
+      "default": "./dist/treasury-date.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "treasury-contract": [
+        "dist/treasury-contract.d.ts"
+      ],
+      "treasury-engine": [
+        "dist/treasury-engine.d.ts"
+      ],
+      "treasury-demo": [
+        "dist/treasury-demo.d.ts"
+      ],
+      "treasury-date": [
+        "dist/treasury-date.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "biome lint src test --error-on-warnings",
+    "build": "tsc",
+    "test": "pnpm build && tsc -p tsconfig.test.json && node --import tsx --test test/*.spec.ts"
+  },
+  "dependencies": {
+    "decimal.js": "10.6.0",
+    "zod": "4.6.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.13",
+    "@types/node": "22.20.2",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3"
+  }
+}

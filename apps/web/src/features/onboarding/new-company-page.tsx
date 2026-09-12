@@ -55,6 +55,7 @@ export function NewCompanyPage() {
           currency: "MXN",
           timeZone: "America/Monterrey",
           minimumCashReserve: "0.00",
+          dailyOperatingExpense: "0.00",
         }}
         onSave={async (values) => {
           try {

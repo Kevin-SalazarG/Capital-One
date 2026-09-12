@@ -30,6 +30,7 @@ import { formatDate, formatMoney } from "@/lib/formatters";
 
 const FREQUENCIES = {
   weekly: "Semanal",
+  biweekly: "Cada 14 días",
   monthly: "Mensual",
   quarterly: "Trimestral",
   yearly: "Anual",
@@ -49,7 +50,7 @@ function ObligationsContent() {
     <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold">Pagos recurrentes</h2>
+          <h2 className="text-xl font-semibold">Compromisos protegidos</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Renta, nómina y otros compromisos de tu operación.
           </p>
@@ -84,6 +85,11 @@ function ObligationsContent() {
                 <h3 className="break-words text-sm font-semibold">
                   {obligation.name}
                 </h3>
+                {obligation.metadata?.critical && (
+                  <p className="mt-1 text-xs font-medium text-primary">
+                    Fecha protegida · no se negocia en los planes
+                  </p>
+                )}
                 <p className="mt-2 text-xs text-muted-foreground">
                   {FREQUENCIES[obligation.frequency]} · Próximo pago:{" "}
                   {formatDate(obligation.nextDueOn)}
@@ -120,6 +126,8 @@ function ObligationDialog({
       name: "",
       amount: "",
       frequency: "monthly",
+      category: "payroll",
+      critical: true,
       nextDueOn: "",
     },
   });
@@ -178,6 +186,18 @@ function ObligationDialog({
             />
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
+            <Field id="obligation-category" label="Tipo de compromiso">
+              <NativeSelect
+                id="obligation-category"
+                {...form.register("category")}
+              >
+                <option value="payroll">Nómina</option>
+                <option value="tax">Impuestos</option>
+                <option value="rent">Renta</option>
+                <option value="supplier">Proveedor</option>
+                <option value="other">Otro</option>
+              </NativeSelect>
+            </Field>
             <Field id="obligation-frequency" label="Frecuencia">
               <NativeSelect
                 id="obligation-frequency"
@@ -204,6 +224,14 @@ function ObligationDialog({
               />
             </Field>
           </div>
+          <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
+            <input
+              type="checkbox"
+              className="size-5 accent-primary"
+              {...form.register("critical")}
+            />
+            Proteger esta fecha. Nómina e impuestos siempre quedan protegidos.
+          </label>
         </fieldset>
         {mutation.isError && (
           <FieldError message={errorMessage(mutation.error)} />

@@ -10,13 +10,13 @@ import {
   ChartNoAxesCombined,
   Check,
   ChevronDown,
-  CircleHelp,
   FileText,
   Landmark,
   LogOut,
   Menu,
   Plus,
   Settings2,
+  ShieldCheck,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -47,10 +47,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [signingOut, setSigningOut] = useState(false);
   const navigation = [
     {
-      label: "Resumen",
+      label: "Plan de caja",
       path: "dashboard",
       icon: ChartNoAxesCombined,
       visible: true,
+    },
+    {
+      label: "Compromisos",
+      path: "commitments",
+      icon: ShieldCheck,
+      visible: can("forecast:configure"),
     },
     {
       label: "Facturas",
@@ -101,10 +107,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     ? "Configuración"
     : pathname.includes("onboarding")
       ? "Primeros pasos"
-      : pathname.endsWith("/help")
-        ? "Cómo funciona"
-        : (navigation.find((item) => isCurrentSection(item.path))?.label ??
-          "Resumen");
+      : (navigation.find((item) => isCurrentSection(item.path))?.label ??
+        "Plan de caja");
   const companyMenu = (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -177,11 +181,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <a href="#main-content" className="skip-link">
         Saltar al contenido
       </a>
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r bg-card px-5 py-8 lg:flex">
+      <aside className="floating-header fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r bg-card/80 px-5 py-8 backdrop-blur-xl lg:flex">
         <Link
           href={`${basePath}/dashboard`}
           className="mb-9 self-start px-2"
-          aria-label="Colchón, ir al resumen"
+          aria-label="Colchón, ir al plan de caja"
         >
           <Brand />
         </Link>
@@ -211,7 +215,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
         <div className="mt-auto space-y-2">
-          {settingsVisible && (
+          {settingsVisible && !isDemo && (
             <Link
               href={`${basePath}/settings/company`}
               className={cn(
@@ -226,10 +230,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
           )}
           <Link
-            href={`${basePath}/help`}
+            href={`${basePath}/dashboard#assumptions`}
             className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:bg-muted"
           >
-            <CircleHelp className="size-[19px]" />
+            <ShieldCheck className="size-[19px]" />
             Cómo funciona
           </Link>
           <div className="mt-5 border-t pt-5">
@@ -275,7 +279,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {isDemo ? (
                 <>
                   <span className="rounded-md border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground">
-                    Vista de ejemplo
+                    Demo interactiva
                   </span>
                   <Link
                     href="/auth/sign-in"
@@ -329,14 +333,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     ))}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild className="min-h-11">
-                      <Link href={`${basePath}/onboarding`}>
+                      <Link
+                        href={
+                          isDemo
+                            ? `${basePath}/dashboard`
+                            : `${basePath}/onboarding`
+                        }
+                      >
                         <ArrowUpRight />
                         Primeros pasos
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="min-h-11">
-                      <Link href={`${basePath}/help`}>
-                        <CircleHelp />
+                      <Link href={`${basePath}/dashboard#assumptions`}>
+                        <ShieldCheck />
                         Cómo funciona
                       </Link>
                     </DropdownMenuItem>
@@ -392,7 +402,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {label}
             </Link>
           ))}
-          {settingsVisible && (
+          {settingsVisible && !isDemo && (
             <Link
               href={`${basePath}/settings/company`}
               aria-current={

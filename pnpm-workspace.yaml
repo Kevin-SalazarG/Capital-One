@@ -1,5 +1,6 @@
 packages:
   - "apps/*"
+  - "packages/*"
   - "nessie-node-sdk"
 allowBuilds:
   "@parcel/watcher": true

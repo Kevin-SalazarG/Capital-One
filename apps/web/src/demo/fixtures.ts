@@ -1,4 +1,6 @@
-import type { Dashboard, Organization } from "@/lib/api/contracts";
+import type { Organization } from "@/lib/api/contracts";
+import treasurySnapshots from "./treasury-snapshots.json";
+import treasurySources from "./treasury-sources.json";
 
 export const DEMO_ORGANIZATION: Organization = {
   id: "example-taller",
@@ -7,7 +9,8 @@ export const DEMO_ORGANIZATION: Organization = {
   rfc: "TEN210315AB1",
   currency: "MXN",
   timeZone: "America/Mexico_City",
-  minimumCashReserve: "75000.00",
+  minimumCashReserve: "40000.00",
+  dailyOperatingExpense: "1200.00",
   role: "owner",
   permissions: [
     "dashboard:read",
@@ -33,58 +36,9 @@ export const DEMO_ORGANIZATION: Organization = {
   ],
 };
 
-const DEMO_BALANCES = [
-  185000, 184200, 183400, 167000, 166200, 165400, 198000, 197200, 178000,
-  177200, 142000, 141200, 104000, 46000, 45200, 44400, 43600, 42800, 98500,
-  97700, 96900, 125000, 124200, 123400, 112000, 111200, 110400, 159000, 158200,
-  144000,
-];
-
-export const DEMO_DASHBOARD: Dashboard = {
-  organization: DEMO_ORGANIZATION,
-  asOf: "2026-09-12",
-  currentBalance: "185000.00",
-  safetyThreshold: "75000.00",
-  forecast: DEMO_BALANCES.map((balance, index) => {
-    const previous = DEMO_BALANCES[index - 1] ?? balance;
-    return {
-      date: new Date(Date.UTC(2026, 8, 12 + index)).toISOString().slice(0, 10),
-      openingBalance: previous.toFixed(2),
-      projectedBalance: balance.toFixed(2),
-      inflows: Math.max(0, balance - previous).toFixed(2),
-      outflows: Math.max(0, previous - balance).toFixed(2),
-      isBelowThreshold: balance < 75000,
-    };
-  }),
-  gap: {
-    date: "2026-09-25",
-    deficit: "29000.00",
-    severity: "warning",
-    explanation:
-      "El saldo proyectado queda por debajo de la reserva de $75,000 al cubrir los pagos programados.",
-  },
-  recommendation: {
-    id: "example-recommendation",
-    type: "collect_receivable",
-    title: "Anticipa el cobro de Casa Roble",
-    amount: "45000.00",
-    status: "open",
-    evidence: {
-      gapDate: "2026-09-25",
-      gapAmount: "29000.00",
-      sourceDate: "2026-09-30",
-      sourceAmount: "45000.00",
-    },
-  },
-  dataFreshness: {
-    bankLastSyncedAt: "2026-09-12T15:42:00Z",
-    forecastCompletedAt: "2026-09-12T15:43:00Z",
-  },
-};
-
 export const DEMO_DATA: Record<string, unknown> = {
-  dashboard: DEMO_DASHBOARD,
-  "forecasts/latest": { id: "example-run", status: "completed" },
+  ...treasurySnapshots,
+  ...treasurySources,
   "bank/accounts": [
     {
       id: "example-account",
@@ -143,87 +97,6 @@ export const DEMO_DATA: Record<string, unknown> = {
     bankAccountId: "example-account",
     status: "completed",
   })),
-  invoices: [
-    {
-      id: "i-1",
-      counterpartyName: "Casa Roble",
-      direction: "receivable",
-      totalAmount: "45000.00",
-      outstandingAmount: "45000.00",
-      dueOn: "2026-09-30",
-      paymentStatus: "pending",
-    },
-    {
-      id: "i-2",
-      counterpartyName: "Estudio Senda",
-      direction: "receivable",
-      totalAmount: "32600.00",
-      outstandingAmount: "32600.00",
-      dueOn: "2026-09-18",
-      paymentStatus: "pending",
-    },
-    {
-      id: "i-3",
-      counterpartyName: "Hotel Alameda",
-      direction: "receivable",
-      totalAmount: "55700.00",
-      outstandingAmount: "55700.00",
-      dueOn: "2026-09-30",
-      paymentStatus: "pending",
-    },
-    {
-      id: "i-4",
-      counterpartyName: "Maderas del Norte",
-      direction: "payable",
-      totalAmount: "58000.00",
-      outstandingAmount: "58000.00",
-      dueOn: "2026-09-25",
-      paymentStatus: "pending",
-    },
-    {
-      id: "i-5",
-      counterpartyName: "Ferretería Central",
-      direction: "payable",
-      totalAmount: "18000.00",
-      outstandingAmount: "18000.00",
-      dueOn: "2026-09-20",
-      paymentStatus: "pending",
-    },
-    {
-      id: "i-6",
-      counterpartyName: "Oficinas Loma",
-      direction: "receivable",
-      totalAmount: "24000.00",
-      outstandingAmount: "12000.00",
-      dueOn: "2026-09-09",
-      paymentStatus: "partial",
-    },
-    {
-      id: "i-7",
-      counterpartyName: "Diseño Norte",
-      direction: "receivable",
-      totalAmount: "24500.00",
-      outstandingAmount: "0.00",
-      dueOn: "2026-09-12",
-      paymentStatus: "paid",
-    },
-    {
-      id: "i-8",
-      counterpartyName: "Textiles Vera",
-      direction: "payable",
-      totalAmount: "9400.00",
-      outstandingAmount: "9400.00",
-      dueOn: "2026-09-10",
-      paymentStatus: "overdue",
-    },
-  ].map((item) => ({
-    ...item,
-    cfdiUuid: `CFDI-ENCINO-${item.id}`,
-    currency: "MXN",
-    issuerRfc: "TEN210315AB1",
-    receiverRfc: "XAXX010101000",
-    issuedAt: "2026-09-01T12:00:00Z",
-  })),
   connections: [
     {
       id: "example-bank",
@@ -244,25 +117,6 @@ export const DEMO_DATA: Record<string, unknown> = {
       lastSyncedAt: null,
       lastErrorCode: null,
       externalCustomerId: null,
-    },
-  ],
-  obligations: [
-    {
-      id: "o-1",
-      name: "Renta del taller",
-      amount: "15000.00",
-      currency: "MXN",
-      frequency: "monthly",
-      nextDueOn: "2026-10-01",
-    },
-  ],
-  members: [
-    {
-      id: "m-1",
-      userId: "example-user",
-      role: "owner",
-      status: "active",
-      joinedAt: "2026-09-01T12:00:00Z",
     },
   ],
 };

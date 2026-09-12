@@ -12,6 +12,7 @@ export const organizationSchema = z.object({
   currency: z.string(),
   timeZone: z.string(),
   minimumCashReserve: moneySchema.default("0.00"),
+  dailyOperatingExpense: moneySchema.optional(),
   role: z
     .enum(["owner", "admin", "analyst", "operator", "viewer"])
     .default("viewer"),
@@ -121,6 +122,7 @@ export const transactionSchema = z.object({
   category: z.string().nullable(),
 });
 export const invoiceSchema = z.object({
+  metadata: z.record(z.string(), z.unknown()).optional(),
   id: z.string(),
   cfdiUuid: z.string(),
   direction: z.enum(["receivable", "payable"]),
@@ -156,7 +158,13 @@ export const obligationSchema = z.object({
   name: z.string(),
   amount: moneySchema,
   currency: z.string(),
-  frequency: z.enum(["weekly", "monthly", "quarterly", "yearly"]),
+  frequency: z.enum(["weekly", "biweekly", "monthly", "quarterly", "yearly"]),
+  metadata: z
+    .object({
+      category: z.string().optional(),
+      critical: z.boolean().optional(),
+    })
+    .optional(),
   nextDueOn: z.string(),
 });
 export const acknowledgmentSchema = z.unknown();

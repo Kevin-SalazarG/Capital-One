@@ -94,7 +94,10 @@ export function useResource<T>(
     queryFn: ({ signal }) =>
       demoData
         ? Promise.resolve(
-            schema.parse(demoData[resource.split("?")[0] ?? resource]),
+            schema.parse(
+              demoData[resource] ??
+                demoData[resource.split("?")[0] ?? resource],
+            ),
           )
         : apiRequest(`/organizations/${organization.id}/${resource}`, schema, {
             signal,

@@ -1,0 +1,5450 @@
+{
+  "treasury": {
+    "version": "treasury-v2",
+    "inputHash": "demo",
+    "input": {
+      "asOf": "2026-09-12",
+      "horizonDays": 30,
+      "currency": "MXN",
+      "currentBalance": "185000.00",
+      "reserve": "40000.00",
+      "dailyOperatingExpense": "1200.00",
+      "events": [
+        {
+          "id": "senda",
+          "date": "2026-09-16",
+          "amount": "32600.00",
+          "label": "Estudio Senda",
+          "source": "invoice",
+          "sourceId": "senda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "materials",
+          "date": "2026-09-18",
+          "amount": "-46000.00",
+          "label": "Maderas del Norte",
+          "source": "invoice",
+          "sourceId": "materials",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": "2026-10-01",
+          "negotiationCost": "500.00"
+        },
+        {
+          "id": "tax",
+          "date": "2026-09-20",
+          "amount": "-28000.00",
+          "label": "Impuestos",
+          "source": "obligation",
+          "sourceId": "tax",
+          "category": "tax",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "rent",
+          "date": "2026-09-22",
+          "amount": "-18000.00",
+          "label": "Renta del taller",
+          "source": "obligation",
+          "sourceId": "rent",
+          "category": "rent",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "payroll",
+          "date": "2026-09-25",
+          "amount": "-118000.00",
+          "label": "Nómina · 12 personas",
+          "source": "obligation",
+          "sourceId": "payroll",
+          "category": "payroll",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "roble",
+          "date": "2026-09-30",
+          "amount": "65000.00",
+          "label": "Casa Roble",
+          "source": "invoice",
+          "sourceId": "roble",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": "2026-09-23",
+          "latestDate": null,
+          "negotiationCost": "1300.00"
+        },
+        {
+          "id": "alameda",
+          "date": "2026-10-04",
+          "amount": "55700.00",
+          "label": "Hotel Alameda",
+          "source": "invoice",
+          "sourceId": "alameda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": "2026-09-24",
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "supplies",
+          "date": "2026-10-06",
+          "amount": "-12000.00",
+          "label": "Insumos de producción",
+          "source": "invoice",
+          "sourceId": "supplies",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        }
+      ],
+      "warnings": [
+        "Ejemplo sintético. Las fechas de cobro, flexibilidad y costos son supuestos explícitos, no datos inferidos del CFDI.",
+        "La proyección usa cierres diarios; no garantiza el orden intradía de cobros y pagos."
+      ]
+    },
+    "baseline": {
+      "points": [
+        {
+          "date": "2026-09-12",
+          "opening": "185000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "183800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-13",
+          "opening": "183800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "182600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-14",
+          "opening": "182600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "181400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-15",
+          "opening": "181400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "180200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-16",
+          "opening": "180200.00",
+          "inflows": "32600.00",
+          "outflows": "1200.00",
+          "closing": "211600.00",
+          "criticalAmount": "0.00",
+          "events": ["senda"]
+        },
+        {
+          "date": "2026-09-17",
+          "opening": "211600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "210400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-18",
+          "opening": "210400.00",
+          "inflows": "0.00",
+          "outflows": "47200.00",
+          "closing": "163200.00",
+          "criticalAmount": "0.00",
+          "events": ["materials"]
+        },
+        {
+          "date": "2026-09-19",
+          "opening": "163200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "162000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-20",
+          "opening": "162000.00",
+          "inflows": "0.00",
+          "outflows": "29200.00",
+          "closing": "132800.00",
+          "criticalAmount": "28000.00",
+          "events": ["tax"]
+        },
+        {
+          "date": "2026-09-21",
+          "opening": "132800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "131600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-22",
+          "opening": "131600.00",
+          "inflows": "0.00",
+          "outflows": "19200.00",
+          "closing": "112400.00",
+          "criticalAmount": "18000.00",
+          "events": ["rent"]
+        },
+        {
+          "date": "2026-09-23",
+          "opening": "112400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "111200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-24",
+          "opening": "111200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "110000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-25",
+          "opening": "110000.00",
+          "inflows": "0.00",
+          "outflows": "119200.00",
+          "closing": "-9200.00",
+          "criticalAmount": "118000.00",
+          "events": ["payroll"]
+        },
+        {
+          "date": "2026-09-26",
+          "opening": "-9200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-10400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-27",
+          "opening": "-10400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-11600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-28",
+          "opening": "-11600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-12800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-29",
+          "opening": "-12800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-14000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-30",
+          "opening": "-14000.00",
+          "inflows": "65000.00",
+          "outflows": "1200.00",
+          "closing": "49800.00",
+          "criticalAmount": "0.00",
+          "events": ["roble"]
+        },
+        {
+          "date": "2026-10-01",
+          "opening": "49800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "48600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-02",
+          "opening": "48600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "47400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-03",
+          "opening": "47400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "46200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-04",
+          "opening": "46200.00",
+          "inflows": "55700.00",
+          "outflows": "1200.00",
+          "closing": "100700.00",
+          "criticalAmount": "0.00",
+          "events": ["alameda"]
+        },
+        {
+          "date": "2026-10-05",
+          "opening": "100700.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "99500.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-06",
+          "opening": "99500.00",
+          "inflows": "0.00",
+          "outflows": "13200.00",
+          "closing": "86300.00",
+          "criticalAmount": "0.00",
+          "events": ["supplies"]
+        },
+        {
+          "date": "2026-10-07",
+          "opening": "86300.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "85100.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-08",
+          "opening": "85100.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "83900.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-09",
+          "opening": "83900.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "82700.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-10",
+          "opening": "82700.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "81500.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-11",
+          "opening": "81500.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "80300.00",
+          "criticalAmount": "0.00",
+          "events": []
+        }
+      ],
+      "summary": {
+        "minimumBalance": "-14000.00",
+        "worstDate": "2026-09-29",
+        "reserveShortfall": "54000.00",
+        "cashShortfall": "14000.00",
+        "daysBelowReserve": 5,
+        "criticalAtRisk": 1,
+        "firstRiskDate": "2026-09-25"
+      }
+    },
+    "plans": [
+      {
+        "id": "alameda:2026-09-24",
+        "title": "Adelantar un cobro",
+        "actions": [
+          {
+            "id": "alameda:2026-09-24",
+            "eventId": "alameda",
+            "label": "Hotel Alameda",
+            "kind": "collect",
+            "from": "2026-10-04",
+            "to": "2026-09-24",
+            "amount": "55700.00",
+            "cost": "0.00"
+          }
+        ],
+        "cost": "0.00",
+        "improvement": "54000.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "47200.00",
+              "closing": "163200.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "163200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "162000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "162000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "132800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "132800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "131600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "131600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "112400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "112400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "111200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "111200.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "165700.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "165700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "46500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "46500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "45300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "45300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "44100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "42900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "42900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "41700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "41700.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "105500.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "105500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "104300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "104300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "103100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "103100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "101900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "101900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "100700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "100700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "99500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "99500.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "86300.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "86300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "85100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "85100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "83900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "82700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "81500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "80300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "41700.00",
+            "worstDate": "2026-09-29",
+            "reserveShortfall": "0.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 0,
+            "criticalAtRisk": 0,
+            "firstRiskDate": null
+          }
+        }
+      },
+      {
+        "id": "alameda:2026-09-24|materials:2026-10-01",
+        "title": "Combinar cobros y acuerdos",
+        "actions": [
+          {
+            "id": "alameda:2026-09-24",
+            "eventId": "alameda",
+            "label": "Hotel Alameda",
+            "kind": "collect",
+            "from": "2026-10-04",
+            "to": "2026-09-24",
+            "amount": "55700.00",
+            "cost": "0.00"
+          },
+          {
+            "id": "materials:2026-10-01",
+            "eventId": "materials",
+            "label": "Maderas del Norte",
+            "kind": "defer",
+            "from": "2026-09-18",
+            "to": "2026-10-01",
+            "amount": "46000.00",
+            "cost": "500.00"
+          }
+        ],
+        "cost": "500.00",
+        "improvement": "54000.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "209200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "209200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "208000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "208000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "178800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "178800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "177600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "158400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "158400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "157200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "157200.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "211700.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "211700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "92500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "92500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "91300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "91300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "90100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "90100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "88900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "88900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "87700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "87700.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "151500.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "151500.00",
+              "inflows": "0.00",
+              "outflows": "47700.00",
+              "closing": "103800.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "103800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "102600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "102600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "101400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "101400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "100200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "100200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "99000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "99000.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "85800.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "85800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "84600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "84600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "83400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "82200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "81000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "79800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "79800.00",
+            "worstDate": "2026-10-11",
+            "reserveShortfall": "0.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 0,
+            "criticalAtRisk": 0,
+            "firstRiskDate": null
+          }
+        }
+      },
+      {
+        "id": "roble:2026-09-23",
+        "title": "Adelantar un cobro",
+        "actions": [
+          {
+            "id": "roble:2026-09-23",
+            "eventId": "roble",
+            "label": "Casa Roble",
+            "kind": "collect",
+            "from": "2026-09-30",
+            "to": "2026-09-23",
+            "amount": "65000.00",
+            "cost": "1300.00"
+          }
+        ],
+        "cost": "1300.00",
+        "improvement": "54000.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "47200.00",
+              "closing": "163200.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "163200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "162000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "162000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "132800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "132800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "131600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "131600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "112400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "112400.00",
+              "inflows": "65000.00",
+              "outflows": "2500.00",
+              "closing": "174900.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "174900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "173700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "173700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "54500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "54500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "53300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "53300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "52100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "52100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "50900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "50900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "49700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "49700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "48500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "48500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "47300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "47300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "46100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "46100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "44900.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "99400.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "99400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "98200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "98200.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "85000.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "85000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "83800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "82600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "81400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "80200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "80200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "79000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "44900.00",
+            "worstDate": "2026-10-03",
+            "reserveShortfall": "0.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 0,
+            "criticalAtRisk": 0,
+            "firstRiskDate": null
+          }
+        }
+      }
+    ],
+    "criticalEvents": [
+      {
+        "id": "tax",
+        "date": "2026-09-20",
+        "amount": "-28000.00",
+        "label": "Impuestos",
+        "source": "obligation",
+        "sourceId": "tax",
+        "category": "tax",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "rent",
+        "date": "2026-09-22",
+        "amount": "-18000.00",
+        "label": "Renta del taller",
+        "source": "obligation",
+        "sourceId": "rent",
+        "category": "rent",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "payroll",
+        "date": "2026-09-25",
+        "amount": "-118000.00",
+        "label": "Nómina · 12 personas",
+        "source": "obligation",
+        "sourceId": "payroll",
+        "category": "payroll",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      }
+    ],
+    "decision": null
+  },
+  "treasury?delayedReceiptId=senda": {
+    "version": "treasury-v2",
+    "inputHash": "demo",
+    "input": {
+      "asOf": "2026-09-12",
+      "horizonDays": 30,
+      "currency": "MXN",
+      "currentBalance": "185000.00",
+      "reserve": "40000.00",
+      "dailyOperatingExpense": "1200.00",
+      "events": [
+        {
+          "id": "senda",
+          "date": "2026-09-23",
+          "amount": "32600.00",
+          "label": "Estudio Senda",
+          "source": "invoice",
+          "sourceId": "senda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "materials",
+          "date": "2026-09-18",
+          "amount": "-46000.00",
+          "label": "Maderas del Norte",
+          "source": "invoice",
+          "sourceId": "materials",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": "2026-10-01",
+          "negotiationCost": "500.00"
+        },
+        {
+          "id": "tax",
+          "date": "2026-09-20",
+          "amount": "-28000.00",
+          "label": "Impuestos",
+          "source": "obligation",
+          "sourceId": "tax",
+          "category": "tax",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "rent",
+          "date": "2026-09-22",
+          "amount": "-18000.00",
+          "label": "Renta del taller",
+          "source": "obligation",
+          "sourceId": "rent",
+          "category": "rent",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "payroll",
+          "date": "2026-09-25",
+          "amount": "-118000.00",
+          "label": "Nómina · 12 personas",
+          "source": "obligation",
+          "sourceId": "payroll",
+          "category": "payroll",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "roble",
+          "date": "2026-09-30",
+          "amount": "65000.00",
+          "label": "Casa Roble",
+          "source": "invoice",
+          "sourceId": "roble",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": "2026-09-23",
+          "latestDate": null,
+          "negotiationCost": "1300.00"
+        },
+        {
+          "id": "alameda",
+          "date": "2026-10-04",
+          "amount": "55700.00",
+          "label": "Hotel Alameda",
+          "source": "invoice",
+          "sourceId": "alameda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": "2026-09-24",
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "supplies",
+          "date": "2026-10-06",
+          "amount": "-12000.00",
+          "label": "Insumos de producción",
+          "source": "invoice",
+          "sourceId": "supplies",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        }
+      ],
+      "warnings": [
+        "Ejemplo sintético. Las fechas de cobro, flexibilidad y costos son supuestos explícitos, no datos inferidos del CFDI.",
+        "La proyección usa cierres diarios; no garantiza el orden intradía de cobros y pagos."
+      ]
+    },
+    "baseline": {
+      "points": [
+        {
+          "date": "2026-09-12",
+          "opening": "185000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "183800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-13",
+          "opening": "183800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "182600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-14",
+          "opening": "182600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "181400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-15",
+          "opening": "181400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "180200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-16",
+          "opening": "180200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "179000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-17",
+          "opening": "179000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "177800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-18",
+          "opening": "177800.00",
+          "inflows": "0.00",
+          "outflows": "47200.00",
+          "closing": "130600.00",
+          "criticalAmount": "0.00",
+          "events": ["materials"]
+        },
+        {
+          "date": "2026-09-19",
+          "opening": "130600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "129400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-20",
+          "opening": "129400.00",
+          "inflows": "0.00",
+          "outflows": "29200.00",
+          "closing": "100200.00",
+          "criticalAmount": "28000.00",
+          "events": ["tax"]
+        },
+        {
+          "date": "2026-09-21",
+          "opening": "100200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "99000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-22",
+          "opening": "99000.00",
+          "inflows": "0.00",
+          "outflows": "19200.00",
+          "closing": "79800.00",
+          "criticalAmount": "18000.00",
+          "events": ["rent"]
+        },
+        {
+          "date": "2026-09-23",
+          "opening": "79800.00",
+          "inflows": "32600.00",
+          "outflows": "1200.00",
+          "closing": "111200.00",
+          "criticalAmount": "0.00",
+          "events": ["senda"]
+        },
+        {
+          "date": "2026-09-24",
+          "opening": "111200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "110000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-25",
+          "opening": "110000.00",
+          "inflows": "0.00",
+          "outflows": "119200.00",
+          "closing": "-9200.00",
+          "criticalAmount": "118000.00",
+          "events": ["payroll"]
+        },
+        {
+          "date": "2026-09-26",
+          "opening": "-9200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-10400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-27",
+          "opening": "-10400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-11600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-28",
+          "opening": "-11600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-12800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-29",
+          "opening": "-12800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-14000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-30",
+          "opening": "-14000.00",
+          "inflows": "65000.00",
+          "outflows": "1200.00",
+          "closing": "49800.00",
+          "criticalAmount": "0.00",
+          "events": ["roble"]
+        },
+        {
+          "date": "2026-10-01",
+          "opening": "49800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "48600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-02",
+          "opening": "48600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "47400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-03",
+          "opening": "47400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "46200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-04",
+          "opening": "46200.00",
+          "inflows": "55700.00",
+          "outflows": "1200.00",
+          "closing": "100700.00",
+          "criticalAmount": "0.00",
+          "events": ["alameda"]
+        },
+        {
+          "date": "2026-10-05",
+          "opening": "100700.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "99500.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-06",
+          "opening": "99500.00",
+          "inflows": "0.00",
+          "outflows": "13200.00",
+          "closing": "86300.00",
+          "criticalAmount": "0.00",
+          "events": ["supplies"]
+        },
+        {
+          "date": "2026-10-07",
+          "opening": "86300.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "85100.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-08",
+          "opening": "85100.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "83900.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-09",
+          "opening": "83900.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "82700.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-10",
+          "opening": "82700.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "81500.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-11",
+          "opening": "81500.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "80300.00",
+          "criticalAmount": "0.00",
+          "events": []
+        }
+      ],
+      "summary": {
+        "minimumBalance": "-14000.00",
+        "worstDate": "2026-09-29",
+        "reserveShortfall": "54000.00",
+        "cashShortfall": "14000.00",
+        "daysBelowReserve": 5,
+        "criticalAtRisk": 1,
+        "firstRiskDate": "2026-09-25"
+      }
+    },
+    "plans": [
+      {
+        "id": "alameda:2026-09-24",
+        "title": "Adelantar un cobro",
+        "actions": [
+          {
+            "id": "alameda:2026-09-24",
+            "eventId": "alameda",
+            "label": "Hotel Alameda",
+            "kind": "collect",
+            "from": "2026-10-04",
+            "to": "2026-09-24",
+            "amount": "55700.00",
+            "cost": "0.00"
+          }
+        ],
+        "cost": "0.00",
+        "improvement": "54000.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "179000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "179000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "177800.00",
+              "inflows": "0.00",
+              "outflows": "47200.00",
+              "closing": "130600.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "130600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "129400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "129400.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "100200.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "100200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "99000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "99000.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "79800.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "79800.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "111200.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "111200.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "165700.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "165700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "46500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "46500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "45300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "45300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "44100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "42900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "42900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "41700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "41700.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "105500.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "105500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "104300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "104300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "103100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "103100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "101900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "101900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "100700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "100700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "99500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "99500.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "86300.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "86300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "85100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "85100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "83900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "82700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "81500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "80300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "41700.00",
+            "worstDate": "2026-09-29",
+            "reserveShortfall": "0.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 0,
+            "criticalAtRisk": 0,
+            "firstRiskDate": null
+          }
+        }
+      },
+      {
+        "id": "alameda:2026-09-24|materials:2026-10-01",
+        "title": "Combinar cobros y acuerdos",
+        "actions": [
+          {
+            "id": "alameda:2026-09-24",
+            "eventId": "alameda",
+            "label": "Hotel Alameda",
+            "kind": "collect",
+            "from": "2026-10-04",
+            "to": "2026-09-24",
+            "amount": "55700.00",
+            "cost": "0.00"
+          },
+          {
+            "id": "materials:2026-10-01",
+            "eventId": "materials",
+            "label": "Maderas del Norte",
+            "kind": "defer",
+            "from": "2026-09-18",
+            "to": "2026-10-01",
+            "amount": "46000.00",
+            "cost": "500.00"
+          }
+        ],
+        "cost": "500.00",
+        "improvement": "54000.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "179000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "179000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "177800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "176600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "176600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "175400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "175400.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "146200.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "146200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "145000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "145000.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "125800.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "125800.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "157200.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "157200.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "211700.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "211700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "92500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "92500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "91300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "91300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "90100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "90100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "88900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "88900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "87700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "87700.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "151500.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "151500.00",
+              "inflows": "0.00",
+              "outflows": "47700.00",
+              "closing": "103800.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "103800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "102600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "102600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "101400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "101400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "100200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "100200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "99000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "99000.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "85800.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "85800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "84600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "84600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "83400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "82200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "81000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "79800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "79800.00",
+            "worstDate": "2026-10-11",
+            "reserveShortfall": "0.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 0,
+            "criticalAtRisk": 0,
+            "firstRiskDate": null
+          }
+        }
+      },
+      {
+        "id": "roble:2026-09-23",
+        "title": "Adelantar un cobro",
+        "actions": [
+          {
+            "id": "roble:2026-09-23",
+            "eventId": "roble",
+            "label": "Casa Roble",
+            "kind": "collect",
+            "from": "2026-09-30",
+            "to": "2026-09-23",
+            "amount": "65000.00",
+            "cost": "1300.00"
+          }
+        ],
+        "cost": "1300.00",
+        "improvement": "54000.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "179000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "179000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "177800.00",
+              "inflows": "0.00",
+              "outflows": "47200.00",
+              "closing": "130600.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "130600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "129400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "129400.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "100200.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "100200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "99000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "99000.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "79800.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "79800.00",
+              "inflows": "97600.00",
+              "outflows": "2500.00",
+              "closing": "174900.00",
+              "criticalAmount": "0.00",
+              "events": ["senda", "roble"]
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "174900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "173700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "173700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "54500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "54500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "53300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "53300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "52100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "52100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "50900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "50900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "49700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "49700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "48500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "48500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "47300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "47300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "46100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "46100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "44900.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "99400.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "99400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "98200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "98200.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "85000.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "85000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "83800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "82600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "81400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "80200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "80200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "79000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "44900.00",
+            "worstDate": "2026-10-03",
+            "reserveShortfall": "0.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 0,
+            "criticalAtRisk": 0,
+            "firstRiskDate": null
+          }
+        }
+      }
+    ],
+    "criticalEvents": [
+      {
+        "id": "tax",
+        "date": "2026-09-20",
+        "amount": "-28000.00",
+        "label": "Impuestos",
+        "source": "obligation",
+        "sourceId": "tax",
+        "category": "tax",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "rent",
+        "date": "2026-09-22",
+        "amount": "-18000.00",
+        "label": "Renta del taller",
+        "source": "obligation",
+        "sourceId": "rent",
+        "category": "rent",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "payroll",
+        "date": "2026-09-25",
+        "amount": "-118000.00",
+        "label": "Nómina · 12 personas",
+        "source": "obligation",
+        "sourceId": "payroll",
+        "category": "payroll",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      }
+    ],
+    "decision": null
+  },
+  "treasury?delayedReceiptId=roble": {
+    "version": "treasury-v2",
+    "inputHash": "demo",
+    "input": {
+      "asOf": "2026-09-12",
+      "horizonDays": 30,
+      "currency": "MXN",
+      "currentBalance": "185000.00",
+      "reserve": "40000.00",
+      "dailyOperatingExpense": "1200.00",
+      "events": [
+        {
+          "id": "senda",
+          "date": "2026-09-16",
+          "amount": "32600.00",
+          "label": "Estudio Senda",
+          "source": "invoice",
+          "sourceId": "senda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "materials",
+          "date": "2026-09-18",
+          "amount": "-46000.00",
+          "label": "Maderas del Norte",
+          "source": "invoice",
+          "sourceId": "materials",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": "2026-10-01",
+          "negotiationCost": "500.00"
+        },
+        {
+          "id": "tax",
+          "date": "2026-09-20",
+          "amount": "-28000.00",
+          "label": "Impuestos",
+          "source": "obligation",
+          "sourceId": "tax",
+          "category": "tax",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "rent",
+          "date": "2026-09-22",
+          "amount": "-18000.00",
+          "label": "Renta del taller",
+          "source": "obligation",
+          "sourceId": "rent",
+          "category": "rent",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "payroll",
+          "date": "2026-09-25",
+          "amount": "-118000.00",
+          "label": "Nómina · 12 personas",
+          "source": "obligation",
+          "sourceId": "payroll",
+          "category": "payroll",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "roble",
+          "date": "2026-10-07",
+          "amount": "65000.00",
+          "label": "Casa Roble",
+          "source": "invoice",
+          "sourceId": "roble",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "1300.00"
+        },
+        {
+          "id": "alameda",
+          "date": "2026-10-04",
+          "amount": "55700.00",
+          "label": "Hotel Alameda",
+          "source": "invoice",
+          "sourceId": "alameda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": "2026-09-24",
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "supplies",
+          "date": "2026-10-06",
+          "amount": "-12000.00",
+          "label": "Insumos de producción",
+          "source": "invoice",
+          "sourceId": "supplies",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        }
+      ],
+      "warnings": [
+        "Ejemplo sintético. Las fechas de cobro, flexibilidad y costos son supuestos explícitos, no datos inferidos del CFDI.",
+        "La proyección usa cierres diarios; no garantiza el orden intradía de cobros y pagos."
+      ]
+    },
+    "baseline": {
+      "points": [
+        {
+          "date": "2026-09-12",
+          "opening": "185000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "183800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-13",
+          "opening": "183800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "182600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-14",
+          "opening": "182600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "181400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-15",
+          "opening": "181400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "180200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-16",
+          "opening": "180200.00",
+          "inflows": "32600.00",
+          "outflows": "1200.00",
+          "closing": "211600.00",
+          "criticalAmount": "0.00",
+          "events": ["senda"]
+        },
+        {
+          "date": "2026-09-17",
+          "opening": "211600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "210400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-18",
+          "opening": "210400.00",
+          "inflows": "0.00",
+          "outflows": "47200.00",
+          "closing": "163200.00",
+          "criticalAmount": "0.00",
+          "events": ["materials"]
+        },
+        {
+          "date": "2026-09-19",
+          "opening": "163200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "162000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-20",
+          "opening": "162000.00",
+          "inflows": "0.00",
+          "outflows": "29200.00",
+          "closing": "132800.00",
+          "criticalAmount": "28000.00",
+          "events": ["tax"]
+        },
+        {
+          "date": "2026-09-21",
+          "opening": "132800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "131600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-22",
+          "opening": "131600.00",
+          "inflows": "0.00",
+          "outflows": "19200.00",
+          "closing": "112400.00",
+          "criticalAmount": "18000.00",
+          "events": ["rent"]
+        },
+        {
+          "date": "2026-09-23",
+          "opening": "112400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "111200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-24",
+          "opening": "111200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "110000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-25",
+          "opening": "110000.00",
+          "inflows": "0.00",
+          "outflows": "119200.00",
+          "closing": "-9200.00",
+          "criticalAmount": "118000.00",
+          "events": ["payroll"]
+        },
+        {
+          "date": "2026-09-26",
+          "opening": "-9200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-10400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-27",
+          "opening": "-10400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-11600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-28",
+          "opening": "-11600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-12800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-29",
+          "opening": "-12800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-14000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-30",
+          "opening": "-14000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-15200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-01",
+          "opening": "-15200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-16400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-02",
+          "opening": "-16400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-17600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-03",
+          "opening": "-17600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-18800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-04",
+          "opening": "-18800.00",
+          "inflows": "55700.00",
+          "outflows": "1200.00",
+          "closing": "35700.00",
+          "criticalAmount": "0.00",
+          "events": ["alameda"]
+        },
+        {
+          "date": "2026-10-05",
+          "opening": "35700.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "34500.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-06",
+          "opening": "34500.00",
+          "inflows": "0.00",
+          "outflows": "13200.00",
+          "closing": "21300.00",
+          "criticalAmount": "0.00",
+          "events": ["supplies"]
+        },
+        {
+          "date": "2026-10-07",
+          "opening": "21300.00",
+          "inflows": "65000.00",
+          "outflows": "1200.00",
+          "closing": "85100.00",
+          "criticalAmount": "0.00",
+          "events": ["roble"]
+        },
+        {
+          "date": "2026-10-08",
+          "opening": "85100.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "83900.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-09",
+          "opening": "83900.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "82700.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-10",
+          "opening": "82700.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "81500.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-11",
+          "opening": "81500.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "80300.00",
+          "criticalAmount": "0.00",
+          "events": []
+        }
+      ],
+      "summary": {
+        "minimumBalance": "-18800.00",
+        "worstDate": "2026-10-03",
+        "reserveShortfall": "58800.00",
+        "cashShortfall": "18800.00",
+        "daysBelowReserve": 12,
+        "criticalAtRisk": 1,
+        "firstRiskDate": "2026-09-25"
+      }
+    },
+    "plans": [
+      {
+        "id": "alameda:2026-09-24",
+        "title": "Adelantar un cobro",
+        "actions": [
+          {
+            "id": "alameda:2026-09-24",
+            "eventId": "alameda",
+            "label": "Hotel Alameda",
+            "kind": "collect",
+            "from": "2026-10-04",
+            "to": "2026-09-24",
+            "amount": "55700.00",
+            "cost": "0.00"
+          }
+        ],
+        "cost": "0.00",
+        "improvement": "40100.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "47200.00",
+              "closing": "163200.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "163200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "162000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "162000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "132800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "132800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "131600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "131600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "112400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "112400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "111200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "111200.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "165700.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "165700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "46500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "46500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "45300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "45300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "44100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "42900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "42900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "41700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "41700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "40500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "40500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "39300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "39300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "38100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "38100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "36900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "36900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "35700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "35700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "34500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "34500.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "21300.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "21300.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "85100.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "85100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "83900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "82700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "81500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "80300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "21300.00",
+            "worstDate": "2026-10-06",
+            "reserveShortfall": "18700.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 6,
+            "criticalAtRisk": 0,
+            "firstRiskDate": "2026-10-01"
+          }
+        }
+      },
+      {
+        "id": "alameda:2026-09-24|materials:2026-10-01",
+        "title": "Combinar cobros y acuerdos",
+        "actions": [
+          {
+            "id": "alameda:2026-09-24",
+            "eventId": "alameda",
+            "label": "Hotel Alameda",
+            "kind": "collect",
+            "from": "2026-10-04",
+            "to": "2026-09-24",
+            "amount": "55700.00",
+            "cost": "0.00"
+          },
+          {
+            "id": "materials:2026-10-01",
+            "eventId": "materials",
+            "label": "Maderas del Norte",
+            "kind": "defer",
+            "from": "2026-09-18",
+            "to": "2026-10-01",
+            "amount": "46000.00",
+            "cost": "500.00"
+          }
+        ],
+        "cost": "500.00",
+        "improvement": "39600.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "209200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "209200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "208000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "208000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "178800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "178800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "177600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "158400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "158400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "157200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "157200.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "211700.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "211700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "92500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "92500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "91300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "91300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "90100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "90100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "88900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "88900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "87700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "87700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "86500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "86500.00",
+              "inflows": "0.00",
+              "outflows": "47700.00",
+              "closing": "38800.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "38800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "37600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "37600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "36400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "36400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "35200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "35200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "34000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "34000.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "20800.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "20800.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "84600.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "84600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "83400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "82200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "81000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "79800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "20800.00",
+            "worstDate": "2026-10-06",
+            "reserveShortfall": "19200.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 6,
+            "criticalAtRisk": 0,
+            "firstRiskDate": "2026-10-01"
+          }
+        }
+      },
+      {
+        "id": "materials:2026-10-01",
+        "title": "Negociar un pago",
+        "actions": [
+          {
+            "id": "materials:2026-10-01",
+            "eventId": "materials",
+            "label": "Maderas del Norte",
+            "kind": "defer",
+            "from": "2026-09-18",
+            "to": "2026-10-01",
+            "amount": "46000.00",
+            "cost": "500.00"
+          }
+        ],
+        "cost": "500.00",
+        "improvement": "0.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "209200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "209200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "208000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "208000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "178800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "178800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "177600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "158400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "158400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "157200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "157200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "156000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "156000.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "36800.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "36800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "35600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "35600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "34400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "34400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "33200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "33200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "32000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "32000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "30800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "30800.00",
+              "inflows": "0.00",
+              "outflows": "47700.00",
+              "closing": "-16900.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "-16900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "-18100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "-18100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "-19300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "-19300.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "35200.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "35200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "34000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "34000.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "20800.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "20800.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "84600.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "84600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "83400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "83400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "82200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "82200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "81000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "81000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "79800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            }
+          ],
+          "summary": {
+            "minimumBalance": "-19300.00",
+            "worstDate": "2026-10-03",
+            "reserveShortfall": "59300.00",
+            "cashShortfall": "19300.00",
+            "daysBelowReserve": 12,
+            "criticalAtRisk": 0,
+            "firstRiskDate": "2026-09-25"
+          }
+        }
+      }
+    ],
+    "criticalEvents": [
+      {
+        "id": "tax",
+        "date": "2026-09-20",
+        "amount": "-28000.00",
+        "label": "Impuestos",
+        "source": "obligation",
+        "sourceId": "tax",
+        "category": "tax",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "rent",
+        "date": "2026-09-22",
+        "amount": "-18000.00",
+        "label": "Renta del taller",
+        "source": "obligation",
+        "sourceId": "rent",
+        "category": "rent",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "payroll",
+        "date": "2026-09-25",
+        "amount": "-118000.00",
+        "label": "Nómina · 12 personas",
+        "source": "obligation",
+        "sourceId": "payroll",
+        "category": "payroll",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      }
+    ],
+    "decision": null
+  },
+  "treasury?delayedReceiptId=alameda": {
+    "version": "treasury-v2",
+    "inputHash": "demo",
+    "input": {
+      "asOf": "2026-09-12",
+      "horizonDays": 30,
+      "currency": "MXN",
+      "currentBalance": "185000.00",
+      "reserve": "40000.00",
+      "dailyOperatingExpense": "1200.00",
+      "events": [
+        {
+          "id": "senda",
+          "date": "2026-09-16",
+          "amount": "32600.00",
+          "label": "Estudio Senda",
+          "source": "invoice",
+          "sourceId": "senda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "materials",
+          "date": "2026-09-18",
+          "amount": "-46000.00",
+          "label": "Maderas del Norte",
+          "source": "invoice",
+          "sourceId": "materials",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": "2026-10-01",
+          "negotiationCost": "500.00"
+        },
+        {
+          "id": "tax",
+          "date": "2026-09-20",
+          "amount": "-28000.00",
+          "label": "Impuestos",
+          "source": "obligation",
+          "sourceId": "tax",
+          "category": "tax",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "rent",
+          "date": "2026-09-22",
+          "amount": "-18000.00",
+          "label": "Renta del taller",
+          "source": "obligation",
+          "sourceId": "rent",
+          "category": "rent",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "payroll",
+          "date": "2026-09-25",
+          "amount": "-118000.00",
+          "label": "Nómina · 12 personas",
+          "source": "obligation",
+          "sourceId": "payroll",
+          "category": "payroll",
+          "critical": true,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "roble",
+          "date": "2026-09-30",
+          "amount": "65000.00",
+          "label": "Casa Roble",
+          "source": "invoice",
+          "sourceId": "roble",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": "2026-09-23",
+          "latestDate": null,
+          "negotiationCost": "1300.00"
+        },
+        {
+          "id": "alameda",
+          "date": "2026-10-11",
+          "amount": "55700.00",
+          "label": "Hotel Alameda",
+          "source": "invoice",
+          "sourceId": "alameda",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        },
+        {
+          "id": "supplies",
+          "date": "2026-10-06",
+          "amount": "-12000.00",
+          "label": "Insumos de producción",
+          "source": "invoice",
+          "sourceId": "supplies",
+          "category": "supplier",
+          "critical": false,
+          "earliestDate": null,
+          "latestDate": null,
+          "negotiationCost": "0.00"
+        }
+      ],
+      "warnings": [
+        "Ejemplo sintético. Las fechas de cobro, flexibilidad y costos son supuestos explícitos, no datos inferidos del CFDI.",
+        "La proyección usa cierres diarios; no garantiza el orden intradía de cobros y pagos."
+      ]
+    },
+    "baseline": {
+      "points": [
+        {
+          "date": "2026-09-12",
+          "opening": "185000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "183800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-13",
+          "opening": "183800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "182600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-14",
+          "opening": "182600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "181400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-15",
+          "opening": "181400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "180200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-16",
+          "opening": "180200.00",
+          "inflows": "32600.00",
+          "outflows": "1200.00",
+          "closing": "211600.00",
+          "criticalAmount": "0.00",
+          "events": ["senda"]
+        },
+        {
+          "date": "2026-09-17",
+          "opening": "211600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "210400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-18",
+          "opening": "210400.00",
+          "inflows": "0.00",
+          "outflows": "47200.00",
+          "closing": "163200.00",
+          "criticalAmount": "0.00",
+          "events": ["materials"]
+        },
+        {
+          "date": "2026-09-19",
+          "opening": "163200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "162000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-20",
+          "opening": "162000.00",
+          "inflows": "0.00",
+          "outflows": "29200.00",
+          "closing": "132800.00",
+          "criticalAmount": "28000.00",
+          "events": ["tax"]
+        },
+        {
+          "date": "2026-09-21",
+          "opening": "132800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "131600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-22",
+          "opening": "131600.00",
+          "inflows": "0.00",
+          "outflows": "19200.00",
+          "closing": "112400.00",
+          "criticalAmount": "18000.00",
+          "events": ["rent"]
+        },
+        {
+          "date": "2026-09-23",
+          "opening": "112400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "111200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-24",
+          "opening": "111200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "110000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-25",
+          "opening": "110000.00",
+          "inflows": "0.00",
+          "outflows": "119200.00",
+          "closing": "-9200.00",
+          "criticalAmount": "118000.00",
+          "events": ["payroll"]
+        },
+        {
+          "date": "2026-09-26",
+          "opening": "-9200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-10400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-27",
+          "opening": "-10400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-11600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-28",
+          "opening": "-11600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-12800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-29",
+          "opening": "-12800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "-14000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-09-30",
+          "opening": "-14000.00",
+          "inflows": "65000.00",
+          "outflows": "1200.00",
+          "closing": "49800.00",
+          "criticalAmount": "0.00",
+          "events": ["roble"]
+        },
+        {
+          "date": "2026-10-01",
+          "opening": "49800.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "48600.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-02",
+          "opening": "48600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "47400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-03",
+          "opening": "47400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "46200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-04",
+          "opening": "46200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "45000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-05",
+          "opening": "45000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "43800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-06",
+          "opening": "43800.00",
+          "inflows": "0.00",
+          "outflows": "13200.00",
+          "closing": "30600.00",
+          "criticalAmount": "0.00",
+          "events": ["supplies"]
+        },
+        {
+          "date": "2026-10-07",
+          "opening": "30600.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "29400.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-08",
+          "opening": "29400.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "28200.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-09",
+          "opening": "28200.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "27000.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-10",
+          "opening": "27000.00",
+          "inflows": "0.00",
+          "outflows": "1200.00",
+          "closing": "25800.00",
+          "criticalAmount": "0.00",
+          "events": []
+        },
+        {
+          "date": "2026-10-11",
+          "opening": "25800.00",
+          "inflows": "55700.00",
+          "outflows": "1200.00",
+          "closing": "80300.00",
+          "criticalAmount": "0.00",
+          "events": ["alameda"]
+        }
+      ],
+      "summary": {
+        "minimumBalance": "-14000.00",
+        "worstDate": "2026-09-29",
+        "reserveShortfall": "54000.00",
+        "cashShortfall": "14000.00",
+        "daysBelowReserve": 10,
+        "criticalAtRisk": 1,
+        "firstRiskDate": "2026-09-25"
+      }
+    },
+    "plans": [
+      {
+        "id": "materials:2026-10-01",
+        "title": "Negociar un pago",
+        "actions": [
+          {
+            "id": "materials:2026-10-01",
+            "eventId": "materials",
+            "label": "Maderas del Norte",
+            "kind": "defer",
+            "from": "2026-09-18",
+            "to": "2026-10-01",
+            "amount": "46000.00",
+            "cost": "500.00"
+          }
+        ],
+        "cost": "500.00",
+        "improvement": "39300.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "209200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "209200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "208000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "208000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "178800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "178800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "177600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "158400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "158400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "157200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "157200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "156000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "156000.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "36800.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "36800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "35600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "35600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "34400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "34400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "33200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "33200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "32000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "32000.00",
+              "inflows": "65000.00",
+              "outflows": "1200.00",
+              "closing": "95800.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "95800.00",
+              "inflows": "0.00",
+              "outflows": "47700.00",
+              "closing": "48100.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "48100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "46900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "46900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "45700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "45700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "44500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "43300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "43300.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "30100.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "30100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "28900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "28900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "27700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "27700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "26500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "26500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "25300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "25300.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "79800.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            }
+          ],
+          "summary": {
+            "minimumBalance": "25300.00",
+            "worstDate": "2026-10-10",
+            "reserveShortfall": "14700.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 10,
+            "criticalAtRisk": 0,
+            "firstRiskDate": "2026-09-25"
+          }
+        }
+      },
+      {
+        "id": "roble:2026-09-23",
+        "title": "Adelantar un cobro",
+        "actions": [
+          {
+            "id": "roble:2026-09-23",
+            "eventId": "roble",
+            "label": "Casa Roble",
+            "kind": "collect",
+            "from": "2026-09-30",
+            "to": "2026-09-23",
+            "amount": "65000.00",
+            "cost": "1300.00"
+          }
+        ],
+        "cost": "1300.00",
+        "improvement": "38500.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "47200.00",
+              "closing": "163200.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "163200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "162000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "162000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "132800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "132800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "131600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "131600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "112400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "112400.00",
+              "inflows": "65000.00",
+              "outflows": "2500.00",
+              "closing": "174900.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "174900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "173700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "173700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "54500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "54500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "53300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "53300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "52100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "52100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "50900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "50900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "49700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "49700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "48500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "48500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "47300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "47300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "46100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "46100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "44900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "43700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "43700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "42500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "42500.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "29300.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "29300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "28100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "28100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "26900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "26900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "25700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "25700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "24500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "24500.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "79000.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            }
+          ],
+          "summary": {
+            "minimumBalance": "24500.00",
+            "worstDate": "2026-10-10",
+            "reserveShortfall": "15500.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 5,
+            "criticalAtRisk": 0,
+            "firstRiskDate": "2026-10-06"
+          }
+        }
+      },
+      {
+        "id": "materials:2026-10-01|roble:2026-09-23",
+        "title": "Combinar cobros y acuerdos",
+        "actions": [
+          {
+            "id": "roble:2026-09-23",
+            "eventId": "roble",
+            "label": "Casa Roble",
+            "kind": "collect",
+            "from": "2026-09-30",
+            "to": "2026-09-23",
+            "amount": "65000.00",
+            "cost": "1300.00"
+          },
+          {
+            "id": "materials:2026-10-01",
+            "eventId": "materials",
+            "label": "Maderas del Norte",
+            "kind": "defer",
+            "from": "2026-09-18",
+            "to": "2026-10-01",
+            "amount": "46000.00",
+            "cost": "500.00"
+          }
+        ],
+        "cost": "1800.00",
+        "improvement": "38000.00",
+        "projection": {
+          "points": [
+            {
+              "date": "2026-09-12",
+              "opening": "185000.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "183800.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-13",
+              "opening": "183800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "182600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-14",
+              "opening": "182600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "181400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-15",
+              "opening": "181400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "180200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-16",
+              "opening": "180200.00",
+              "inflows": "32600.00",
+              "outflows": "1200.00",
+              "closing": "211600.00",
+              "criticalAmount": "0.00",
+              "events": ["senda"]
+            },
+            {
+              "date": "2026-09-17",
+              "opening": "211600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "210400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-18",
+              "opening": "210400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "209200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-19",
+              "opening": "209200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "208000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-20",
+              "opening": "208000.00",
+              "inflows": "0.00",
+              "outflows": "29200.00",
+              "closing": "178800.00",
+              "criticalAmount": "28000.00",
+              "events": ["tax"]
+            },
+            {
+              "date": "2026-09-21",
+              "opening": "178800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "177600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-22",
+              "opening": "177600.00",
+              "inflows": "0.00",
+              "outflows": "19200.00",
+              "closing": "158400.00",
+              "criticalAmount": "18000.00",
+              "events": ["rent"]
+            },
+            {
+              "date": "2026-09-23",
+              "opening": "158400.00",
+              "inflows": "65000.00",
+              "outflows": "2500.00",
+              "closing": "220900.00",
+              "criticalAmount": "0.00",
+              "events": ["roble"]
+            },
+            {
+              "date": "2026-09-24",
+              "opening": "220900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "219700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-25",
+              "opening": "219700.00",
+              "inflows": "0.00",
+              "outflows": "119200.00",
+              "closing": "100500.00",
+              "criticalAmount": "118000.00",
+              "events": ["payroll"]
+            },
+            {
+              "date": "2026-09-26",
+              "opening": "100500.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "99300.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-27",
+              "opening": "99300.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "98100.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-28",
+              "opening": "98100.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "96900.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-29",
+              "opening": "96900.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "95700.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-09-30",
+              "opening": "95700.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "94500.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-01",
+              "opening": "94500.00",
+              "inflows": "0.00",
+              "outflows": "47700.00",
+              "closing": "46800.00",
+              "criticalAmount": "0.00",
+              "events": ["materials"]
+            },
+            {
+              "date": "2026-10-02",
+              "opening": "46800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "45600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-03",
+              "opening": "45600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "44400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-04",
+              "opening": "44400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "43200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-05",
+              "opening": "43200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "42000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-06",
+              "opening": "42000.00",
+              "inflows": "0.00",
+              "outflows": "13200.00",
+              "closing": "28800.00",
+              "criticalAmount": "0.00",
+              "events": ["supplies"]
+            },
+            {
+              "date": "2026-10-07",
+              "opening": "28800.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "27600.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-08",
+              "opening": "27600.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "26400.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-09",
+              "opening": "26400.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "25200.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-10",
+              "opening": "25200.00",
+              "inflows": "0.00",
+              "outflows": "1200.00",
+              "closing": "24000.00",
+              "criticalAmount": "0.00",
+              "events": []
+            },
+            {
+              "date": "2026-10-11",
+              "opening": "24000.00",
+              "inflows": "55700.00",
+              "outflows": "1200.00",
+              "closing": "78500.00",
+              "criticalAmount": "0.00",
+              "events": ["alameda"]
+            }
+          ],
+          "summary": {
+            "minimumBalance": "24000.00",
+            "worstDate": "2026-10-10",
+            "reserveShortfall": "16000.00",
+            "cashShortfall": "0.00",
+            "daysBelowReserve": 5,
+            "criticalAtRisk": 0,
+            "firstRiskDate": "2026-10-06"
+          }
+        }
+      }
+    ],
+    "criticalEvents": [
+      {
+        "id": "tax",
+        "date": "2026-09-20",
+        "amount": "-28000.00",
+        "label": "Impuestos",
+        "source": "obligation",
+        "sourceId": "tax",
+        "category": "tax",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "rent",
+        "date": "2026-09-22",
+        "amount": "-18000.00",
+        "label": "Renta del taller",
+        "source": "obligation",
+        "sourceId": "rent",
+        "category": "rent",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      },
+      {
+        "id": "payroll",
+        "date": "2026-09-25",
+        "amount": "-118000.00",
+        "label": "Nómina · 12 personas",
+        "source": "obligation",
+        "sourceId": "payroll",
+        "category": "payroll",
+        "critical": true,
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00"
+      }
+    ],
+    "decision": null
+  }
+}

@@ -1,5 +1,5 @@
-import { DashboardPage } from "@/features/dashboard/dashboard";
-export const metadata = { title: "Resumen" };
+import { TreasuryPage } from "@/features/dashboard/treasury-page";
+export const metadata = { title: "Plan de caja" };
 export default function Page() {
-  return <DashboardPage />;
+  return <TreasuryPage />;
 }

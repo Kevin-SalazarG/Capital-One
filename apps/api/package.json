@@ -19,12 +19,13 @@
     "typecheck": "tsc --noEmit",
     "test:unit": "jest --config jest.config.cjs --runInBand --testPathPatterns=src/.*\\.spec\\.ts$",
     "test:integration": "node --import tsx --test test/*.integration.spec.ts",
-    "pretest:e2e": "pnpm --filter nessie-node-sdk build",
+    "pretest:e2e": "pnpm --filter @colchon/treasury build && pnpm --filter nessie-node-sdk build",
     "test:e2e": "node --import tsx --test test/*.e2e-spec.ts",
     "test": "pnpm test:unit && pnpm test:integration && pnpm test:e2e",
     "verify": "pnpm check:encoding && pnpm format:check && pnpm lint && pnpm typecheck && pnpm build && pnpm test"
   },
   "dependencies": {
+    "@colchon/treasury": "workspace:*",
     "@nestjs/common": "12.0.1",
     "@nestjs/config": "12.0.0",
     "@nestjs/core": "12.0.1",
@@ -40,7 +41,8 @@
     "joi": "18.2.9",
     "nessie-node-sdk": "workspace:*",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.2"
+    "rxjs": "7.8.2",
+    "zod": "4.6.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.13",

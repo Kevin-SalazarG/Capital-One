@@ -1,168 +1,96 @@
 import Decimal from "decimal.js";
-
-import { addDays } from "../../../common/utilities/date";
-import { toDecimal } from "../../../common/utilities/money";
+import { buildTreasury } from "@colchon/treasury/treasury-engine";
+import { treasuryInput } from "./treasury-input.mapper";
 import type {
-  ForecastEvent,
   ForecastInput,
   ForecastOutput,
-  ForecastPoint,
   ForecastRecommendation,
-  LiquidityGap,
 } from "./forecast.types";
 
-const SAFETY_RATE = new Decimal("0.15");
-
-function eventsForDate(
-  events: readonly ForecastEvent[],
-  pointDate: string,
-): ForecastEvent[] {
-  return events.filter((event) => event.date === pointDate);
-}
-
-function createRecommendation(
-  gap: LiquidityGap,
-  events: readonly ForecastEvent[],
-): ForecastRecommendation {
-  const receivable = events
-    .filter(
-      (event) =>
-        event.sourceType === "cfdi_invoice" && event.signedExpectedAmount.gt(0),
-    )
-    .sort((left, right) => left.date.localeCompare(right.date))[0];
-  if (receivable) {
-    const estimatedImpact = Decimal.min(
-      receivable.signedExpectedAmount,
-      gap.amount,
-    );
-    return {
-      type: "collect_receivable",
-      title: `Collect ${receivable.label} before ${gap.gapDate}`,
-      rationale: `Expected collection can reduce the projected deficit on ${gap.gapDate}.`,
-      priority: gap.severity === "critical" ? "critical" : "high",
-      estimatedImpact,
-      sourceEventId: receivable.sourceId,
-      evidence: {
-        gapDate: gap.gapDate,
-        gapAmount: gap.amount.toFixed(2),
-        sourceDate: receivable.date,
-        sourceAmount: receivable.signedExpectedAmount.toFixed(2),
-      },
-    };
-  }
-
-  const payable = events
-    .filter(
-      (event) =>
-        event.sourceType === "cfdi_invoice" && event.signedExpectedAmount.lt(0),
-    )
-    .sort((left, right) => left.date.localeCompare(right.date))[0];
-  if (payable) {
-    const estimatedImpact = Decimal.min(
-      payable.signedExpectedAmount.abs(),
-      gap.amount,
-    );
-    return {
-      type: "schedule_payment",
-      title: `Schedule ${payable.label} after ${gap.gapDate}`,
-      rationale: `Negotiating the payment date can reduce the projected deficit.`,
-      priority: gap.severity === "critical" ? "critical" : "medium",
-      estimatedImpact,
-      sourceEventId: payable.sourceId,
-      evidence: {
-        gapDate: gap.gapDate,
-        gapAmount: gap.amount.toFixed(2),
-        sourceDate: payable.date,
-        sourceAmount: payable.signedExpectedAmount.abs().toFixed(2),
-      },
-    };
-  }
-
-  return {
-    type: "increase_buffer",
-    title: `Increase the cash buffer before ${gap.gapDate}`,
-    rationale:
-      "No eligible receivable or payable was available to reduce the projected gap.",
-    priority: gap.severity === "critical" ? "critical" : "high",
-    estimatedImpact: gap.amount,
-    sourceEventId: null,
-    evidence: {
-      gapDate: gap.gapDate,
-      gapAmount: gap.amount.toFixed(2),
-    },
-  };
-}
-
+/** The persisted legacy endpoint uses the same ledger and feasible plans as the cockpit. */
 export class ForecastEngine {
   public calculate(input: ForecastInput): ForecastOutput {
     const safetyThreshold = Decimal.max(
-      toDecimal(input.minimumCashReserve, "minimumCashReserve"),
-      toDecimal(input.averageMonthlyOutflow, "averageMonthlyOutflow").mul(
-        SAFETY_RATE,
-      ),
+      input.minimumCashReserve,
+      input.averageMonthlyOutflow.mul("0.15"),
     );
-    const points: ForecastPoint[] = [];
-    let openingBalance = toDecimal(input.currentBalance, "currentBalance");
-    let firstGap: LiquidityGap | null = null;
-
-    for (let offset = 0; offset < input.horizonDays; offset += 1) {
-      const pointDate = addDays(input.asOf, offset);
-      const events = eventsForDate(input.events, pointDate);
-      const inflows = events
-        .filter((event) => event.signedExpectedAmount.gt(0))
-        .reduce(
-          (total, event) => total.plus(event.signedExpectedAmount),
-          new Decimal(0),
-        );
-      const scheduledOutflows = events
-        .filter((event) => event.signedExpectedAmount.lt(0))
-        .reduce(
-          (total, event) => total.plus(event.signedExpectedAmount.abs()),
-          new Decimal(0),
-        );
-      const outflows = scheduledOutflows.plus(
-        toDecimal(input.variableOutflowPerDay, "variableOutflowPerDay"),
-      );
-      const closingBalance = openingBalance.plus(inflows).minus(outflows);
-      const gapAmount = Decimal.max(safetyThreshold.minus(closingBalance), 0);
-      const point: ForecastPoint = {
-        pointDate,
-        openingBalance,
-        inflows,
-        outflows,
-        closingBalance,
-        safetyThreshold,
-        gapAmount,
-      };
-      points.push(point);
-
-      if (gapAmount.gt(0) && !firstGap) {
-        firstGap = {
-          gapDate: pointDate,
-          amount: gapAmount,
-          severity: gapAmount.gte(safetyThreshold.mul("0.5"))
-            ? "critical"
-            : "warning",
-          explanation: `Projected balance falls below the safety threshold on ${pointDate}.`,
+    const model = buildTreasury(
+      treasuryInput({ ...input, minimumCashReserve: safetyThreshold }),
+    );
+    const points = model.baseline.points.map((point) => ({
+      pointDate: point.date,
+      openingBalance: new Decimal(point.opening),
+      inflows: new Decimal(point.inflows),
+      outflows: new Decimal(point.outflows),
+      closingBalance: new Decimal(point.closing),
+      safetyThreshold,
+      gapAmount: Decimal.max(safetyThreshold.minus(point.closing), 0),
+    }));
+    const gap = points.find((point) => point.gapAmount.gt(0));
+    const firstGap = gap
+      ? {
+          gapDate: gap.pointDate,
+          amount: gap.gapAmount,
+          severity: gap.closingBalance.lt(0)
+            ? ("critical" as const)
+            : ("warning" as const),
+          explanation:
+            "El saldo al cierre queda debajo de la reserva configurada. Un saldo positivo no implica impago.",
           evidence: {
-            pointDate,
-            projectedBalance: closingBalance.toFixed(2),
+            pointDate: gap.pointDate,
+            projectedBalance: gap.closingBalance.toFixed(2),
             safetyThreshold: safetyThreshold.toFixed(2),
           },
-        };
-      }
-
-      openingBalance = closingBalance;
-    }
-
+        }
+      : null;
+    const best = model.plans[0];
+    const action = best?.actions[0];
+    let recommendation: ForecastRecommendation | null = null;
+    if (firstGap)
+      recommendation =
+        action && best
+          ? {
+              type:
+                action.kind === "collect"
+                  ? "collect_receivable"
+                  : "schedule_payment",
+              title: best.title,
+              rationale:
+                "Plan condicionado a acuerdos. Compara todos los movimientos en Plan de caja antes de actuar.",
+              priority: "high",
+              estimatedImpact: new Decimal(best.improvement),
+              sourceEventId: action.eventId,
+              evidence: {
+                gapDate: firstGap.gapDate,
+                gapAmount: model.baseline.summary.reserveShortfall,
+                sourceDate: action.from,
+                targetDate: action.to,
+                sourceAmount: action.amount,
+                cost: best.cost,
+                residual: best.projection.summary.reserveShortfall,
+              },
+            }
+          : {
+              type: "increase_buffer",
+              title: "Revisar la liquidez adicional necesaria",
+              rationale:
+                "No hay acuerdos elegibles. Una reserva objetivo no crea dinero; este monto cubre el peor día del horizonte.",
+              priority: "high",
+              estimatedImpact: new Decimal(
+                model.baseline.summary.reserveShortfall,
+              ),
+              sourceEventId: null,
+              evidence: {
+                gapDate: firstGap.gapDate,
+                gapAmount: model.baseline.summary.reserveShortfall,
+              },
+            };
     return {
-      algorithmVersion: "rules-v1",
+      algorithmVersion: "treasury-v2",
       safetyThreshold,
       points,
       firstGap,
-      recommendation: firstGap
-        ? createRecommendation(firstGap, input.events)
-        : null,
+      recommendation,
       confidence: input.confidence,
     };
   }

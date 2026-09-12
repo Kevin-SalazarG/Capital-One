@@ -36,7 +36,7 @@ export class ForecastRepository {
         as_of: input.asOf,
         input_hash: inputHash,
         input_snapshot: forecastInputSnapshot(input),
-        engine_version: "rules-v1",
+        engine_version: "treasury-v2",
       })
       .select("*")
       .single();

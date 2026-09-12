@@ -13,18 +13,12 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
   const links = [
     { path: "company", label: "Empresa", permission: "organization:read" },
     { path: "connections", label: "Conexiones", permission: "connection:read" },
-    { path: "team", label: "Equipo", permission: "member:read" },
-    {
-      path: "obligations",
-      label: "Pagos recurrentes",
-      permission: "forecast:configure",
-    },
   ];
   return (
     <div className="page-container">
       <PageHeader
         title="Todo en su lugar."
-        description="Tu empresa, tus fuentes de datos y las personas que colaboran contigo."
+        description="Los datos de tu empresa y las fuentes que alimentan tu plan de caja."
       />
       <nav
         aria-label="Configuración"

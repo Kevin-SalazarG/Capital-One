@@ -29,6 +29,9 @@ export class CfdiService {
       totalAmount: document.totalAmount,
       outstandingAmount: document.outstandingAmount,
       paymentStatus: document.paymentStatus,
+      dueOn: document.dueOn ?? null,
+      currency: document.currency ?? "MXN",
+      metadata: document.metadata ?? {},
     }));
     const result = await this.repository.createImportBatch(
       organizationId,

@@ -11,6 +11,9 @@ const ignoredDirectories = new Set([
   ".pnpm-store",
   ".branches",
   ".temp",
+  ".next",
+  "test-results",
+  "playwright-report",
 ]);
 const textExtensions = new Set([
   ".cjs",

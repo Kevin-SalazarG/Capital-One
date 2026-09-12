@@ -1,4 +1,11 @@
-import { IsIn, Matches, MaxLength, MinLength, IsString } from "class-validator";
+import {
+  IsIn,
+  IsBoolean,
+  Matches,
+  MaxLength,
+  MinLength,
+  IsString,
+} from "class-validator";
 
 export class CreateRecurringObligationDto {
   @IsString()
@@ -9,8 +16,16 @@ export class CreateRecurringObligationDto {
   @Matches(/^\d+(\.\d{1,2})?$/)
   public readonly amount!: string;
 
-  @IsIn(["weekly", "monthly", "quarterly", "yearly"])
-  public readonly frequency!: "weekly" | "monthly" | "quarterly" | "yearly";
+  @IsIn(["weekly", "biweekly", "monthly", "quarterly", "yearly"])
+  public readonly frequency!:
+    "weekly" | "biweekly" | "monthly" | "quarterly" | "yearly";
+
+  @IsIn(["payroll", "tax", "rent", "supplier", "other"])
+  public readonly category: "payroll" | "tax" | "rent" | "supplier" | "other" =
+    "other";
+
+  @IsBoolean()
+  public readonly critical = false;
 
   @Matches(/^[A-Z]{3}$/)
   public readonly currency = "MXN";

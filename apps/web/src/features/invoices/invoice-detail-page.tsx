@@ -18,6 +18,7 @@ import { invoiceSchema, type Invoice } from "@/lib/api/contracts";
 import { formatDate, formatMoney } from "@/lib/formatters";
 import { cn } from "@/lib/class-names";
 import { InvoicePaymentStatus } from "@/features/invoices/invoice-payment-status";
+import { InvoicePlanningForm } from "@/features/invoices/invoice-planning-form";
 
 function invoiceName(invoice: Invoice) {
   return (
@@ -197,6 +198,7 @@ function InvoiceDetailContent({ invoiceId }: { invoiceId: string }) {
           />
         </header>
 
+        <InvoicePlanningForm key={invoice.id} invoice={invoice} />
         <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,.6fr)]">
           <section
             aria-labelledby="invoice-balance-heading"

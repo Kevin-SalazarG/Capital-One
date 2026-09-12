@@ -21,14 +21,14 @@ describe("invoice filtering", () => {
   });
   it("searches counterparties and identifiers, ignoring case", () => {
     expect(filterInvoices(invoices, { search: "CASA ROBLE" })).toHaveLength(1);
-    expect(filterInvoices(invoices, { search: "CFDI-ENCINO-i-8" })[0]?.id).toBe(
-      "i-8",
+    expect(filterInvoices(invoices, { search: "CFDI-ENCINO-i-5" })[0]?.id).toBe(
+      "i-5",
     );
   });
   it("sorts without mutating query cache", () => {
     const original = invoices.map((item) => item.id);
     const result = filterInvoices(invoices, {});
-    expect(result[0]?.dueOn).toBe("2026-09-09");
+    expect(result[0]?.dueOn).toBe("2026-09-16");
     expect(invoices.map((item) => item.id)).toEqual(original);
   });
   it("puts invoices without due dates last", () => {
