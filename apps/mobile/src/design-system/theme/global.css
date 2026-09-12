@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@import "uniwind";
+@import "heroui-native/styles";
+@source "../../";
+
+@theme {
+  --text-title: 2rem;
+  --text-title--line-height: 2.375rem;
+  --text-money: 2.125rem;
+  --text-money--line-height: 2.625rem;
+  --radius: 0.625rem;
+  --auth-background: #ffffff;
+  --auth-foreground: #013d5b;
+  --auth-muted: #586c78;
+  --auth-field: #f7f9fa;
+  --auth-border: #adbac2;
+  --auth-action: #013d5b;
+  --auth-action-foreground: #ffffff;
+  --auth-action-pressed: #125775;
+  --auth-canvas: #f1f6f8;
+  --auth-red: #cc2427;
+  --auth-art-base: #e0edf3;
+  --auth-art-edge: #99b6c6;
+}
+
+@theme inline {
+  --color-auth-background: var(--auth-background);
+  --color-auth-foreground: var(--auth-foreground);
+  --color-auth-muted: var(--auth-muted);
+  --color-auth-field: var(--auth-field);
+  --color-auth-border: var(--auth-border);
+  --color-auth-action: var(--auth-action);
+  --color-auth-action-foreground: var(--auth-action-foreground);
+  --color-auth-canvas: var(--auth-canvas);
+  --color-auth-red: var(--auth-red);
+}
+
+@layer theme {
+  :root {
+    @variant light {
+      --background: #ffffff;
+      --foreground: #013d5b;
+      --surface: #ffffff;
+      --surface-foreground: #013d5b;
+      --muted: #59677e;
+      --accent: #013d5b;
+      --accent-foreground: #ffffff;
+      --border: #ccd3e2;
+      --field-background: #ffffff;
+      --field-foreground: #18243b;
+      --field-border: #a7b3c9;
+      --danger: #b12f3e;
+      --warning: #885500;
+      --success: #216645;
+    }
+  }
+}

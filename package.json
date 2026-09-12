@@ -1,0 +1,33 @@
+{
+  "name": "mirror-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.1.3",
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "scripts": {
+    "build": "pnpm --filter nessie-node-sdk build && pnpm --filter @mirror/api build && pnpm --filter @mirror/api-client build && pnpm --filter @mirror/mobile build",
+    "typecheck": "pnpm --filter @mirror/api typecheck && pnpm --filter @mirror/api-client typecheck && pnpm --filter @mirror/mobile typecheck && tsc -p tsconfig.scripts.json --noEmit",
+    "lint": "biome lint apps/api/src apps/api/test apps/api/scripts apps/mobile/src apps/mobile/app.config.ts apps/mobile/*.cjs apps/mobile/plugins packages/api-client/src scripts --error-on-warnings",
+    "format:check": "prettier --check README.md package.json pnpm-workspace.yaml tsconfig*.json biome.json .prettierrc.json .github apps packages scripts docs/verification docs/Backend-Plan.md docs/Backend.md docs/Code.md docs/Mobile.md docs/Mobile-Plan.md",
+    "check:encoding": "node --import tsx scripts/check-encoding.ts",
+    "check:source-policy": "node --import tsx scripts/check-source-policy.ts",
+    "test": "pnpm --filter @mirror/api test && pnpm --filter @mirror/mobile test",
+    "demo:mobile-api": "node --import tsx scripts/run-integration.ts --mobile",
+    "test:integration": "node --import tsx scripts/run-integration.ts",
+    "generate:contracts": "pnpm --filter @mirror/api generate:contracts",
+    "check:contracts": "pnpm --filter @mirror/api check:contracts",
+    "check": "pnpm --filter nessie-node-sdk check && pnpm --filter @mirror/api build && pnpm check:encoding && pnpm check:source-policy && pnpm format:check && pnpm typecheck && pnpm lint && pnpm test && pnpm test:integration && pnpm --filter @mirror/api-client build && pnpm check:contracts && pnpm --filter @mirror/mobile build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.13",
+    "@types/node": "22.20.2",
+    "@types/pg": "8.23.1",
+    "pg": "8.23.0",
+    "prettier": "3.9.6",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "@mirror/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node --env-file-if-exists=.env dist/main.js",
+    "dev": "node --env-file-if-exists=.env --import tsx --watch src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --exclude 'test/integration/**' --exclude 'test/e2e/**'",
+    "test:integration": "vitest run test/integration test/e2e",
+    "generate:contracts": "tsc -p tsconfig.build.json && tsx scripts/generate-contracts.ts",
+    "check:contracts": "tsc -p tsconfig.build.json && tsx scripts/generate-contracts.ts --check",
+    "db:migrate": "supabase db push --linked",
+    "demo:seed": "node --env-file-if-exists=.env --import tsx scripts/seed-demo.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "12.0.1",
+    "@nestjs/core": "12.0.1",
+    "@nestjs/platform-express": "12.0.1",
+    "@nestjs/swagger": "12.0.1",
+    "@supabase/supabase-js": "2.116.0",
+    "@valibot/to-json-schema": "1.8.0",
+    "decimal.js": "10.6.0",
+    "helmet": "8.3.0",
+    "nessie-node-sdk": "workspace:*",
+    "pino": "10.3.1",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "valibot": "1.5.0"
+  },
+  "devDependencies": {
+    "@mirror/api-client": "workspace:*",
+    "@nestjs/testing": "12.0.1",
+    "@types/express": "5.0.6",
+    "@types/pg": "8.23.1",
+    "@types/supertest": "6.0.3",
+    "pg": "8.23.0",
+    "supertest": "7.2.2",
+    "vitest": "4.1.11"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "environment": {
+    "node": "v24.15.0",
+    "os": "darwin 25.6.0",
+    "cpu": "Apple M2",
+    "database": "isolated PostgreSQL 17",
+    "auth": "synthetic Auth fixture",
+    "banking": "synthetic replay",
+    "client": "generated public HTTP client",
+    "concurrentClients": 1
+  },
+  "metrics": [
+    {
+      "operation": "dashboard",
+      "samples": 12,
+      "p95Ms": 51.58,
+      "maxMs": 51.58,
+      "errors": 0,
+      "budgetMs": 500
+    },
+    {
+      "operation": "replay_refresh",
+      "samples": 12,
+      "p95Ms": 256.07,
+      "maxMs": 256.07,
+      "errors": 0,
+      "budgetMs": 2000
+    },
+    {
+      "operation": "job_evaluation",
+      "samples": 12,
+      "p95Ms": 399.14,
+      "maxMs": 399.14,
+      "errors": 0,
+      "budgetMs": 750
+    },
+    {
+      "operation": "evaluation_and_confirmation",
+      "samples": 12,
+      "p95Ms": 411.11,
+      "maxMs": 411.11,
+      "errors": 0,
+      "budgetMs": 500
+    }
+  ]
+}
