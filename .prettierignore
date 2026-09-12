@@ -1,0 +1,12 @@
+.git
+.pnpm-store
+node_modules
+dist
+coverage
+supabase/.branches
+supabase/.temp
+nessie-node-sdk/dist
+nessie-node-sdk/pnpm-lock.yaml
+nessie-node-sdk/spec/nessie-openapi.yaml
+docs/Idea.md
+pnpm-lock.yaml

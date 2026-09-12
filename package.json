@@ -1,0 +1,30 @@
+{
+  "name": "colchon-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend monorepo for Colchon.",
+  "packageManager": "pnpm@11.1.3",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter nessie-node-sdk build && node scripts/dev.mjs",
+    "verify:web": "pnpm --filter @colchon/web verify",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:encoding": "node scripts/check-encoding.mjs",
+    "lint": "pnpm --filter @colchon/api lint && pnpm --filter nessie-node-sdk lint",
+    "typecheck": "pnpm --filter nessie-node-sdk build && pnpm --filter @colchon/api typecheck && pnpm --filter nessie-node-sdk typecheck",
+    "build": "pnpm --filter nessie-node-sdk build && pnpm --filter @colchon/api build",
+    "test:unit": "pnpm --filter @colchon/api test:unit",
+    "test:integration": "pnpm --filter @colchon/api test:integration",
+    "test:e2e": "pnpm --filter @colchon/api test:e2e",
+    "test": "pnpm --filter nessie-node-sdk test && pnpm --filter nessie-node-sdk test:package && pnpm --filter @colchon/api test",
+    "test:db": "supabase test db",
+    "db:lint": "supabase db lint --local --schema public,private --level error --fail-on error",
+    "verify": "pnpm check:encoding && pnpm format:check && pnpm lint && pnpm typecheck && pnpm build && pnpm test"
+  },
+  "devDependencies": {
+    "prettier": "3.9.6"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.13/schema.json",
+  "formatter": { "enabled": false },
+  "css": { "parser": { "tailwindDirectives": true } },
+  "linter": {
+    "enabled": true,
+    "rules": { "recommended": true, "suspicious": { "noExplicitAny": "error" } }
+  },
+  "assist": { "actions": { "source": { "organizeImports": "off" } } }
+}

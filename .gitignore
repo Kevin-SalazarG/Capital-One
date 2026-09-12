@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+apps/web/.next/
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/tsconfig.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+.pnpm-debug.log
+supabase/.branches/
+supabase/.temp/
+tmp/

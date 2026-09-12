@@ -1,0 +1,45 @@
+import type { JsonValue } from "../types/json-value";
+
+export type AppErrorCode =
+  | "AUTH_INVALID_CREDENTIALS"
+  | "AUTH_SESSION_INVALID"
+  | "AUTH_EMAIL_NOT_CONFIRMED"
+  | "UNAUTHENTICATED"
+  | "FORBIDDEN"
+  | "ORGANIZATION_NOT_FOUND"
+  | "ORG_ACCESS_DENIED"
+  | "RESOURCE_NOT_FOUND"
+  | "VALIDATION_FAILED"
+  | "CONFLICT"
+  | "EXTERNAL_PROVIDER_ERROR"
+  | "EXTERNAL_PROVIDER_UNAVAILABLE"
+  | "UPSTREAM_TIMEOUT"
+  | "UPSTREAM_RATE_LIMITED"
+  | "DUPLICATE_IMPORT"
+  | "DATABASE_ERROR"
+  | "FORECAST_INPUTS_INCOMPLETE"
+  | "FORECAST_FAILED"
+  | "INTERNAL_ERROR";
+
+export interface AppErrorOptions {
+  readonly code: AppErrorCode;
+  readonly status: number;
+  readonly details?: JsonValue;
+  readonly cause?: unknown;
+}
+
+export class AppError extends Error {
+  public readonly code: AppErrorCode;
+  public readonly status: number;
+  public readonly details?: JsonValue;
+
+  public constructor(message: string, options: AppErrorOptions) {
+    super(message, { cause: options.cause });
+    this.name = "AppError";
+    this.code = options.code;
+    this.status = options.status;
+    if (options.details !== undefined) {
+      this.details = options.details;
+    }
+  }
+}
