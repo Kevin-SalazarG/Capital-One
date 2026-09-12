@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/.env
+**/.env.*
+**/.git
+.local
+**/.local
+apps/mobile
+Capital One Challenge HackMTY 2026.pdf
+**/.DS_Store

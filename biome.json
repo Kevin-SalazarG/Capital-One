@@ -1,0 +1,28 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.13/schema.json",
+  "formatter": { "enabled": false },
+  "javascript": { "parser": { "unsafeParameterDecoratorsEnabled": true } },
+  "css": { "parser": { "tailwindDirectives": true } },
+  "assist": { "enabled": false },
+  "files": {
+    "includes": [
+      "**",
+      "!!apps/mobile/.expo",
+      "!!apps/mobile/ios",
+      "!!apps/mobile/android",
+      "!!apps/mobile/build",
+      "!!nessie-node-sdk",
+      "!!**/dist",
+      "!!**/node_modules",
+      "!!.local"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": { "noExplicitAny": "error" },
+      "style": { "noNonNullAssertion": "error" }
+    }
+  }
+}
