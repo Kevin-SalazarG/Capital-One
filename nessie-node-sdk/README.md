@@ -14,7 +14,14 @@ A typed Node.js client for [Nessie](https://prod.nessieisreal.com/docs), Capital
 
 ## Installation
 
-This project has not been published to npm. Build a package from this repository using Node.js 22+ and the pnpm version pinned in `package.json`:
+Install the published package with npm or pnpm:
+
+```sh
+npm install nessie-node-sdk
+# or: pnpm add nessie-node-sdk
+```
+
+For local development, build a package from this repository using Node.js 22+ and the pnpm version pinned in `package.json`:
 
 ```sh
 git clone https://github.com/Kevin-SalazarG/nessie-node-sdk.git
