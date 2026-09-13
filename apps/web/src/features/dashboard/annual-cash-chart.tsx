@@ -48,14 +48,14 @@ export function AnnualCashChart({ data }: { data: AnnualHistory }) {
               className="w-5 border-t-[3px] border-primary"
               aria-hidden="true"
             />
-            {data.currentYear}
+            Este año
           </span>
           <span className="flex items-center gap-2">
             <span
               className="w-5 border-t-2 border-dashed border-muted-foreground"
               aria-hidden="true"
             />
-            {data.previousYear}
+            Año pasado
           </span>
           <span className="flex items-center gap-2">
             <span

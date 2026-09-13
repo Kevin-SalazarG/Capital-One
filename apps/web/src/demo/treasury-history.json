@@ -4,6 +4,7 @@
     "currentYear": 2026,
     "previousYear": 2025,
     "currency": "MXN",
+    "hasPreviousYear": true,
     "reserve": "40000.00",
     "source": "demo",
     "points": [

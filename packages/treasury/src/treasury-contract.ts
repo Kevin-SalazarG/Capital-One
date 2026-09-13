@@ -105,6 +105,7 @@ export const annualHistorySchema = z.object({
   currentYear: z.number().int().min(2000).max(9999),
   previousYear: z.number().int().min(2000).max(9999),
   currency: z.string().regex(/^[A-Z]{3}$/),
+  hasPreviousYear: z.boolean(),
   reserve: positiveMoney,
   source: z.enum(["demo", "bank_transactions"]),
   points: z.array(annualHistoryPointSchema).min(1).max(12),

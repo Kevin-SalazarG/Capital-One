@@ -16,7 +16,10 @@ test("owner reviews a construction recommendation without manufacturing cash", a
   await expect(
     page.getByRole("img", { name: /Con plan:.*41,700/ }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Ver tabla", exact: true }).click();
+  await page
+    .getByRole("region", { name: "El camino de tu caja" })
+    .getByRole("button", { name: "Ver tabla", exact: true })
+    .click();
   const payroll = page.getByRole("row").filter({ hasText: "25 sep" });
   await expect(payroll).toContainText("-$9,200.00");
   await expect(payroll).toContainText("$46,500.00");

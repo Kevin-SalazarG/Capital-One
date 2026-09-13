@@ -11,7 +11,7 @@ test("all demo routes render without external API requests", async ({
   });
   for (const [path, title] of [
     ["dashboard", "Protege la nómina antes del faltante."],
-    ["commitments", "Los pagos que sostienen tu obra."],
+    ["commitments", "Lo que tu obra no puede posponer."],
     ["invoices", "Avances, materiales y pagos."],
     ["bank", "La cuenta de operación."],
   ]) {
@@ -57,7 +57,7 @@ test("cash alert opens an editable email modal without leaving the dashboard", a
     .getByRole("button", { name: "Cerrar", exact: true })
     .last()
     .click();
-  await expect(dialog).toHaveAttribute("data-state", "closed");
+  await expect(dialog).not.toBeVisible();
   await expect(page).toHaveURL(/\/demo\/dashboard$/);
 });
 

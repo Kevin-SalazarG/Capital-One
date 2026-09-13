@@ -150,7 +150,9 @@ function TreasuryContent({ data }: { data: Treasury }) {
     isDemo,
   );
   const model = stressId && preview.data ? preview.data : data;
-  const annualHistory = annualHistoryQuery.data ?? null;
+  const annualHistory = annualHistoryQuery.data?.hasPreviousYear
+    ? annualHistoryQuery.data
+    : null;
   const plan = model.plans.find((item) => item.id === selectedId) ?? null;
   const decision = isDemo ? localDecision : data.decision;
   const stale = decision && decision.inputHash !== data.inputHash;
@@ -644,23 +646,21 @@ function TreasuryContent({ data }: { data: Treasury }) {
                   id="annual-history-heading"
                   className="dashboard-annual-title"
                 >
-                  Así va tu caja este año.
+                  ¿Cómo va tu caja este año?
                 </h2>
                 <p className="dashboard-panel-description">
-                  Compara el saldo de enero a{" "}
-                  {formatDate(annualHistory.asOf, { month: "long" })} con el
-                  mismo periodo de {annualHistory.previousYear}.
+                  Compara tu saldo mes a mes con el mismo corte del año pasado.
                 </p>
               </div>
               <span className="dashboard-period shrink-0">
-                {annualHistory.currentYear} vs {annualHistory.previousYear}
+                Comparando con {annualHistory.previousYear}
               </span>
             </header>
             <div className="dashboard-annual-body">
               <div className="dashboard-annual-summary">
                 <div className="dashboard-annual-summary-item">
                   <p className="dashboard-annual-summary-label">
-                    Saldo al corte · {annualHistory.currentYear}
+                    Saldo al corte
                   </p>
                   <p className="dashboard-annual-summary-value">
                     {money(annualHistory.summary.currentBalance)}
@@ -671,7 +671,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
                 </div>
                 <div className="dashboard-annual-summary-item">
                   <p className="dashboard-annual-summary-label">
-                    Diferencia vs. {annualHistory.previousYear}
+                    Frente al año pasado
                   </p>
                   <p
                     className={cn(

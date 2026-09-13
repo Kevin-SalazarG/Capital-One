@@ -313,18 +313,44 @@ export function BankSkeleton() {
   return (
     <LoadingFrame
       label="Cargando movimientos bancarios"
-      className="page-container"
+      className="page-container dashboard-page bank-page space-y-7 pb-14"
     >
-      <PageHeaderSkeleton />
-      <NoticeSkeleton />
-      <div className="mb-8 grid gap-4 sm:grid-cols-2">
-        <AccountCardSkeleton />
-      </div>
-      <div className="mt-9">
-        <Skeleton className="mb-5 h-7 w-36" />
-        <ListControlsSkeleton />
-        <TableSkeleton />
-      </div>
+      <section className="dashboard-hero bank-hero">
+        <div className="dashboard-hero-copy space-y-4">
+          <Skeleton className="h-8 w-40 rounded-full" />
+          <Skeleton className="h-16 w-full max-w-[28rem] rounded-xl" />
+          <Skeleton className="h-14 w-full max-w-[38rem]" />
+          <div className="flex flex-wrap gap-2">
+            <Skeleton className="h-11 w-36 rounded-full" />
+            <Skeleton className="h-11 w-32 rounded-full" />
+          </div>
+        </div>
+        <div className="dashboard-payroll-card bank-balance-card">
+          <div className="flex items-center gap-3">
+            <Skeleton className="size-11 rounded-2xl bg-white/10" />
+            <Skeleton className="h-3 w-28 bg-white/10" />
+          </div>
+          <Skeleton className="relative mt-8 h-4 w-32 bg-white/10" />
+          <Skeleton className="relative mt-2 h-12 w-52 max-w-full bg-white/10" />
+          <Skeleton className="relative mt-3 h-4 w-40 max-w-full bg-white/10" />
+          <Skeleton className="relative mt-7 h-12 w-full border-t border-white/10 bg-white/10" />
+        </div>
+      </section>
+      <section className="dashboard-panel bank-movements-panel">
+        <header className="bank-movements-header">
+          <div className="space-y-3">
+            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-8 w-64 max-w-full rounded-xl" />
+            <Skeleton className="h-4 w-80 max-w-full" />
+          </div>
+          <Skeleton className="h-9 w-28 rounded-full" />
+        </header>
+        <Skeleton className="mx-5 my-5 h-12 rounded-2xl sm:mx-7" />
+        <div className="bank-movements-content">
+          <ListControlsSkeleton />
+          <TableSkeleton />
+        </div>
+      </section>
     </LoadingFrame>
   );
 }
@@ -344,15 +370,21 @@ export function BankTransactionsSkeleton() {
 function ObligationRowsSkeleton() {
   const rowKeys = ["taxes", "rent", "payroll"];
   return (
-    <div className="panel divide-y">
+    <div className="commitments-list">
       {rowKeys.map((rowKey) => (
-        <div key={rowKey} className="flex items-center gap-4 p-5">
-          <Skeleton className="size-5 rounded-md" />
-          <div className="min-w-0 flex-1 space-y-2">
-            <Skeleton className="h-4 w-48 max-w-full" />
-            <Skeleton className="h-3 w-40" />
+        <div key={rowKey} className="commitments-row">
+          <Skeleton className="size-14 rounded-2xl" />
+          <div className="commitments-row-content space-y-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <Skeleton className="h-4 w-48 max-w-full" />
+              <Skeleton className="h-7 w-28 rounded-full" />
+            </div>
+            <Skeleton className="h-3 w-56 max-w-full" />
           </div>
-          <Skeleton className="h-5 w-24" />
+          <div className="commitments-row-amount-wrap space-y-2">
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="ml-auto h-3 w-16" />
+          </div>
         </div>
       ))}
     </div>
@@ -361,17 +393,58 @@ function ObligationRowsSkeleton() {
 
 export function CommitmentsSkeleton() {
   return (
-    <LoadingFrame label="Cargando pagos protegidos" className="page-container">
-      <Skeleton className="mb-7 h-10 w-80 max-w-full rounded-xl" />
-      <div className="mb-6 flex items-end justify-between gap-4">
-        <div className="space-y-3">
-          <Skeleton className="h-7 w-64" />
-          <Skeleton className="h-4 w-80 max-w-full" />
+    <LoadingFrame
+      label="Cargando pagos protegidos"
+      className="page-container dashboard-page commitments-page space-y-7 pb-14"
+    >
+      <section className="dashboard-hero commitments-hero">
+        <div className="dashboard-hero-copy space-y-4">
+          <Skeleton className="h-8 w-40 rounded-full" />
+          <Skeleton className="h-24 w-full max-w-[34rem] rounded-xl" />
+          <Skeleton className="h-14 w-full max-w-[40rem]" />
+          <div className="flex gap-2">
+            <Skeleton className="h-11 w-36 rounded-full" />
+            <Skeleton className="h-11 w-40 rounded-full" />
+          </div>
         </div>
-        <Skeleton className="h-12 w-32 rounded-xl" />
-      </div>
-      <NoticeSkeleton />
-      <ObligationRowsSkeleton />
+        <div className="dashboard-payroll-card commitments-summary-card">
+          <div className="flex items-center gap-3">
+            <Skeleton className="size-11 rounded-2xl bg-white/10" />
+            <Skeleton className="h-3 w-28 bg-white/10" />
+          </div>
+          <Skeleton className="relative mt-8 h-4 w-40 bg-white/10" />
+          <Skeleton className="relative mt-2 h-12 w-52 max-w-full bg-white/10" />
+          <Skeleton className="relative mt-3 h-4 w-64 max-w-full bg-white/10" />
+          <Skeleton className="relative mt-7 h-12 w-full border-t border-white/10 bg-white/10" />
+        </div>
+      </section>
+      <section className="dashboard-panel commitments-list-panel">
+        <header className="commitments-list-header">
+          <div className="space-y-3">
+            <Skeleton className="h-3 w-28" />
+            <Skeleton className="h-8 w-64 max-w-full rounded-xl" />
+            <Skeleton className="h-4 w-80 max-w-full" />
+          </div>
+          <Skeleton className="h-11 w-32 rounded-md" />
+        </header>
+        <div className="commitments-board-summary">
+          {["payments", "amount", "protected"].map((key) => (
+            <div key={key} className="commitments-board-stat">
+              <Skeleton className="size-8 rounded-xl" />
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-3 w-28" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <Skeleton className="mx-5 my-5 h-12 rounded-2xl sm:mx-7" />
+        <ObligationRowsSkeleton />
+        <div className="flex gap-2 border-t px-5 py-4 sm:px-7">
+          <Skeleton className="mt-1 size-3.5 rounded-full" />
+          <Skeleton className="h-4 w-full max-w-[42rem]" />
+        </div>
+      </section>
     </LoadingFrame>
   );
 }

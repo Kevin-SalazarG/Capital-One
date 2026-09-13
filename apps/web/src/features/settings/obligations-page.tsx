@@ -1,12 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CalendarDays, Plus } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  Info,
+  LockKeyhole,
+  Plus,
+  ShieldCheck,
+  WalletCards,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { EditorDialog } from "@/components/forms/editor-dialog";
 import { Field, NativeSelect } from "@/components/forms/field";
 import {
@@ -16,10 +26,7 @@ import {
   FieldError,
 } from "@/components/feedback";
 import { CommitmentsListSkeleton } from "@/components/page-skeletons";
-import {
-  PermissionGate,
-  DemoNotice,
-} from "@/features/workspace/permission-gate";
+import { PermissionGate } from "@/features/workspace/permission-gate";
 import { useResource, useWorkspace } from "@/features/workspace/workspace";
 import { useCommand } from "@/features/workspace/use-command";
 import { apiRequest } from "@/lib/api/client";
@@ -35,6 +42,14 @@ const FREQUENCIES = {
   quarterly: "Trimestral",
   yearly: "Anual",
 };
+const CATEGORIES: Record<string, string> = {
+  payroll: "Nómina",
+  tax: "Impuestos",
+  rent: "Renta",
+  supplier: "Proveedor",
+  other: "Otro",
+};
+
 export function ObligationsPage() {
   return (
     <PermissionGate permission="forecast:configure">
@@ -43,70 +58,242 @@ export function ObligationsPage() {
   );
 }
 function ObligationsContent() {
-  const { isDemo } = useWorkspace();
+  const { basePath, isDemo, organization } = useWorkspace();
   const obligations = useResource("obligations", z.array(obligationSchema));
   const [adding, setAdding] = useState(false);
+  const items = obligations.data ?? [];
+  const orderedItems = [...items].sort((left, right) =>
+    left.nextDueOn.localeCompare(right.nextDueOn),
+  );
+  const nextPayment = orderedItems[0] ?? null;
+  const totalAmount = items
+    .reduce((total, item) => total + Number(item.amount), 0)
+    .toFixed(2);
+  const protectedCount = items.filter((item) => item.metadata?.critical).length;
+  const currency = nextPayment?.currency ?? organization.currency;
+
   return (
     <>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-semibold">Compromisos protegidos</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Nómina de cuadrilla, renta, impuestos y otros pagos de tu obra.
+      <section
+        className="dashboard-hero commitments-hero"
+        aria-labelledby="commitments-title"
+      >
+        <div className="dashboard-hero-copy">
+          <div className="dashboard-kicker dashboard-kicker-safe">
+            <ShieldCheck aria-hidden="true" className="size-4" />
+            Pagos protegidos
+          </div>
+          <h1 id="commitments-title" className="dashboard-hero-title">
+            Lo que tu obra no puede posponer.
+          </h1>
+          <p className="dashboard-hero-description">
+            La nómina, la renta y los impuestos tienen fecha fija. Tu plan los
+            respeta para que sepas con qué caja sí puedes decidir.
           </p>
-        </div>
-        <Button disabled={isDemo} onClick={() => setAdding(true)}>
-          <Plus />
-          Agregar pago
-        </Button>
-      </div>
-      <DemoNotice />
-      {obligations.isPending ? (
-        <CommitmentsListSkeleton />
-      ) : obligations.isError ? (
-        <ErrorView
-          error={obligations.error}
-          retry={() => void obligations.refetch()}
-        />
-      ) : !obligations.data.length ? (
-        <EmptyView
-          title="Anticipa tus pagos habituales"
-          description="Registra un compromiso recurrente para incluirlo en la siguiente proyección."
-        />
-      ) : (
-        <div className="panel divide-y">
-          {obligations.data.map((obligation) => (
-            <div
-              key={obligation.id}
-              className="flex flex-wrap items-center gap-4 p-5"
+          <div className="dashboard-hero-links">
+            <a href="#protected-payments" className="dashboard-hero-link">
+              Ver pagos protegidos
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </a>
+            <Link
+              href={`${basePath}/dashboard`}
+              className="dashboard-hero-link"
             >
-              <CalendarDays className="size-5 shrink-0 text-muted-foreground" />
-              <div className="min-w-0 flex-1">
-                <h3 className="break-words text-sm font-semibold">
-                  {obligation.name}
-                </h3>
-                {obligation.metadata?.critical && (
-                  <p className="mt-1 text-xs font-medium text-primary">
-                    Fecha protegida · no se negocia en los planes
-                  </p>
-                )}
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {FREQUENCIES[obligation.frequency]} · Próximo pago:{" "}
-                  {formatDate(obligation.nextDueOn)}
-                </p>
-              </div>
-              <p className="numeric text-lg font-semibold">
-                {formatMoney(obligation.amount, obligation.currency)}
-              </p>
-            </div>
-          ))}
+              Ver plan de caja
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
+          </div>
         </div>
-      )}
-      <p className="mt-4 max-w-xl text-xs leading-relaxed text-muted-foreground">
-        Los pagos se incorporan al actualizar la proyección; no se ejecutan
-        transferencias. Por ahora puedes registrarlos y consultarlos, pero no
-        editarlos ni eliminarlos.
-      </p>
+        <div className="dashboard-payroll-card commitments-summary-card">
+          <div className="dashboard-payroll-topline">
+            <span className="dashboard-payroll-icon">
+              <ShieldCheck aria-hidden="true" className="size-5" />
+            </span>
+            <span className="dashboard-payroll-label">Salidas protegidas</span>
+            <span className="dashboard-payroll-lock">
+              <LockKeyhole aria-hidden="true" className="size-3" />
+              No se mueve
+            </span>
+          </div>
+          <p className="dashboard-payroll-title">
+            {nextPayment
+              ? "Próximo pago protegido"
+              : "Aún no hay pagos protegidos"}
+          </p>
+          {obligations.isPending ? (
+            <Skeleton className="relative mt-2 h-12 w-52 max-w-full bg-white/10" />
+          ) : nextPayment ? (
+            <p className="dashboard-payroll-amount">
+              {formatMoney(nextPayment.amount, nextPayment.currency)}
+            </p>
+          ) : (
+            <p className="dashboard-payroll-amount commitments-summary-empty">
+              —
+            </p>
+          )}
+          <p className="dashboard-payroll-detail commitments-summary-detail">
+            {nextPayment
+              ? `${formatDate(nextPayment.nextDueOn)} · ${nextPayment.name}`
+              : "Agrega un pago recurrente para protegerlo en tu proyección."}
+          </p>
+          <div className="dashboard-payroll-risk commitments-summary-risk">
+            <p className="dashboard-payroll-risk-label">
+              Fechas protegidas
+              <br />
+              dentro del plan
+            </p>
+            <p className="commitments-summary-risk-value numeric">
+              {obligations.isPending ? "—" : protectedCount}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="protected-payments"
+        className="dashboard-panel commitments-list-panel"
+        aria-labelledby="protected-payments-title"
+      >
+        <header className="commitments-list-header">
+          <div className="min-w-0">
+            <p className="dashboard-panel-kicker">Lo que no se mueve</p>
+            <h2
+              id="protected-payments-title"
+              className="dashboard-panel-heading"
+            >
+              Pagos protegidos de tu obra
+            </h2>
+            <p className="dashboard-panel-description">
+              Fechas que el plan respeta para que puedas decidir con el resto de
+              tu caja.
+            </p>
+          </div>
+          <Button disabled={isDemo} onClick={() => setAdding(true)}>
+            <Plus />
+            Agregar pago
+          </Button>
+        </header>
+
+        <div className="commitments-board-summary">
+          <div className="commitments-board-stat">
+            <span className="commitments-board-stat-icon">
+              <WalletCards aria-hidden="true" className="size-4" />
+            </span>
+            <div className="min-w-0">
+              <p className="commitments-board-stat-value numeric">
+                {obligations.isPending ? "—" : items.length}
+              </p>
+              <p className="commitments-board-stat-label">Pagos en el plan</p>
+            </div>
+          </div>
+          <div className="commitments-board-stat">
+            <span className="commitments-board-stat-icon">
+              <CalendarDays aria-hidden="true" className="size-4" />
+            </span>
+            <div className="min-w-0">
+              <p className="commitments-board-stat-value numeric">
+                {obligations.isPending
+                  ? "—"
+                  : formatMoney(totalAmount, currency)}
+              </p>
+              <p className="commitments-board-stat-label">Monto registrado</p>
+            </div>
+          </div>
+          <div className="commitments-board-stat">
+            <span className="commitments-board-stat-icon">
+              <ShieldCheck aria-hidden="true" className="size-4" />
+            </span>
+            <div className="min-w-0">
+              <p className="commitments-board-stat-value numeric">
+                {obligations.isPending ? "—" : protectedCount}
+              </p>
+              <p className="commitments-board-stat-label">Fechas protegidas</p>
+            </div>
+          </div>
+        </div>
+
+        {isDemo && (
+          <div className="commitments-board-notice" role="status">
+            <Info aria-hidden="true" className="size-4 shrink-0" />
+            <p>
+              Datos de ejemplo. Los cambios se habilitan al usar tu empresa.
+            </p>
+          </div>
+        )}
+
+        {obligations.isPending ? (
+          <CommitmentsListSkeleton />
+        ) : obligations.isError ? (
+          <div className="p-5 sm:p-7">
+            <ErrorView
+              error={obligations.error}
+              retry={() => void obligations.refetch()}
+            />
+          </div>
+        ) : !items.length ? (
+          <div className="p-5 sm:p-7">
+            <EmptyView
+              title="Anticipa tus pagos habituales"
+              description="Registra un compromiso recurrente para incluirlo en la siguiente proyección."
+            />
+          </div>
+        ) : (
+          <div className="commitments-list">
+            {orderedItems.map((obligation) => (
+              <article key={obligation.id} className="commitments-row">
+                <div className="commitments-date" aria-hidden="true">
+                  <span>
+                    {formatDate(obligation.nextDueOn, { month: "short" })}
+                  </span>
+                  <strong>
+                    {formatDate(obligation.nextDueOn, { day: "numeric" })}
+                  </strong>
+                </div>
+                <div className="commitments-row-content">
+                  <div className="commitments-row-heading">
+                    <h3 className="commitments-row-title">{obligation.name}</h3>
+                    <span
+                      className={
+                        obligation.metadata?.critical
+                          ? "commitments-status commitments-status-protected"
+                          : "commitments-status"
+                      }
+                    >
+                      {obligation.metadata?.critical && (
+                        <LockKeyhole aria-hidden="true" className="size-3" />
+                      )}
+                      {obligation.metadata?.critical
+                        ? "Fecha protegida"
+                        : "Incluido en el plan"}
+                    </span>
+                  </div>
+                  <p className="commitments-row-meta">
+                    {CATEGORIES[obligation.metadata?.category ?? ""] ??
+                      "Pago recurrente"}
+                    {" · "}
+                    {FREQUENCIES[obligation.frequency]} · Próximo pago:{" "}
+                    {formatDate(obligation.nextDueOn)}
+                  </p>
+                </div>
+                <div className="commitments-row-amount-wrap">
+                  <p className="commitments-row-amount numeric">
+                    {formatMoney(obligation.amount, obligation.currency)}
+                  </p>
+                  <p className="commitments-row-amount-note">por periodo</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+        <footer className="commitments-board-footer">
+          <LockKeyhole aria-hidden="true" className="size-3.5 shrink-0" />
+          <p>
+            Se incorporan al actualizar la proyección; no ejecutan
+            transferencias. Puedes consultarlos, pero todavía no editarlos ni
+            eliminarlos.
+          </p>
+        </footer>
+      </section>
       {adding && <ObligationDialog open onOpenChange={setAdding} />}
     </>
   );

@@ -5,8 +5,7 @@ export const metadata = { title: "Compromisos" };
 export default function Page() {
   return (
     <Suspense fallback={<CommitmentsSkeleton />}>
-      <div className="page-container">
-        <h1 className="page-title mb-7">Los pagos que sostienen tu obra.</h1>
+      <div className="page-container dashboard-page commitments-page space-y-7 pb-14">
         <ObligationsPage />
       </div>
     </Suspense>
