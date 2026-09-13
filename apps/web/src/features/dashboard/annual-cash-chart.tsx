@@ -48,14 +48,14 @@ export function AnnualCashChart({ data }: { data: AnnualHistory }) {
               className="w-5 border-t-[3px] border-primary"
               aria-hidden="true"
             />
-            Este año
+            {data.currentYear}
           </span>
           <span className="flex items-center gap-2">
             <span
               className="w-5 border-t-2 border-dashed border-muted-foreground"
               aria-hidden="true"
             />
-            Año pasado
+            {data.previousYear}
           </span>
           <span className="flex items-center gap-2">
             <span
@@ -200,11 +200,6 @@ export function AnnualCashChart({ data }: { data: AnnualHistory }) {
           </ResponsiveContainer>
         </div>
       )}
-      <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-        Saldo al cierre de cada mes.{" "}
-        {formatDate(data.asOf, { day: "numeric", month: "long" })} es un corte
-        parcial; no se muestran meses futuros.
-      </p>
     </div>
   );
 }
