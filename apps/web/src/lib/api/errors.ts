@@ -21,6 +21,10 @@ const MESSAGES: Record<string, string> = {
     "El proveedor no está disponible. Intenta sincronizar de nuevo en un momento.",
   EXTERNAL_PROVIDER_ERROR:
     "El proveedor no pudo completar la consulta. Revisa el identificador de tu conexión e intenta de nuevo.",
+  EMAIL_DELIVERY_ERROR:
+    "El correo no pudo enviarse. Revisa el destinatario e intenta de nuevo.",
+  EMAIL_DELIVERY_UNAVAILABLE:
+    "El servicio de correo no está disponible. Intenta de nuevo en un momento.",
   AUTH_INVALID_CREDENTIALS: "Revisa tu correo y contraseña e intenta de nuevo.",
   AUTH_SESSION_INVALID: "Tu sesión terminó. Inicia sesión para continuar.",
   UNAUTHENTICATED: "Inicia sesión para continuar.",

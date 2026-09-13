@@ -9,12 +9,8 @@ import { treasurySchema } from "@colchon/treasury/treasury-contract";
 import { ArrowRight, Check, FileText, Landmark } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
-import {
-  BusyIcon,
-  ErrorView,
-  FieldError,
-  LoadingView,
-} from "@/components/feedback";
+import { BusyIcon, ErrorView, FieldError } from "@/components/feedback";
+import { OnboardingStepsSkeleton } from "@/components/page-skeletons";
 import { EditorDialog } from "@/components/forms/editor-dialog";
 import { DemoNotice } from "@/features/workspace/permission-gate";
 import { useResource, useWorkspace } from "@/features/workspace/workspace";
@@ -99,7 +95,7 @@ export function OnboardingPage() {
       />
       <DemoNotice />
       {connections.isPending && can("connection:read") ? (
-        <LoadingView />
+        <OnboardingStepsSkeleton />
       ) : connections.isError ? (
         <ErrorView
           error={connections.error}

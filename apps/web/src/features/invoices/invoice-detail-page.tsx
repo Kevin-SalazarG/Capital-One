@@ -3,15 +3,10 @@
 import type { ReactNode } from "react";
 import { z } from "zod";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  CalendarDays,
-  CircleDollarSign,
-  ReceiptText,
-} from "lucide-react";
+import { CalendarDays, CircleDollarSign, ReceiptText } from "lucide-react";
 import { EmptyView, ErrorView } from "@/components/feedback";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { InvoiceDetailSkeleton } from "@/components/page-skeletons";
 import { PermissionGate } from "@/features/workspace/permission-gate";
 import { useResource, useWorkspace } from "@/features/workspace/workspace";
 import { invoiceSchema, type Invoice } from "@/lib/api/contracts";
@@ -31,18 +26,6 @@ function invoiceName(invoice: Invoice) {
 
 function directionLabel(direction: Invoice["direction"]) {
   return direction === "receivable" ? "Cobro" : "Pago";
-}
-
-function BackToInvoices({ href }: { href: string }) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex min-h-11 items-center gap-2 rounded-md pr-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-    >
-      <ArrowLeft aria-hidden="true" className="size-4" />
-      Volver a facturas
-    </Link>
-  );
 }
 
 function DetailMetric({
@@ -88,31 +71,6 @@ function DetailItem({
   );
 }
 
-function InvoiceDetailLoading({ href }: { href: string }) {
-  return (
-    <div className="page-container">
-      <BackToInvoices href={href} />
-      <div
-        role="status"
-        aria-label="Cargando detalle de factura"
-        className="mt-7 space-y-6"
-      >
-        <div className="space-y-3 border-b pb-8">
-          <Skeleton className="h-4 w-28" />
-          <Skeleton className="h-12 w-72 max-w-full" />
-          <Skeleton className="h-5 w-80 max-w-full" />
-        </div>
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,.6fr)]">
-          <Skeleton className="h-64 rounded-xl" />
-          <Skeleton className="h-64 rounded-xl" />
-        </div>
-        <Skeleton className="h-72 rounded-xl" />
-        <span className="sr-only">Cargando información…</span>
-      </div>
-    </div>
-  );
-}
-
 export function InvoiceDetailPage({ invoiceId }: { invoiceId: string }) {
   return (
     <PermissionGate permission="cfdi:read">
@@ -126,13 +84,12 @@ function InvoiceDetailContent({ invoiceId }: { invoiceId: string }) {
   const backHref = `${basePath}/invoices`;
   const invoices = useResource("invoices?limit=500", z.array(invoiceSchema));
 
-  if (invoices.isPending) return <InvoiceDetailLoading href={backHref} />;
+  if (invoices.isPending) return <InvoiceDetailSkeleton />;
 
   if (invoices.isError) {
     return (
       <div className="page-container">
-        <BackToInvoices href={backHref} />
-        <div className="mt-7">
+        <div>
           <ErrorView
             error={invoices.error}
             retry={() => void invoices.refetch()}
@@ -146,14 +103,13 @@ function InvoiceDetailContent({ invoiceId }: { invoiceId: string }) {
   if (!invoice) {
     return (
       <div className="page-container">
-        <BackToInvoices href={backHref} />
-        <div className="mt-7">
+        <div>
           <EmptyView
             title="No encontramos esta factura"
             description="Puede que el registro ya no esté disponible o que el enlace haya expirado."
           >
             <Button asChild variant="outline">
-              <Link href={backHref}>Volver a facturas</Link>
+              <Link href={backHref}>Ver facturas</Link>
             </Button>
           </EmptyView>
         </div>
@@ -180,9 +136,8 @@ function InvoiceDetailContent({ invoiceId }: { invoiceId: string }) {
 
   return (
     <div className="page-container max-w-6xl">
-      <BackToInvoices href={backHref} />
       <div>
-        <header className="mt-7 flex flex-col gap-4 border-b pb-8 sm:flex-row sm:items-end sm:justify-between">
+        <header className="flex flex-col gap-4 border-b pb-8 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0">
             <p className="text-sm font-medium text-muted-foreground">
               Factura · {directionLabel(invoice.direction)}

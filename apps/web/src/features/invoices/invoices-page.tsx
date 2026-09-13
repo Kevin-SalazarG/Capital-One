@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { z } from "zod";
 import Link from "next/link";
-import { FileText, Upload } from "lucide-react";
+import { FileText, Search, Upload } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/forms/field";
 import { DataList } from "@/components/data-list";
-import { EmptyView, ErrorView, LoadingView } from "@/components/feedback";
+import { EmptyView, ErrorView } from "@/components/feedback";
+import { InvoicesTableSkeleton } from "@/components/page-skeletons";
 import {
   PermissionGate,
   DemoNotice,
@@ -86,22 +87,29 @@ function InvoicesContent() {
         }
       />
       <DemoNotice />
-      <div className="mb-6 flex items-end gap-3">
+      <div className="mb-6 flex flex-wrap items-end gap-3">
         <div className="min-w-0 flex-1">
           <Field id="invoice-search" label="Buscar">
-            <Input
-              id="invoice-search"
-              type="search"
-              placeholder="Cliente, obra, proveedor o folio"
-              value={filters.get("q")}
-              onChange={(event) => filters.setFilter("q", event.target.value)}
-            />
+            <div className="relative">
+              <Search
+                aria-hidden="true"
+                className="pointer-events-none absolute left-4 top-1/2 z-10 size-4 -translate-y-1/2 text-primary"
+              />
+              <Input
+                id="invoice-search"
+                type="search"
+                placeholder="Cliente, obra, proveedor o folio"
+                className="list-search-input pl-11"
+                value={filters.get("q")}
+                onChange={(event) => filters.setFilter("q", event.target.value)}
+              />
+            </div>
           </Field>
         </div>
         <InvoiceFilterMenu direction={direction} status={status} />
       </div>
       {invoices.isPending ? (
-        <LoadingView />
+        <InvoicesTableSkeleton />
       ) : invoices.isError ? (
         <ErrorView
           error={invoices.error}

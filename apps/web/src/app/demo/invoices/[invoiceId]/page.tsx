@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { LoadingView } from "@/components/feedback";
+import { InvoiceDetailSkeleton } from "@/components/page-skeletons";
 import { InvoiceDetailPage } from "@/features/invoices/invoice-detail-page";
 
 export const metadata = { title: "Detalle de factura" };
@@ -11,7 +11,7 @@ export default async function Page({
 }) {
   const { invoiceId } = await params;
   return (
-    <Suspense fallback={<LoadingView />}>
+    <Suspense fallback={<InvoiceDetailSkeleton />}>
       <InvoiceDetailPage invoiceId={invoiceId} />
     </Suspense>
   );

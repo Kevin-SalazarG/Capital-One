@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { motion } from "motion/react";
 import {
   ArrowUpRight,
   Building2,
@@ -15,6 +16,7 @@ import {
   LogOut,
   Menu,
   Plus,
+  RefreshCw,
   Settings2,
   ShieldCheck,
   X,
@@ -29,12 +31,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useWorkspace } from "@/features/workspace/workspace";
+import { useResource, useWorkspace } from "@/features/workspace/workspace";
 import { apiRequest, waitForSessionRefresh } from "@/lib/api/client";
 import { acknowledgmentSchema } from "@/lib/api/contracts";
+import { treasurySchema } from "@colchon/treasury/treasury-contract";
 import { cn } from "@/lib/class-names";
 import { errorMessage } from "@/lib/api/errors";
-import { ROLE_LABELS } from "@/lib/formatters";
+import { formatDate, ROLE_LABELS } from "@/lib/formatters";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { organization, organizations, email, basePath, isDemo, can } =
@@ -79,6 +82,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isCurrentSection = (path: string) =>
     pathname === `${basePath}/${path}` ||
     pathname.startsWith(`${basePath}/${path}/`);
+  const isDashboard = isCurrentSection("dashboard");
+  const canSyncDashboard = isDashboard && can("bank-account:read");
+  const treasuryQuery = useResource(
+    "treasury",
+    treasurySchema,
+    canSyncDashboard,
+  );
+  const [syncRequested, setSyncRequested] = useState(false);
+  const syncing = syncRequested || treasuryQuery.isFetching;
 
   useEffect(() => {
     if (previousPath.current !== pathname) {
@@ -103,6 +115,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function syncData() {
+    setSyncRequested(true);
+    try {
+      await treasuryQuery.refetch();
+    } finally {
+      window.setTimeout(() => setSyncRequested(false), 550);
+    }
+  }
+
   const currentPage = pathname.includes("settings")
     ? "Configuración"
     : pathname.includes("onboarding")
@@ -115,17 +136,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <button
           type="button"
           aria-label={`Cambiar empresa: ${organization.name}`}
-          className="group grid w-full gap-1.5 rounded-lg border bg-muted/40 px-3 py-3 text-left transition-colors duration-150 hover:bg-secondary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:bg-secondary data-[state=open]:bg-secondary/70"
+          className="group flex min-h-11 max-w-[230px] items-center gap-2 rounded-full border bg-card px-2.5 py-2 text-left transition-[background-color,border-color,box-shadow] duration-200 hover:border-primary/30 hover:bg-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:bg-secondary data-[state=open]:bg-secondary/70"
         >
-          <span className="flex items-center gap-2 text-xs leading-4 text-muted-foreground">
-            <Building2 aria-hidden="true" className="size-3.5 shrink-0" />
-            <span className="flex-1">Empresa</span>
-            <span className="shrink-0 transition-transform duration-150 ease-out group-data-[state=open]:rotate-180 motion-reduce:transition-none">
-              <ChevronDown aria-hidden="true" className="size-3.5" />
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+            <Building2 aria-hidden="true" className="size-3.5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[0.65rem] leading-3 text-muted-foreground">
+              Empresa activa
+            </span>
+            <span className="block truncate text-xs font-semibold leading-5">
+              {organization.name}
             </span>
           </span>
-          <span className="min-w-0 wrap-anywhere text-sm font-semibold leading-5">
-            {organization.name}
+          <span className="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180 motion-reduce:transition-none">
+            <ChevronDown aria-hidden="true" className="size-3.5" />
           </span>
         </button>
       </DropdownMenuTrigger>
@@ -177,129 +202,91 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-dvh">
+    <div className="app-frame">
       <a href="#main-content" className="skip-link">
         Saltar al contenido
       </a>
-      <aside className="floating-header fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r bg-card/80 px-5 py-8 backdrop-blur-xl lg:flex">
-        <Link
-          href={`${basePath}/dashboard`}
-          className="mb-9 self-start px-2"
-          aria-label="Colchón, ir al plan de caja"
-        >
-          <Brand />
-        </Link>
-        {companyMenu}
-        <nav aria-label="Navegación principal" className="mt-8 space-y-1.5">
-          {navigation.map(({ label, path, icon: Icon }) => (
+      <div className="app-workspace">
+        <header className="app-topbar">
+          <div className="app-topbar-inner">
             <Link
-              key={path}
-              href={`${basePath}/${path}`}
-              aria-current={isCurrentSection(path) ? "page" : undefined}
-              className={cn(
-                "flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors hover:bg-muted",
-                isCurrentSection(path)
-                  ? "bg-secondary text-primary"
-                  : "text-muted-foreground",
-              )}
+              href={`${basePath}/dashboard`}
+              className="shrink-0"
+              aria-label="Colchón, ir al plan de caja"
             >
-              <Icon className="size-[19px]" />
-              {label}
-              {pathname.endsWith(path) && (
-                <span
-                  aria-hidden="true"
-                  className="ml-auto size-1.5 rounded-full bg-primary"
-                />
-              )}
+              <Brand />
             </Link>
-          ))}
-        </nav>
-        <div className="mt-auto space-y-2">
-          {settingsVisible && !isDemo && (
-            <Link
-              href={`${basePath}/settings/company`}
-              className={cn(
-                "flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm transition-colors hover:bg-muted",
-                pathname.includes("settings")
-                  ? "bg-secondary text-primary"
-                  : "text-muted-foreground",
-              )}
-            >
-              <Settings2 className="size-[19px]" />
-              Configuración
-            </Link>
-          )}
-          <Link
-            href={`${basePath}/dashboard#assumptions`}
-            className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:bg-muted"
-          >
-            <ShieldCheck className="size-[19px]" />
-            Cómo funciona
-          </Link>
-          <div className="mt-5 border-t pt-5">
-            <div className="flex items-center gap-3 px-2">
-              <span className="flex size-9 items-center justify-center rounded-full bg-secondary text-xs font-semibold">
-                {isDemo ? "MV" : (email?.slice(0, 2).toUpperCase() ?? "TU")}
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold">
-                  {isDemo ? "María Vega" : email}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {ROLE_LABELS[organization.role]}
-                </p>
-              </div>
-              {!isDemo && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  disabled={signingOut}
-                  onClick={() => void signOut()}
-                  aria-label="Cerrar sesión"
-                >
-                  <LogOut className="size-4" />
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </aside>
-      <div className="lg:pl-[244px]">
-        <header className="floating-header sticky top-0 z-20 border-b bg-background/95 backdrop-blur-md">
-          <div className="mx-auto flex h-[72px] max-w-[1320px] items-center justify-between gap-3 px-5 md:px-9 xl:px-12">
-            <div className="flex items-center gap-3">
-              <span className="lg:hidden">
-                <Brand compact />
-              </span>
-              <span className="text-sm text-muted-foreground">
+            {!isDashboard && (
+              <span className="hidden flex-1 items-center border-l pl-4 text-sm font-semibold text-muted-foreground lg:flex">
                 {currentPage}
               </span>
-            </div>
-            <div className="flex items-center gap-3">
-              {isDemo ? (
-                <>
-                  <span className="rounded-md border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground">
-                    Demo interactiva
-                  </span>
-                  <Link
-                    href="/auth/sign-in"
-                    className="flex items-center gap-1.5 text-xs font-semibold text-primary"
-                  >
-                    Usar mi empresa
-                    <ArrowUpRight className="size-3.5" />
-                  </Link>
-                </>
-              ) : (
-                <span className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
-                  <span className="size-1.5 rounded-full bg-primary" />
+            )}
+            <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
+              {!isDemo && (
+                <span className="hidden items-center gap-2 rounded-full border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground sm:inline-flex">
+                  <span className="size-1.5 rounded-full bg-success" />
                   {organization.currency}
                 </span>
               )}
+              {canSyncDashboard && treasuryQuery.data && (
+                <span className="app-dashboard-cutoff">
+                  <span className="app-dashboard-cutoff-label">Corte</span>
+                  <span>
+                    {formatDate(treasuryQuery.data.input.asOf, {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                </span>
+              )}
+              <div className="hidden md:block">{companyMenu}</div>
+              {canSyncDashboard && (
+                <button
+                  type="button"
+                  title={syncing ? "Sincronizando datos" : "Sincronizar datos"}
+                  aria-label={
+                    syncing ? "Sincronizando datos" : "Sincronizar datos"
+                  }
+                  aria-busy={syncing}
+                  disabled={syncing || !treasuryQuery.data}
+                  onClick={() => void syncData()}
+                  className="app-sync-button"
+                  data-syncing={syncing}
+                >
+                  <RefreshCw
+                    aria-hidden="true"
+                    className={cn("size-4", syncing && "animate-spin")}
+                  />
+                </button>
+              )}
+              {isDemo && (
+                <Link
+                  href="/auth/sign-in"
+                  className="hidden items-center gap-1 text-xs font-semibold text-primary transition-colors hover:text-foreground xl:inline-flex"
+                >
+                  Usar mi empresa
+                  <ArrowUpRight aria-hidden="true" className="size-3.5" />
+                </Link>
+              )}
+              <span className="hidden items-center gap-2 xl:flex">
+                <span className="flex size-9 items-center justify-center rounded-full bg-secondary text-xs font-bold text-primary">
+                  {isDemo ? "MV" : (email?.slice(0, 2).toUpperCase() ?? "TU")}
+                </span>
+                <span className="hidden min-w-0 max-w-28 lg:block">
+                  <span className="block truncate text-xs font-semibold">
+                    {isDemo ? "María Vega" : email}
+                  </span>
+                  <span className="block truncate text-[0.65rem] text-muted-foreground">
+                    {ROLE_LABELS[organization.role]}
+                  </span>
+                </span>
+              </span>
               <div className="lg:hidden">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="icon"
                       aria-label="Abrir menú de empresa"
                     >
@@ -308,11 +295,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="end"
-                    className="w-64 max-w-[calc(100vw-2rem)]"
+                    className="w-72 max-w-[calc(100vw-2rem)] rounded-2xl p-2"
                   >
                     {organizations.map((org) => (
                       <DropdownMenuItem
                         key={org.id}
+                        className="min-h-11 rounded-xl"
                         onSelect={() => {
                           if (!isDemo) {
                             void client.cancelQueries({
@@ -325,14 +313,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           }
                         }}
                       >
-                        <Building2 />
+                        <Building2 aria-hidden="true" />
                         <span className="min-w-0 flex-1 wrap-anywhere">
                           {org.name}
                         </span>
                       </DropdownMenuItem>
                     ))}
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild className="min-h-11">
+                    <DropdownMenuItem asChild className="min-h-11 rounded-xl">
                       <Link
                         href={
                           isDemo
@@ -340,30 +328,28 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                             : `${basePath}/onboarding`
                         }
                       >
-                        <ArrowUpRight />
+                        <ArrowUpRight aria-hidden="true" />
                         Primeros pasos
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="min-h-11">
-                      <Link href={`${basePath}/dashboard#assumptions`}>
-                        <ShieldCheck />
-                        Cómo funciona
                       </Link>
                     </DropdownMenuItem>
                     {!isDemo && (
                       <>
-                        <DropdownMenuItem asChild>
+                        <DropdownMenuItem
+                          asChild
+                          className="min-h-11 rounded-xl"
+                        >
                           <Link href="/app/new">
-                            <Plus />
+                            <Plus aria-hidden="true" />
                             Agregar empresa
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           disabled={signingOut}
+                          className="min-h-11 rounded-xl"
                           onSelect={() => void signOut()}
                         >
-                          <X />
+                          <X aria-hidden="true" />
                           Cerrar sesión
                         </DropdownMenuItem>
                       </>
@@ -374,17 +360,88 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </header>
-        <main
-          id="main-content"
-          ref={mainRef}
-          tabIndex={-1}
-          className="min-w-0 pb-24 outline-none lg:pb-8"
-        >
-          {children}
-        </main>
+        <div className="flex min-h-0 flex-1">
+          <aside
+            className="app-rail hidden lg:flex"
+            aria-label="Accesos rápidos"
+          >
+            <div className="app-rail-group">
+              {navigation.map(({ label, path, icon: Icon }) => (
+                <Link
+                  key={path}
+                  href={`${basePath}/${path}`}
+                  aria-label={label}
+                  title={label}
+                  aria-current={isCurrentSection(path) ? "page" : undefined}
+                  className={cn(
+                    "app-rail-link",
+                    isCurrentSection(path) && "app-rail-link-active",
+                  )}
+                >
+                  <Icon aria-hidden="true" className="size-[19px]" />
+                </Link>
+              ))}
+            </div>
+            {!isDemo && (
+              <div className="app-rail-group">
+                {settingsVisible && (
+                  <Link
+                    href={`${basePath}/settings/company`}
+                    aria-label="Configuración"
+                    title="Configuración"
+                    aria-current={
+                      pathname.includes("settings") ? "page" : undefined
+                    }
+                    className={cn(
+                      "app-rail-link",
+                      pathname.includes("settings") && "app-rail-link-active",
+                    )}
+                  >
+                    <Settings2 aria-hidden="true" className="size-[19px]" />
+                  </Link>
+                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  disabled={signingOut}
+                  onClick={() => void signOut()}
+                  aria-label="Cerrar sesión"
+                  title="Cerrar sesión"
+                  className="app-rail-link"
+                >
+                  <LogOut aria-hidden="true" className="size-4" />
+                </Button>
+              </div>
+            )}
+          </aside>
+          <div className="min-w-0 flex-1">
+            {!isDashboard && (
+              <div className="border-b px-5 py-3 lg:hidden">
+                <span className="text-sm font-medium text-muted-foreground">
+                  {currentPage}
+                </span>
+              </div>
+            )}
+            <motion.main
+              key={pathname}
+              id="main-content"
+              ref={mainRef}
+              tabIndex={-1}
+              className="min-w-0 pb-24 outline-none lg:pb-8"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.36,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              {children}
+            </motion.main>
+          </div>
+        </div>
         <nav
           aria-label="Navegación móvil"
-          className="safe-bottom fixed inset-x-0 bottom-0 z-30 flex justify-around border-t bg-card px-2 pt-2 lg:hidden"
+          className="safe-bottom fixed inset-x-0 bottom-0 z-30 flex justify-around border-t bg-card/95 px-2 pt-2 backdrop-blur-xl lg:hidden"
         >
           {navigation.map(({ label, path, icon: Icon }) => (
             <Link
@@ -392,13 +449,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               href={`${basePath}/${path}`}
               aria-current={isCurrentSection(path) ? "page" : undefined}
               className={cn(
-                "flex min-h-12 flex-1 flex-col items-center justify-center gap-1 rounded-lg text-[11px] font-medium",
+                "flex min-h-12 flex-1 flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-medium transition-[background-color,color] duration-200",
                 isCurrentSection(path)
-                  ? "text-primary"
+                  ? "bg-secondary text-primary"
                   : "text-muted-foreground",
               )}
             >
-              <Icon className="size-5" />
+              <Icon aria-hidden="true" className="size-5" />
               {label}
             </Link>
           ))}
@@ -409,13 +466,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 pathname.includes("/settings/") ? "page" : undefined
               }
               className={cn(
-                "flex min-h-12 flex-1 flex-col items-center justify-center gap-1 text-[11px]",
+                "flex min-h-12 flex-1 flex-col items-center justify-center gap-1 rounded-xl text-[11px] transition-[background-color,color] duration-200",
                 pathname.includes("/settings/")
-                  ? "text-primary"
+                  ? "bg-secondary text-primary"
                   : "text-muted-foreground",
               )}
             >
-              <Settings2 className="size-5" />
+              <Settings2 aria-hidden="true" className="size-5" />
               Ajustes
             </Link>
           )}

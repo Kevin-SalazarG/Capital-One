@@ -26,7 +26,6 @@ import {
   FileCheck2,
   Info,
   LockKeyhole,
-  RefreshCw,
   ShieldCheck,
   SlidersHorizontal,
   Wallet,
@@ -34,12 +33,8 @@ import {
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  BusyIcon,
-  EmptyView,
-  ErrorView,
-  LoadingView,
-} from "@/components/feedback";
+import { BusyIcon, EmptyView, ErrorView } from "@/components/feedback";
+import { DashboardSkeleton } from "@/components/page-skeletons";
 import { useResource, useWorkspace } from "@/features/workspace/workspace";
 import { apiRequest } from "@/lib/api/client";
 import { ApiError, errorMessage } from "@/lib/api/errors";
@@ -71,12 +66,7 @@ export function TreasuryPage() {
         />
       </div>
     );
-  if (query.isPending)
-    return (
-      <div className="page-container">
-        <LoadingView />
-      </div>
-    );
+  if (query.isPending) return <DashboardSkeleton />;
   if (
     query.error instanceof ApiError &&
     query.error.code === "FORECAST_INPUTS_INCOMPLETE"
@@ -104,23 +94,11 @@ export function TreasuryPage() {
       </div>
     );
   return (
-    <TreasuryContent
-      data={query.data}
-      refreshing={query.isFetching}
-      refresh={() => void query.refetch()}
-    />
+    <TreasuryContent data={query.data} />
   );
 }
 
-function TreasuryContent({
-  data,
-  refreshing,
-  refresh,
-}: {
-  data: Treasury;
-  refreshing: boolean;
-  refresh: () => void;
-}) {
+function TreasuryContent({ data }: { data: Treasury }) {
   const { organization, email, basePath, isDemo, can } = useWorkspace();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [stressId, setStressId] = useState("");
@@ -244,94 +222,102 @@ function TreasuryContent({
   const riskPoint = model.baseline.points.find(
     (point) => point.date === firstRisk,
   );
+  const worstDateLabel = formatDate(model.baseline.summary.worstDate);
+  const heroTitle = payrollRisk
+    ? payroll?.category === "payroll"
+      ? "Protege la nómina antes del faltante."
+      : "Protege los pagos de tu obra antes del faltante."
+    : hasRisk
+      ? "Anticipa el faltante de tu obra."
+      : "Conoce el margen de tu obra.";
+  const heroDescription = payrollRisk
+    ? `La estimación que esperas llega después de la nómina. El ${worstDateLabel} la caja toca su punto más bajo; te avisamos antes para que revises el cobro.`
+    : hasRisk
+      ? `La proyección muestra cuándo la caja se aprieta. Revisa tus cobros, materiales y pagos protegidos antes del ${worstDateLabel}.`
+      : "Comparamos cobros, materiales y pagos protegidos para que conozcas el margen de tu obra durante los próximos 30 días.";
   return (
-    <div className="page-container space-y-8 pb-12">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground">
-          {organization.name}
-          <span className="mx-2 text-border">/</span>
-          {formatDate(data.input.asOf, {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </p>
-        <Button variant="ghost" disabled={refreshing} onClick={refresh}>
-          {refreshing ? <BusyIcon /> : <RefreshCw />}Actualizar datos
-        </Button>
-      </div>
-      <section className="flex flex-col justify-between gap-7 xl:flex-row xl:items-center">
-        <div>
+    <div className="page-container dashboard-page space-y-7 pb-14">
+      <section className="dashboard-hero" aria-labelledby="dashboard-title">
+        <div className="dashboard-hero-copy">
           <div
             className={cn(
-              "mb-4 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold",
-              hasRisk ? "risk-note" : "bg-secondary text-primary",
+              "dashboard-kicker",
+              hasRisk ? "dashboard-kicker-risk" : "dashboard-kicker-safe",
             )}
           >
-            <span
-              className={cn(
-                "size-1.5 rounded-full",
-                hasRisk ? "bg-destructive" : "bg-primary",
-              )}
-            />
+            <span className="dashboard-kicker-dot" />
             {hasRisk ? "Hay tiempo para actuar" : "Dentro de tu reserva"}
           </div>
-          <h1 className="treasury-heading">
-            {payrollRisk
-              ? payroll?.category === "payroll"
-                ? "Evita que una obra te deje sin nómina."
-                : "Evita que una obra te deje sin caja."
-              : hasRisk
-                ? "La caja de tu obra necesita atención."
-                : "Anticipa la caja de tus obras."}
+          <h1 id="dashboard-title" className="dashboard-hero-title">
+            {heroTitle}
           </h1>
-          <p className="mt-4 max-w-[56ch] text-base leading-relaxed text-muted-foreground">
-            {payrollRisk
-              ? `La estimación que esperas y la nómina no caen el mismo día. El ${formatDate(payroll?.date ?? data.input.asOf)} el cierre proyectado no alcanza; te avisamos a tiempo para decidir qué revisar.`
-              : hasRisk
-                ? "Anticipa el punto más ajustado de la obra y decide qué conversación vale la pena abrir."
-                : "Revisa tus avances, nómina y materiales para saber cuándo tienes que actuar."}
-          </p>
+          <p className="dashboard-hero-description">{heroDescription}</p>
+          <div className="dashboard-hero-links">
+            <Link
+              href={`${basePath}/commitments`}
+              className="dashboard-hero-link"
+            >
+              Ver pagos protegidos
+              <ChevronRight aria-hidden="true" className="size-4" />
+            </Link>
+            <Link href="#assumptions" className="dashboard-hero-link">
+              Cómo calculamos
+              <ChevronRight aria-hidden="true" className="size-4" />
+            </Link>
+          </div>
         </div>
-        <div className="min-w-0 rounded-2xl border bg-card px-6 py-5 xl:w-[310px] xl:shrink-0">
-          <div className="mb-4 flex items-center justify-between gap-4 text-primary">
-            <ShieldCheck className="size-6" />
-            <span className="flex items-center gap-1.5 text-xs font-medium">
-              <LockKeyhole className="size-3" />
+        <div className="dashboard-payroll-card">
+          <div className="dashboard-payroll-topline">
+            <span className="dashboard-payroll-icon">
+              <ShieldCheck aria-hidden="true" className="size-5" />
+            </span>
+            <span className="dashboard-payroll-label">Salida protegida</span>
+            <span className="dashboard-payroll-lock">
+              <LockKeyhole aria-hidden="true" className="size-3" />
               No se mueve
             </span>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="dashboard-payroll-title">
             {payroll
               ? payroll.category === "payroll"
                 ? "Próxima nómina de obra"
                 : "Próximo pago de obra"
               : "Tu próximo compromiso de obra"}
           </p>
-          <p className="treasury-number mt-1 text-[1.9rem]">
+          <p className="dashboard-payroll-amount">
             {payroll
               ? money(String(Math.abs(Number(payroll.amount))))
               : "Sin registrar"}
           </p>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="dashboard-payroll-detail">
             {payroll
               ? `${formatDate(payroll.date, { day: "numeric", month: "long" })} · ${payroll.label}`
               : "Agrega nómina de cuadrilla y pagos esenciales."}
           </p>
+          <div className="dashboard-payroll-risk">
+            <span className="dashboard-payroll-risk-label">
+              Peor cierre proyectado
+              <br />
+              {formatDate(model.baseline.summary.worstDate)}
+            </span>
+            <span className="dashboard-payroll-risk-value">
+              {money(model.baseline.summary.minimumBalance)}
+            </span>
+          </div>
           {!payroll && (
             <Link
               href={`${basePath}/commitments`}
-              className="mt-3 inline-flex min-h-11 items-center text-sm font-medium text-primary"
+              className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-white underline-offset-4 hover:underline"
             >
               Registrar compromiso
-              <ChevronRight className="size-4" />
+              <ChevronRight aria-hidden="true" className="size-4" />
             </Link>
           )}
         </div>
       </section>
 
       <section
-        className="grid grid-cols-2 gap-x-6 gap-y-5 border-y py-6 lg:grid-cols-4"
+        className="dashboard-signal-grid"
         aria-label="Resumen de caja sin cambios"
       >
         <Metric
@@ -373,33 +359,29 @@ function TreasuryContent({
         />
       )}
 
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_350px]">
+      <div className="dashboard-workbench">
         <section
-          className="treasury-surface min-w-0 p-5 sm:p-7"
+          className="dashboard-chart-panel"
           aria-labelledby="cash-heading"
         >
-          <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h2
-                id="cash-heading"
-                className="text-xl font-semibold tracking-tight"
-              >
+              <p className="dashboard-panel-kicker">Mapa de caja</p>
+              <h2 id="cash-heading" className="dashboard-panel-heading">
                 El camino de tu caja
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="dashboard-panel-description">
                 Avances que entran, nómina y materiales que salen, y cuándo
                 actuar.
               </p>
             </div>
-            <span className="rounded-lg bg-muted px-3 py-2 text-xs font-medium">
-              30 días · {currency}
-            </span>
+            <span className="dashboard-period">30 días · {currency}</span>
           </div>
           <TreasuryChart data={model} projected={plan?.projection ?? null} />
           <div
             className={cn(
-              "mt-5 flex items-start gap-3 rounded-xl p-4",
-              hasRisk ? "risk-note" : "bg-secondary text-primary",
+              "dashboard-chart-insight",
+              !hasRisk && "bg-secondary text-secondary-foreground",
             )}
           >
             <Info className="mt-0.5 size-4 shrink-0" />
@@ -418,12 +400,12 @@ function TreasuryContent({
               )}
             </p>
           </div>
-          <details className="mt-5 border-t pt-3">
+          <details className="dashboard-disclosure">
             <summary className="treasury-summary">
               <SlidersHorizontal className="size-4" />
               Simular un atraso de estimación
             </summary>
-            <div className="mt-3 space-y-3">
+            <div className="dashboard-disclosure-content space-y-3">
               <label
                 htmlFor="stress-receipt"
                 className="block text-sm text-muted-foreground"
@@ -460,23 +442,26 @@ function TreasuryContent({
           </details>
         </section>
 
-        <section className="min-w-0" aria-labelledby="plans-heading">
-          <div className="mb-4 flex items-center justify-between gap-2">
-            <h2
-              id="plans-heading"
-              className="text-xl font-semibold tracking-tight"
-            >
+        <section
+          className="dashboard-plans-panel"
+          aria-labelledby="plans-heading"
+        >
+          <div className="dashboard-plans-header">
+            <h2 id="plans-heading" className="dashboard-panel-heading">
               Recomendaciones para tu obra
             </h2>
-            <span className="text-xs text-muted-foreground">
+            <span className="shrink-0 text-xs text-muted-foreground">
               {model.plans.length} recomendaciones modeladas
             </span>
           </div>
-          <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+          <p className="mb-5 max-w-[42ch] text-sm leading-6 text-muted-foreground">
             Comparamos alternativas de cobro y pagos con proveedores. Son
             conversaciones que la pyme debe llevar; no se ejecutan desde aquí.
           </p>
-          <fieldset className="space-y-3" aria-label="Comparar planes">
+          <fieldset
+            className="dashboard-plan-list"
+            aria-label="Comparar planes"
+          >
             {model.plans.map((item, index) => (
               <button
                 key={item.id}
@@ -484,9 +469,8 @@ function TreasuryContent({
                 aria-pressed={plan?.id === item.id}
                 onClick={() => setSelectedId(item.id)}
                 className={cn(
-                  "relative w-full overflow-hidden rounded-xl border bg-card p-5 text-left transition-colors hover:border-primary/60",
-                  plan?.id === item.id &&
-                    "border-primary bg-secondary/50 ring-1 ring-primary",
+                  "dashboard-plan-card",
+                  plan?.id === item.id && "dashboard-plan-card-selected",
                 )}
               >
                 {plan?.id === item.id && (
@@ -500,29 +484,35 @@ function TreasuryContent({
                     }
                   />
                 )}
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <span className="text-xs font-semibold text-primary">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="dashboard-plan-card-label">
                     {index === 0
                       ? "Mejor resultado simulado"
                       : `Alternativa ${index + 1}`}
                   </span>
                   {plan?.id === item.id ? (
-                    <CheckCircle2 className="size-4 text-primary" />
+                    <CheckCircle2
+                      aria-hidden="true"
+                      className="size-4 text-primary"
+                    />
                   ) : (
-                    <ArrowUpRight className="size-4 text-muted-foreground" />
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="size-4 text-muted-foreground"
+                    />
                   )}
                 </div>
-                <p className="text-base font-semibold">
+                <p className="dashboard-plan-card-title">
                   {item.actions.length === 1
                     ? `${item.actions[0]?.kind === "collect" ? "Revisar anticipo con" : "Negociar con"} ${item.actions[0]?.label}`
                     : "Combinar dos conversaciones"}
                 </p>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="dashboard-plan-card-meta">
                   {item.actions.length}{" "}
                   {item.actions.length === 1 ? "acción" : "acciones"} · Costo
                   supuesto {money(item.cost)}
                 </p>
-                <div className="mt-4 flex items-end justify-between gap-3 border-t pt-3">
+                <div className="dashboard-plan-card-footer">
                   <span className="text-xs text-muted-foreground">
                     Saldo mínimo si ocurre
                   </span>
@@ -565,22 +555,19 @@ function TreasuryContent({
 
       {plan && (
         <section
-          className="treasury-surface border-primary/35 p-5 sm:p-7"
+          className="dashboard-selection-panel"
           aria-labelledby="selected-heading"
         >
           <div className="flex flex-wrap items-start justify-between gap-5">
             <div>
-              <p className="mb-2 text-sm font-medium text-primary">
+              <p className="dashboard-panel-kicker mb-2">
                 Vista previa · no ejecuta pagos
               </p>
-              <h2
-                id="selected-heading"
-                className="text-2xl font-semibold tracking-tight"
-              >
+              <h2 id="selected-heading" className="dashboard-panel-heading">
                 Tu siguiente conversación, con números claros.
               </h2>
             </div>
-            <div className="rounded-xl bg-secondary px-4 py-3 text-primary">
+            <div className="dashboard-selection-summary">
               <p className="text-xs">
                 Liquidez adicional aún necesaria para la reserva
               </p>
@@ -589,7 +576,7 @@ function TreasuryContent({
               </p>
             </div>
           </div>
-          <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_290px]">
+          <div className="dashboard-selection-actions">
             <ol className="space-y-5">
               {plan.actions.map((action, index) => (
                 <li key={action.id} className="flex gap-4">
@@ -614,7 +601,7 @@ function TreasuryContent({
                 </li>
               ))}
             </ol>
-            <div className="border-t pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
+            <div className="dashboard-selection-cta">
               <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
                 Nómina e impuestos conservan su fecha. Guardar solo registra la
                 recomendación: el saldo real y las facturas no cambian.
@@ -640,7 +627,7 @@ function TreasuryContent({
 
       {decision && (
         <section
-          className="treasury-surface p-5 sm:p-7"
+          className="dashboard-followup-panel"
           aria-labelledby="followup-heading"
         >
           <div className="mb-5 flex flex-wrap justify-between gap-4">
@@ -670,12 +657,9 @@ function TreasuryContent({
               seguimiento, pero necesitas comparar de nuevo.
             </p>
           )}
-          <div className="divide-y">
+          <div>
             {decision.plan.actions.map((action) => (
-              <div
-                key={action.id}
-                className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
-              >
+              <div key={action.id} className="dashboard-followup-row">
                 <div className="flex gap-3">
                   <Check
                     className={cn(
@@ -725,16 +709,17 @@ function TreasuryContent({
         </section>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <section className="treasury-surface p-5 sm:p-7">
-          <h2 className="mb-5 text-xl font-semibold tracking-tight">
+      <div className="dashboard-bottom-grid">
+        <section className="dashboard-bottom-panel">
+          <p className="dashboard-panel-kicker">Lo que no se mueve</p>
+          <h2 className="mt-1 text-2xl font-semibold tracking-[-0.04em]">
             Pagos de la obra que protegemos
           </h2>
           <div className="space-y-5">
             {model.criticalEvents.length ? (
               model.criticalEvents.map((event) => (
                 <div key={event.id} className="flex items-center gap-4">
-                  <div className="flex min-w-12 flex-col items-center rounded-xl bg-muted p-2">
+                  <div className="dashboard-event-date">
                     <span className="text-xs text-muted-foreground">
                       {formatDate(event.date, { month: "short" })}
                     </span>
@@ -769,8 +754,9 @@ function TreasuryContent({
             <ChevronRight className="size-4" />
           </Link>
         </section>
-        <section className="treasury-surface p-5 sm:p-7">
-          <h2 className="mb-3 text-xl font-semibold tracking-tight">
+        <section className="dashboard-bottom-panel">
+          <p className="dashboard-panel-kicker">El hueco que vemos</p>
+          <h2 className="mt-1 text-2xl font-semibold tracking-[-0.04em]">
             La brecha de esta obra
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
@@ -803,10 +789,7 @@ function TreasuryContent({
         </section>
       </div>
 
-      <details
-        id="assumptions"
-        className="scroll-mt-24 rounded-xl border px-5 py-3"
-      >
+      <details id="assumptions" className="dashboard-assumptions">
         <summary className="treasury-summary">
           <CircleHelp className="size-4" />
           Datos, supuestos y límites de este plan
@@ -861,20 +844,13 @@ function Metric({
   risk?: boolean;
 }) {
   return (
-    <div className="min-w-0">
-      <p className="flex items-center gap-2 text-xs text-muted-foreground">
-        {icon}
+    <div className={cn("dashboard-metric", risk && "dashboard-metric-risk")}>
+      <p className="dashboard-metric-label">
+        <span className="dashboard-metric-icon">{icon}</span>
         {label}
       </p>
-      <p
-        className={cn(
-          "treasury-number mt-2 break-words text-xl sm:text-2xl",
-          risk && "text-destructive",
-        )}
-      >
-        {value}
-      </p>
-      <p className="mt-1 text-xs text-muted-foreground">{note}</p>
+      <p className="dashboard-metric-value">{value}</p>
+      <p className="dashboard-metric-note">{note}</p>
     </div>
   );
 }

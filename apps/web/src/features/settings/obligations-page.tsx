@@ -14,8 +14,8 @@ import {
   EmptyView,
   ErrorView,
   FieldError,
-  LoadingView,
 } from "@/components/feedback";
+import { CommitmentsListSkeleton } from "@/components/page-skeletons";
 import {
   PermissionGate,
   DemoNotice,
@@ -62,7 +62,7 @@ function ObligationsContent() {
       </div>
       <DemoNotice />
       {obligations.isPending ? (
-        <LoadingView />
+        <CommitmentsListSkeleton />
       ) : obligations.isError ? (
         <ErrorView
           error={obligations.error}

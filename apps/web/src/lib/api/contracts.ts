@@ -168,3 +168,6 @@ export const obligationSchema = z.object({
   nextDueOn: z.string(),
 });
 export const acknowledgmentSchema = z.unknown();
+export const emailDeliverySchema = z.object({
+  status: z.literal("sent"),
+});

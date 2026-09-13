@@ -10,7 +10,7 @@ test("all demo routes render without external API requests", async ({
     await route.abort();
   });
   for (const [path, title] of [
-    ["dashboard", "Evita que una obra te deje sin nómina."],
+    ["dashboard", "Protege la nómina antes del faltante."],
     ["commitments", "Los pagos que sostienen tu obra."],
     ["invoices", "Avances, materiales y pagos."],
     ["bank", "La cuenta de operación."],
@@ -27,6 +27,33 @@ test("all demo routes render without external API requests", async ({
     ).toBe(true);
   }
   expect(requests).toEqual([]);
+});
+
+test("cash alert opens an editable email modal without leaving the dashboard", async ({
+  page,
+}) => {
+  await page.goto("/demo/dashboard");
+
+  await page.getByRole("button", { name: "Revisar y enviar" }).click();
+
+  const dialog = page.getByRole("dialog", {
+    name: "Revisa el correo antes de enviarlo",
+  });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText("maria@example.com", { exact: true })).toBeVisible();
+  await expect(dialog.getByLabel("Asunto")).toHaveValue(
+    "Colchón: posible faltante el 29 sep",
+  );
+  await expect(dialog.getByLabel("Mensaje")).toHaveValue(
+    /podría tener un faltante de \$14,000\.00 el 29 sep/,
+  );
+  await expect(
+    dialog.getByRole("button", { name: "Enviar correo", exact: true }),
+  ).toBeEnabled();
+
+  await dialog.getByRole("button", { name: "Cerrar", exact: true }).last().click();
+  await expect(dialog).toHaveAttribute("data-state", "closed");
+  await expect(page).toHaveURL(/\/demo\/dashboard$/);
 });
 
 test("invoice filters retain complete search text and details are keyboard accessible", async ({
@@ -172,6 +199,33 @@ test("bank keeps search visible and groups persistent filters without clearing t
   await expect(page.getByRole("status")).toHaveText("1 registro");
   await page.getByRole("button", { name: "Listo", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
+});
+
+test("bank opens the connection editor without leaving the page", async ({
+  page,
+}) => {
+  await page.goto("/demo/bank");
+  const trigger = page.getByRole("button", {
+    name: "Conexiones",
+    exact: true,
+  });
+
+  await trigger.click();
+
+  const dialog = page.getByRole("dialog", { name: "Agregar conexión" });
+  await expect(dialog).toBeVisible();
+  await expect(
+    dialog.getByText(
+      "Estás viendo datos de ejemplo. Conecta tu empresa para guardar una fuente.",
+    ),
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole("button", { name: "Agregar conexión", exact: true }),
+  ).toBeDisabled();
+
+  await dialog.getByRole("button", { name: "Cerrar", exact: true }).click();
+  await expect(dialog).toHaveAttribute("data-state", "closed");
+  await expect(page).toHaveURL(/\/demo\/bank$/);
 });
 
 test("viewer cannot reach privileged views or issue writes", async ({

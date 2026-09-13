@@ -29,6 +29,15 @@ export const environmentSchema = Joi.object({
     .max(120000)
     .default(10000),
   NESSIE_MAX_RETRIES: Joi.number().integer().min(0).max(5).default(2),
+  RESEND_API_KEY: Joi.string().min(1).optional(),
+  RESEND_FROM_EMAIL: Joi.string()
+    .min(1)
+    .default("Colchón <onboarding@resend.dev>"),
+  RESEND_TIMEOUT_MS: Joi.number()
+    .integer()
+    .positive()
+    .max(120000)
+    .default(10000),
   AUTH_ACCESS_COOKIE: Joi.string().default("colchon_access_token"),
   AUTH_REFRESH_COOKIE: Joi.string().default("colchon_refresh_token"),
   AUTH_COOKIE_DOMAIN: Joi.string().allow("").default(""),

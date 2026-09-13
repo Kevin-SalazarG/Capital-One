@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import { LoadingView } from "@/components/feedback";
+import { InvoicesSkeleton } from "@/components/page-skeletons";
 import { InvoicesPage } from "@/features/invoices/invoices-page";
 
 export const metadata = { title: "Facturas" };
 export default function Page() {
   return (
-    <Suspense fallback={<LoadingView />}>
+    <Suspense fallback={<InvoicesSkeleton />}>
       <InvoicesPage />
     </Suspense>
   );

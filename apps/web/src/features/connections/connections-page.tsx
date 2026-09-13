@@ -17,8 +17,8 @@ import {
   EmptyView,
   ErrorView,
   FieldError,
-  LoadingView,
 } from "@/components/feedback";
+import { ConnectionsListSkeleton } from "@/components/page-skeletons";
 import {
   PermissionGate,
   DemoNotice,
@@ -82,7 +82,7 @@ function ConnectionsContent() {
       </div>
       <DemoNotice />
       {connections.isPending ? (
-        <LoadingView />
+        <ConnectionsListSkeleton />
       ) : connections.isError ? (
         <ErrorView
           error={connections.error}

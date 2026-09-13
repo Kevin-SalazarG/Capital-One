@@ -35,21 +35,30 @@ export function TreasuryChart({
     data.criticalEvents.find((event) => event.category === "payroll") ??
     data.criticalEvents[0];
   return (
-    <div>
+    <div className="dashboard-chart-content">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
           <span className="flex items-center gap-2">
-            <span className="w-5 border-t-2 border-dashed border-chart-1" />
+            <span
+              className="w-5 border-t-2 border-dashed border-chart-1"
+              aria-hidden="true"
+            />
             Sin cambios
           </span>
           {projected && (
             <span className="flex items-center gap-2">
-              <span className="w-5 border-t-[3px] border-primary" />
+              <span
+                className="w-5 border-t-[3px] border-primary"
+                aria-hidden="true"
+              />
               Con el plan
             </span>
           )}
           <span className="flex items-center gap-2">
-            <span className="w-5 border-t border-dotted border-warning" />
+            <span
+              className="w-5 border-t border-dotted border-warning"
+              aria-hidden="true"
+            />
             Reserva
           </span>
         </div>
@@ -63,13 +72,13 @@ export function TreasuryChart({
         </Button>
       </div>
       {table ? (
-        <div className="overflow-auto rounded-lg border">
+        <div className="overflow-auto rounded-2xl border bg-muted/40">
           <table className="w-full text-left text-sm numeric">
             <caption className="sr-only">
               Saldos al cierre diario en {currency}. Reserva:{" "}
               {formatMoney(data.input.reserve, currency)}.
             </caption>
-            <thead className="sticky top-0 bg-muted">
+            <thead className="sticky top-0 bg-card">
               <tr>
                 <th className="p-3">Fecha</th>
                 <th className="p-3">Sin cambios</th>
