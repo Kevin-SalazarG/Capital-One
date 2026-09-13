@@ -10,6 +10,9 @@ export function forecastInputSnapshot(input: ForecastInput): JsonValue {
     averageMonthlyOutflow: input.averageMonthlyOutflow.toFixed(2),
     variableOutflowPerDay: input.variableOutflowPerDay.toFixed(2),
     confidence: input.confidence,
+    engineVersion: "treasury-v2",
+    currency: input.currency ?? "MXN",
+    warnings: [...(input.warnings ?? [])],
     events: input.events.map((event) => ({
       id: event.id,
       date: event.date,
@@ -18,6 +21,11 @@ export function forecastInputSnapshot(input: ForecastInput): JsonValue {
       sourceId: event.sourceId,
       label: event.label,
       confidence: event.confidence,
+      category: event.category ?? "other",
+      critical: event.critical ?? false,
+      earliestDate: event.earliestDate ?? null,
+      latestDate: event.latestDate ?? null,
+      negotiationCost: event.negotiationCost ?? "0.00",
     })),
   };
 }

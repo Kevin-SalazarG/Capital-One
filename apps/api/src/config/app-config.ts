@@ -17,6 +17,9 @@ export interface AppEnvironment {
   readonly NESSIE_BASE_URL: string;
   readonly NESSIE_TIMEOUT_MS: number;
   readonly NESSIE_MAX_RETRIES: number;
+  readonly RESEND_API_KEY?: string;
+  readonly RESEND_FROM_EMAIL: string;
+  readonly RESEND_TIMEOUT_MS: number;
   readonly AUTH_ACCESS_COOKIE: string;
   readonly AUTH_REFRESH_COOKIE: string;
   readonly AUTH_COOKIE_DOMAIN: string;

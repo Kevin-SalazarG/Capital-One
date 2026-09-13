@@ -5,15 +5,12 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import { treasurySchema } from "@colchon/treasury/treasury-contract";
 import { ArrowRight, Check, FileText, Landmark } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
-import {
-  BusyIcon,
-  ErrorView,
-  FieldError,
-  LoadingView,
-} from "@/components/feedback";
+import { BusyIcon, ErrorView, FieldError } from "@/components/feedback";
+import { OnboardingStepsSkeleton } from "@/components/page-skeletons";
 import { EditorDialog } from "@/components/forms/editor-dialog";
 import { DemoNotice } from "@/features/workspace/permission-gate";
 import { useResource, useWorkspace } from "@/features/workspace/workspace";
@@ -52,17 +49,15 @@ export function OnboardingPage() {
     can("cfdi:read"),
   );
   const latest = useResource(
-    "forecasts/latest",
-    z.object({ id: z.string(), status: z.string() }).nullable(),
-    can("forecast:read"),
+    "treasury",
+    treasurySchema,
+    can("forecast:read") &&
+      can("bank-account:read") &&
+      Boolean(accounts.data?.length),
   );
   const forecast = useCommand(
     () =>
-      apiRequest(
-        `/organizations/${organization.id}/forecasts/runs`,
-        acknowledgmentSchema,
-        { method: "POST", body: { horizonDays: 30 } },
-      ),
+      apiRequest(`/organizations/${organization.id}/treasury`, treasurySchema),
     "Tu proyección está lista",
     () => router.push(`${basePath}/dashboard`),
   );
@@ -86,12 +81,12 @@ export function OnboardingPage() {
   );
   const readyBank = Boolean(accounts.data?.length);
   const readyInvoices = Boolean(invoices.data?.length);
-  const readyForecast = latest.data?.status === "completed";
+  const readyForecast = Boolean(latest.data);
   return (
     <div className="page-container">
       <PageHeader
-        title="Prepara tu primera proyección."
-        description="Conecta tus fuentes, revisa los datos y mira los próximos 30 días."
+        title="Prepara la caja de tu constructora."
+        description="Conecta tus fuentes, revisa tus obras y mira los próximos 30 días."
         action={
           <Button asChild variant="outline">
             <Link href={`${basePath}/dashboard`}>Ir al resumen</Link>
@@ -100,7 +95,7 @@ export function OnboardingPage() {
       />
       <DemoNotice />
       {connections.isPending && can("connection:read") ? (
-        <LoadingView />
+        <OnboardingStepsSkeleton />
       ) : connections.isError ? (
         <ErrorView
           error={connections.error}
@@ -110,7 +105,7 @@ export function OnboardingPage() {
         <div className="max-w-4xl space-y-4">
           <Step
             number={1}
-            title="Conecta tu banco"
+            title="Conecta la cuenta de operación"
             description="Nessie es un banco de prueba. Necesitas el identificador de un cliente con cuentas creadas."
             completed={readyBank}
           >
@@ -147,8 +142,8 @@ export function OnboardingPage() {
           </Step>
           <Step
             number={2}
-            title="Agrega tus facturas"
-            description="Incluye los cobros y pagos que vienen. También puedes continuar solo con tus cuentas."
+            title="Agrega tus estimaciones y materiales"
+            description="Incluye los cobros por avance y los pagos a proveedores que vienen. También puedes continuar solo con tus cuentas."
             completed={readyInvoices}
           >
             <div className="flex flex-wrap gap-3">
@@ -192,7 +187,7 @@ export function OnboardingPage() {
           <Step
             number={3}
             title="Mira tu caja, a futuro"
-            description="Se calcula con tus cuentas, facturas y pagos recurrentes."
+            description="Se calcula con tu cuenta, estimaciones, materiales y nómina recurrente."
             completed={readyForecast}
           >
             {can("forecast:run") ? (

@@ -30,6 +30,13 @@ export class ObligationsRepository {
         currency: input.currency,
         frequency: input.frequency,
         next_due_on: input.nextDueOn,
+        metadata: {
+          category: input.category,
+          critical:
+            input.critical ||
+            input.category === "payroll" ||
+            input.category === "tax",
+        },
         created_by: userId,
       })
       .select("*")

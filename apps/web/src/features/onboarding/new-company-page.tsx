@@ -43,8 +43,8 @@ export function NewCompanyPage() {
         )}
       </div>
       <PageHeader
-        title="Dale espacio a tu empresa."
-        description="Empieza con lo esencial. Después conectarás tus cuentas y facturas."
+        title="Dale espacio a tu próxima obra."
+        description="Empieza con lo esencial. Después conectarás tu cuenta, estimaciones y pagos de materiales."
       />
       <CompanyForm
         creating
@@ -55,6 +55,7 @@ export function NewCompanyPage() {
           currency: "MXN",
           timeZone: "America/Monterrey",
           minimumCashReserve: "0.00",
+          dailyOperatingExpense: "0.00",
         }}
         onSave={async (values) => {
           try {

@@ -1,0 +1,64 @@
+{
+  "treasury-history": {
+    "asOf": "2026-09-12",
+    "currentYear": 2026,
+    "previousYear": 2025,
+    "currency": "MXN",
+    "hasPreviousYear": true,
+    "reserve": "40000.00",
+    "source": "demo",
+    "points": [
+      {
+        "month": "2026-01",
+        "currentBalance": "92000.00",
+        "previousBalance": "82000.00"
+      },
+      {
+        "month": "2026-02",
+        "currentBalance": "107000.00",
+        "previousBalance": "94000.00"
+      },
+      {
+        "month": "2026-03",
+        "currentBalance": "126000.00",
+        "previousBalance": "111000.00"
+      },
+      {
+        "month": "2026-04",
+        "currentBalance": "118000.00",
+        "previousBalance": "125000.00"
+      },
+      {
+        "month": "2026-05",
+        "currentBalance": "151000.00",
+        "previousBalance": "136000.00"
+      },
+      {
+        "month": "2026-06",
+        "currentBalance": "144000.00",
+        "previousBalance": "129000.00"
+      },
+      {
+        "month": "2026-07",
+        "currentBalance": "132000.00",
+        "previousBalance": "141000.00"
+      },
+      {
+        "month": "2026-08",
+        "currentBalance": "168000.00",
+        "previousBalance": "150000.00"
+      },
+      {
+        "month": "2026-09",
+        "currentBalance": "185000.00",
+        "previousBalance": "162000.00"
+      }
+    ],
+    "summary": {
+      "currentBalance": "185000.00",
+      "previousBalance": "162000.00",
+      "difference": "23000.00",
+      "direction": "positive"
+    }
+  }
+}

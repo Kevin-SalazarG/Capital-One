@@ -28,6 +28,7 @@ import { HealthModule } from "./modules/health/health.module";
 import { IdentityModule } from "./modules/identity/identity.module";
 import { ObligationsModule } from "./modules/obligations/obligations.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
+import { NotificationsModule } from "./modules/notifications/notifications.module";
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { OrganizationsModule } from "./modules/organizations/organizations.modul
     ObligationsModule,
     ForecastingModule,
     DashboardModule,
+    NotificationsModule,
     HealthModule,
   ],
   providers: [

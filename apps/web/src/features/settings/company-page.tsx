@@ -43,6 +43,7 @@ function CompanyContent() {
           currency: organization.currency,
           timeZone: organization.timeZone,
           minimumCashReserve: organization.minimumCashReserve,
+          dailyOperatingExpense: organization.dailyOperatingExpense ?? "0.00",
         }}
         readOnly={isDemo || !can("organization:update")}
         pending={mutation.isPending}

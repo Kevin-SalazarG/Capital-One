@@ -33,7 +33,8 @@ describe("ForecastEngine", () => {
     expect(result.points[1]?.closingBalance.toFixed(2)).toBe("1000.00");
     expect(result.firstGap?.gapDate).toBe("2026-09-12");
     expect(result.firstGap?.amount.toFixed(2)).toBe("50.00");
-    expect(result.recommendation?.type).toBe("collect_receivable");
+    // No earliest collection date was supplied: do not invent a feasible agreement.
+    expect(result.recommendation?.type).toBe("increase_buffer");
   });
 
   it("does not create a gap when the projected balance stays above the threshold", () => {

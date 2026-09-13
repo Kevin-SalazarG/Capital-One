@@ -9,16 +9,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/class-names";
 
 export function FilterMenu({
   label,
   activeCount,
   onClear,
+  className,
   children,
 }: {
   label: string;
   activeCount: number;
   onClear: () => void;
+  className?: string;
   children: ReactNode;
 }) {
   const titleId = useId();
@@ -34,6 +37,7 @@ export function FilterMenu({
               ? `${label}, ${activeCount} ${activeCount === 1 ? "activo" : "activos"}`
               : label
           }
+          className={cn("list-filter-trigger", className)}
         >
           <Funnel aria-hidden="true" />
           Filtros

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useListFilters } from "@/features/workspace/use-list-filters";
+import { cn } from "@/lib/class-names";
 
 export function DataList<T extends { id: string }>({
   items,
@@ -12,6 +13,7 @@ export function DataList<T extends { id: string }>({
   row,
   mobile,
   empty,
+  className,
 }: {
   items: T[];
   caption: string;
@@ -19,6 +21,7 @@ export function DataList<T extends { id: string }>({
   row: (item: T) => ReactNode;
   mobile: (item: T) => ReactNode;
   empty: ReactNode;
+  className?: string;
 }) {
   const filters = useListFilters();
   const requested = Number(filters.get("page")) || 1;
@@ -27,7 +30,7 @@ export function DataList<T extends { id: string }>({
   const visible = items.slice((page - 1) * 20, page * 20);
   if (!items.length) return empty;
   return (
-    <section className="panel" aria-label={caption}>
+    <section className={cn("panel", className)} aria-label={caption}>
       <div className="hidden md:block">
         <table className="w-full table-fixed">
           <caption className="sr-only">{caption}</caption>

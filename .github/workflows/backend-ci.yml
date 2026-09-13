@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "apps/api/**"
+      - "apps/web/**"
       - "packages/**"
       - "nessie-node-sdk/**"
       - "supabase/**"
@@ -16,6 +17,7 @@ on:
       - main
     paths:
       - "apps/api/**"
+      - "apps/web/**"
       - "packages/**"
       - "nessie-node-sdk/**"
       - "supabase/**"
@@ -36,6 +38,25 @@ env:
   PNPM_VERSION: "11.1.3"
 
 jobs:
+  frontend-quality:
+    name: Frontend quality and browser journeys
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify:web
+      - run: pnpm exec playwright install --with-deps chromium
+        working-directory: apps/web
+      - run: pnpm --filter @colchon/web test:e2e --workers=2
+
   backend-quality:
     name: Backend quality
     runs-on: ubuntu-latest

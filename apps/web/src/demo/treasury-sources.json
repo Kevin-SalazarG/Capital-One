@@ -1,0 +1,138 @@
+{
+  "invoices": [
+    {
+      "id": "i-2",
+      "cfdiUuid": "CFDI-ENCINO-i-2",
+      "direction": "receivable",
+      "counterpartyName": "Obra Senda · Estimación 01",
+      "issuerRfc": "AAA010101AAA",
+      "receiverRfc": "BBB010101BBB",
+      "issuedAt": "2026-09-12T12:00:00Z",
+      "dueOn": "2026-09-16",
+      "totalAmount": "32600.00",
+      "outstandingAmount": "32600.00",
+      "currency": "MXN",
+      "paymentStatus": "pending",
+      "metadata": {
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00",
+        "critical": false,
+        "category": "supplier"
+      }
+    },
+    {
+      "id": "i-4",
+      "cfdiUuid": "CFDI-ENCINO-i-4",
+      "direction": "payable",
+      "counterpartyName": "Maderas del Norte · Materiales",
+      "issuerRfc": "AAA010101AAA",
+      "receiverRfc": "BBB010101BBB",
+      "issuedAt": "2026-09-12T12:00:00Z",
+      "dueOn": "2026-09-18",
+      "totalAmount": "46000.00",
+      "outstandingAmount": "46000.00",
+      "currency": "MXN",
+      "paymentStatus": "pending",
+      "metadata": {
+        "earliestDate": null,
+        "latestDate": "2026-10-01",
+        "negotiationCost": "500.00",
+        "critical": false,
+        "category": "supplier"
+      }
+    },
+    {
+      "id": "i-1",
+      "cfdiUuid": "CFDI-ENCINO-i-1",
+      "direction": "receivable",
+      "counterpartyName": "Casa Roble · Estimación 02",
+      "issuerRfc": "AAA010101AAA",
+      "receiverRfc": "BBB010101BBB",
+      "issuedAt": "2026-09-12T12:00:00Z",
+      "dueOn": "2026-09-30",
+      "totalAmount": "65000.00",
+      "outstandingAmount": "65000.00",
+      "currency": "MXN",
+      "paymentStatus": "pending",
+      "metadata": {
+        "earliestDate": "2026-09-23",
+        "latestDate": null,
+        "negotiationCost": "1300.00",
+        "critical": false,
+        "category": "supplier"
+      }
+    },
+    {
+      "id": "i-3",
+      "cfdiUuid": "CFDI-ENCINO-i-3",
+      "direction": "receivable",
+      "counterpartyName": "Grupo Alameda · Estimación 03",
+      "issuerRfc": "AAA010101AAA",
+      "receiverRfc": "BBB010101BBB",
+      "issuedAt": "2026-09-12T12:00:00Z",
+      "dueOn": "2026-10-04",
+      "totalAmount": "55700.00",
+      "outstandingAmount": "55700.00",
+      "currency": "MXN",
+      "paymentStatus": "pending",
+      "metadata": {
+        "earliestDate": "2026-09-24",
+        "latestDate": null,
+        "negotiationCost": "0.00",
+        "critical": false,
+        "category": "supplier"
+      }
+    },
+    {
+      "id": "i-5",
+      "cfdiUuid": "CFDI-ENCINO-i-5",
+      "direction": "payable",
+      "counterpartyName": "Concretos del Valle · Materiales",
+      "issuerRfc": "AAA010101AAA",
+      "receiverRfc": "BBB010101BBB",
+      "issuedAt": "2026-09-12T12:00:00Z",
+      "dueOn": "2026-10-06",
+      "totalAmount": "12000.00",
+      "outstandingAmount": "12000.00",
+      "currency": "MXN",
+      "paymentStatus": "pending",
+      "metadata": {
+        "earliestDate": null,
+        "latestDate": null,
+        "negotiationCost": "0.00",
+        "critical": false,
+        "category": "supplier"
+      }
+    }
+  ],
+  "obligations": [
+    {
+      "id": "tax",
+      "name": "Impuestos",
+      "amount": "28000.00",
+      "currency": "MXN",
+      "frequency": "monthly",
+      "nextDueOn": "2026-09-20",
+      "metadata": { "critical": true, "category": "tax" }
+    },
+    {
+      "id": "rent",
+      "name": "Renta de bodega y patio",
+      "amount": "18000.00",
+      "currency": "MXN",
+      "frequency": "monthly",
+      "nextDueOn": "2026-09-22",
+      "metadata": { "critical": true, "category": "rent" }
+    },
+    {
+      "id": "payroll",
+      "name": "Nómina · cuadrilla y oficina · 12 personas",
+      "amount": "118000.00",
+      "currency": "MXN",
+      "frequency": "monthly",
+      "nextDueOn": "2026-09-25",
+      "metadata": { "critical": true, "category": "payroll" }
+    }
+  ]
+}

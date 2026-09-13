@@ -33,4 +33,8 @@ export class CreateOrganizationDto {
   @IsOptional()
   @Matches(/^\d+(\.\d{1,2})?$/)
   public readonly minimumCashReserve?: string;
+
+  @IsOptional()
+  @Matches(/^\d{1,12}(\.\d{1,2})?$/)
+  public readonly dailyOperatingExpense?: string;
 }

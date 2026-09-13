@@ -3,7 +3,7 @@
 Reviewed on 2026-09-12. The primary source is the [published OpenAPI specification](https://prod.nessieisreal.com/nessie-openapi-spec.yaml), version 1.0.0 / OpenAPI 3.0.3, preserved in `spec/nessie-openapi.yaml`.
 
 Local snapshot SHA-256:
-`0a8e49d1764850a0f85ef3591f385c491f262b89973988f3070db13d1547d8c7`.
+`2a33e85ec72e34b9f4298489a06b10fce492e3f729a96aebc80de05033603dcc`.
 
 The [documentation website](https://prod.nessieisreal.com/docs) configures `https://prod-api.nessieisreal.com` as the production server. The SDK preserves current paths, including singular forms: `/purchase/{id}`, `/withdrawal/{id}`, and `/enterprise/withdrawal/{id}`. Earlier SDKs use plural forms for some of these paths; the SDK does not automatically substitute legacy routes.
 

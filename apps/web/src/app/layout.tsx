@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
-import { Manrope, Newsreader } from "next/font/google";
 import { Providers } from "@/app/providers";
 import "@/app/globals.css";
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: { default: "Colchón — Tu caja, a futuro", template: "%s · Colchón" },
-  description: "Una mirada clara a la liquidez de tu negocio.",
+  title: {
+    default: "Colchón — Anticipa la caja de tu obra",
+    template: "%s · Colchón",
+  },
+  description:
+    "Anticipa faltantes de caja en pequeñas constructoras y recibe un plan de acción antes de poner en riesgo la nómina.",
 };
 
 export default function RootLayout({
@@ -25,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es-MX" className={`${manrope.variable} ${newsreader.variable}`}>
+    <html lang="es-MX">
       <body>
         <Providers>{children}</Providers>
       </body>

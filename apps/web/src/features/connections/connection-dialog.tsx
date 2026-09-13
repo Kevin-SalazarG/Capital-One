@@ -27,7 +27,7 @@ export function ConnectionDialog({
   onOpenChange: (open: boolean) => void;
   initialKind?: "bank" | "cfdi";
 }) {
-  const { organization } = useWorkspace();
+  const { organization, isDemo } = useWorkspace();
   const form = useForm<Values>({
     resolver: zodResolver(connectionFormSchema),
     mode: "onBlur",
@@ -67,7 +67,11 @@ export function ConnectionDialog({
       open={open}
       onOpenChange={onOpenChange}
       title={connection ? "Editar conexión" : "Agregar conexión"}
-      description="No necesitas ingresar claves ni contraseñas."
+      description={
+        isDemo
+          ? "Estás viendo datos de ejemplo. Conecta tu empresa para guardar una fuente."
+          : "No necesitas ingresar claves ni contraseñas."
+      }
       dirty={form.formState.isDirty}
       busy={mutation.isPending}
     >
@@ -76,7 +80,7 @@ export function ConnectionDialog({
         className="space-y-5"
         onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
       >
-        <fieldset disabled={mutation.isPending} className="space-y-5">
+        <fieldset disabled={mutation.isPending || isDemo} className="space-y-5">
           <Field id="connection-kind" label="Fuente">
             <NativeSelect
               id="connection-kind"
@@ -120,7 +124,11 @@ export function ConnectionDialog({
         {mutation.isError && (
           <FieldError message={errorMessage(mutation.error)} />
         )}
-        <Button type="submit" className="w-full" disabled={mutation.isPending}>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isDemo || mutation.isPending}
+        >
           {mutation.isPending && <BusyIcon />}
           {connection ? "Guardar conexión" : "Agregar conexión"}
         </Button>

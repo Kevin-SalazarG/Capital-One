@@ -1,0 +1,5 @@
+import { InvoiceDetailSkeleton } from "@/components/page-skeletons";
+
+export default function Loading() {
+  return <InvoiceDetailSkeleton />;
+}

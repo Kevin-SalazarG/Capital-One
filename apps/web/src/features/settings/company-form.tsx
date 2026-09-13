@@ -130,6 +130,19 @@ export function CompanyForm({
               ))}
             </NativeSelect>
           </Field>
+          <Field
+            id="company-daily-expense"
+            label="Gasto operativo diario"
+            hint="Solo gasto variable: excluye nómina, renta y facturas ya registradas para no contarlos dos veces."
+            error={form.formState.errors.dailyOperatingExpense?.message}
+          >
+            <Input
+              id="company-daily-expense"
+              inputMode="decimal"
+              aria-describedby="company-daily-expense-hint company-daily-expense-error"
+              {...form.register("dailyOperatingExpense")}
+            />
+          </Field>
         </div>
         <details open={!creating} className="border-t pt-5">
           <summary className="cursor-pointer py-1 text-sm font-medium">

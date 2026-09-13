@@ -1,4 +1,5 @@
 import type { JsonValue } from "../types/json-value";
+import type { Database as GeneratedDatabase } from "./supabase.generated";
 
 export type OrganizationRole = "owner" | "admin" | "analyst" | "viewer";
 export type MembershipStatus = "active" | "invited" | "suspended";
@@ -21,10 +22,14 @@ export interface OrganizationRow {
   currency: string;
   time_zone: string;
   minimum_cash_reserve: string;
+  daily_operating_expense?: string;
   created_by: string;
   created_at: string;
   updated_at: string;
 }
+
+export type TreasuryDecisionRow =
+  GeneratedDatabase["public"]["Tables"]["treasury_decisions"]["Row"];
 
 export interface OrganizationMemberRow {
   id: string;
@@ -144,7 +149,7 @@ export interface RecurringObligationRow {
   name: string;
   amount: string;
   currency: string;
-  frequency: "weekly" | "monthly" | "quarterly" | "yearly";
+  frequency: "weekly" | "biweekly" | "monthly" | "quarterly" | "yearly";
   next_due_on: string;
   active: boolean;
   metadata: JsonValue;
@@ -238,6 +243,7 @@ type TableDefinition<Row, Insert, Update> = {
 export interface Database {
   public: {
     Tables: {
+      treasury_decisions: GeneratedDatabase["public"]["Tables"]["treasury_decisions"];
       organizations: TableDefinition<
         OrganizationRow,
         Partial<OrganizationRow> & Pick<OrganizationRow, "name" | "created_by">,

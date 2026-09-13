@@ -201,15 +201,15 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
         </div>
         <div>
           <h2 className="max-w-lg font-editorial text-6xl leading-[1.06] tracking-[-0.035em]">
-            Tu negocio avanza.
+            Tu obra avanza.
             <br />
             Tu caja también
             <br />
             puede anticiparse.
           </h2>
           <p className="mt-7 max-w-xs text-sm leading-7 text-muted-foreground">
-            Conoce tu saldo, anticipa tus pagos y toma la siguiente decisión con
-            claridad.
+            Conoce tu saldo, anticipa el cobro de tus estimaciones y protege la
+            nómina de tu cuadrilla.
           </p>
           <div className="mt-10 max-w-sm rounded-xl border border-white/70 bg-white/65 p-6">
             <div className="flex items-center gap-2 text-sm font-semibold">
@@ -236,7 +236,7 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
           </div>
         </div>
         <p className="text-xs text-primary/65">
-          Hecho para pequeñas empresas con grandes planes.
+          Hecho para constructoras pequeñas que no pueden improvisar la nómina.
         </p>
       </aside>
     </main>

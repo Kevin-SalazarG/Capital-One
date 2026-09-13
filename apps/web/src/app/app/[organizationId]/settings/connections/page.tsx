@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import { LoadingView } from "@/components/feedback";
+import { ConnectionsSkeleton } from "@/components/page-skeletons";
 import { ConnectionsPage } from "@/features/connections/connections-page";
 
 export const metadata = { title: "Conexiones" };
 export default function Page() {
   return (
-    <Suspense fallback={<LoadingView />}>
+    <Suspense fallback={<ConnectionsSkeleton />}>
       <ConnectionsPage />
     </Suspense>
   );

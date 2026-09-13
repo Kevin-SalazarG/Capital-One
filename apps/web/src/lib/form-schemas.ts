@@ -31,6 +31,7 @@ export const companyFormSchema = z.object({
       }
     }, "Selecciona una zona horaria válida."),
   minimumCashReserve: amountInput,
+  dailyOperatingExpense: amountInput.optional(),
 });
 export type CompanyFormValues = z.infer<typeof companyFormSchema>;
 export function companyPayload(values: CompanyFormValues) {
@@ -60,7 +61,9 @@ export const memberFormSchema = z.object({
 export const obligationFormSchema = z.object({
   name: z.string().trim().min(2, "Escribe un nombre.").max(120),
   amount: amountInput,
-  frequency: z.enum(["weekly", "monthly", "quarterly", "yearly"]),
+  frequency: z.enum(["weekly", "biweekly", "monthly", "quarterly", "yearly"]),
+  category: z.enum(["payroll", "tax", "rent", "supplier", "other"]).optional(),
+  critical: z.boolean().optional(),
   nextDueOn: z.iso.date("Elige una fecha válida."),
 });
 const rfcInput = z.string().regex(/^[A-Z0-9]{12,13}$/);
