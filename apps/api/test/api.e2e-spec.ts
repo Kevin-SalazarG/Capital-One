@@ -18,7 +18,7 @@ import request from "supertest";
 let app: INestApplication | undefined;
 
 before(async () => {
-  const { AppModule } = await import("../src/app.module");
+  const { AppModule } = await import("../src/app.module.js");
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
