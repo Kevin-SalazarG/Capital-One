@@ -15,11 +15,10 @@ import type { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 
-import { AppModule } from "../src/app.module";
-
 let app: INestApplication | undefined;
 
 before(async () => {
+  const { AppModule } = await import("../src/app.module");
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
