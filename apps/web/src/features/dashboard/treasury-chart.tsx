@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  Area,
   CartesianGrid,
   ComposedChart,
   Line,
@@ -30,7 +29,7 @@ export function TreasuryChart({
   const [table, setTable] = useState(false);
   const reducedMotion = useReducedMotion();
   const currency = data.input.currency;
-  const baselineLabel = cashOffset > 0 ? "Con pago registrado" : "Sin cambios";
+  const baselineLabel = cashOffset > 0 ? "Pago registrado" : "Sin acciones";
   const rows = data.baseline.points.map((point, index) => ({
     date: point.date,
     baseline: Number(point.closing) + cashOffset,
@@ -45,7 +44,7 @@ export function TreasuryChart({
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
           <span className="flex items-center gap-2">
             <span
-              className="w-5 border-t-2 border-dashed border-chart-1"
+              className="w-5 border-t-[3px] border-primary"
               aria-hidden="true"
             />
             {baselineLabel}
@@ -53,7 +52,7 @@ export function TreasuryChart({
           {projected && (
             <span className="flex items-center gap-2">
               <span
-                className="w-5 border-t-[3px] border-primary"
+                className="w-5 border-t-[3px] border-success"
                 aria-hidden="true"
               />
               Con el plan
@@ -182,37 +181,35 @@ export function TreasuryChart({
                 />
               )}
               {projected && (
-                <Area
+                <Line
                   type="linear"
                   dataKey="plan"
-                  stroke="var(--primary)"
-                  strokeWidth={3}
-                  fill="var(--secondary)"
-                  fillOpacity={0.65}
+                  stroke="var(--success)"
+                  strokeWidth={2.75}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  dot={false}
                   isAnimationActive={!reducedMotion}
                   animationDuration={reducedMotion ? 0 : 450}
-                  activeDot={{ r: 5 }}
+                  activeDot={false}
                 />
               )}
               <Line
                 type="linear"
                 dataKey="baseline"
-                stroke="var(--chart-1)"
-                strokeWidth={2.5}
-                strokeDasharray="5 5"
+                stroke="var(--primary)"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 dot={false}
                 isAnimationActive={!reducedMotion}
                 animationDuration={reducedMotion ? 0 : 450}
-                activeDot={{ r: 5 }}
+                activeDot={false}
               />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
       )}
-      <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-        Saldos al cierre en {currency}. La línea de reserva es un objetivo de
-        seguridad, no un pago adicional.
-      </p>
     </div>
   );
 }

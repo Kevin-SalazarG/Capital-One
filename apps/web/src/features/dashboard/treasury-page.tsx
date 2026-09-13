@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -410,13 +410,11 @@ function TreasuryContent({ data }: { data: Treasury }) {
       <div className="dashboard-workbench">
         <header className="dashboard-workbench-header">
           <div className="min-w-0">
-            <p className="dashboard-panel-kicker">Centro de decisiones</p>
             <h2 id="workbench-heading" className="dashboard-workbench-title">
-              Mira el riesgo. Elige qué conversar.
+              Mira el riesgo y decide
             </h2>
             <p className="dashboard-panel-description">
-              Primero identifica cuándo se aprieta la caja; después compara las
-              conversaciones que pueden proteger tu obra.
+              Saldo diario y opciones para cuidarlo.
             </p>
           </div>
           <span className="dashboard-period shrink-0">
@@ -427,17 +425,16 @@ function TreasuryContent({ data }: { data: Treasury }) {
           className="dashboard-chart-panel"
           aria-labelledby="cash-heading"
         >
-          <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
+          <div className="dashboard-panel-title-row mb-6">
             <div>
-              <p className="dashboard-panel-kicker">Mapa de caja</p>
               <h3 id="cash-heading" className="dashboard-panel-heading">
                 El camino de tu caja
               </h3>
-              <p className="dashboard-panel-description">
-                Avances que entran, nómina y materiales que salen, y cuándo
-                actuar.
-              </p>
             </div>
+            <InfoHint
+              label="Cómo leer el mapa de caja"
+              text="La línea azul muestra tu saldo sin acciones. Al elegir un plan, la línea punteada muestra ese escenario. La línea naranja marca tu reserva."
+            />
           </div>
           <TreasuryChart
             data={model}
@@ -454,19 +451,19 @@ function TreasuryContent({ data }: { data: Treasury }) {
             <p className="text-sm leading-relaxed">
               {riskPoint ? (
                 <>
-                  El {formatDate(riskPoint.date)} terminas con{" "}
+                  El {formatDate(riskPoint.date)}:{" "}
                   <strong>
                     {money(String(adjustedRiskPointClosing ?? 0))}
                   </strong>
-                  , debajo de tu reserva.{" "}
-                  {receivedAdvance > 0
-                    ? "El monto incluye el pago registrado en esta vista; sincroniza el banco para confirmarlo."
-                    : Number(riskPoint.closing) >= 0
-                      ? "Eso reduce tu margen, pero no implica un impago."
-                      : "Ese día existe un faltante de efectivo. El aviso llega antes para que la pyme decida qué hacer."}
+                  .{" "}
+                  {Number(adjustedRiskPointClosing ?? 0) < 0
+                    ? "Hay un faltante de efectivo."
+                    : "Queda debajo de tu reserva."}{" "}
+                  {receivedAdvance > 0 &&
+                    "El pago registrado solo cambia esta vista."}
                 </>
               ) : (
-                "No aparece un faltante en este escenario. Los cobros siguen siendo supuestos hasta recibirlos."
+                "No hay faltante en este escenario."
               )}
             </p>
           </div>
@@ -530,9 +527,6 @@ function TreasuryContent({ data }: { data: Treasury }) {
                 : `${model.plans.length} opciones`}
             </span>
           </div>
-          <p className="mb-5 max-w-[32ch] text-sm leading-6 text-muted-foreground">
-            Ordenadas por cuánto pueden proteger el saldo de tu obra.
-          </p>
           <fieldset
             className="dashboard-plan-list"
             aria-label="Comparar planes"
@@ -641,38 +635,39 @@ function TreasuryContent({ data }: { data: Treasury }) {
           >
             <header className="dashboard-annual-header">
               <div className="min-w-0">
-                <p className="dashboard-panel-kicker">Tendencia anual</p>
-                <h2
-                  id="annual-history-heading"
-                  className="dashboard-annual-title"
-                >
-                  ¿Cómo va tu caja este año?
-                </h2>
+                <div className="dashboard-annual-title-row">
+                  <h2
+                    id="annual-history-heading"
+                    className="dashboard-annual-title"
+                  >
+                    ¿Vas mejor que el año pasado?
+                  </h2>
+                  <InfoHint
+                    label="Cómo leer la comparación anual"
+                    text="Compara tu saldo al cierre de cada mes con el mismo mes del año pasado."
+                  />
+                </div>
                 <p className="dashboard-panel-description">
-                  Compara tu saldo mes a mes con el mismo corte del año pasado.
+                  Compara tu saldo al mismo corte, mes a mes.
                 </p>
               </div>
               <span className="dashboard-period shrink-0">
-                Comparando con {annualHistory.previousYear}
+                vs. {annualHistory.previousYear}
               </span>
             </header>
             <div className="dashboard-annual-body">
               <div className="dashboard-annual-summary">
                 <div className="dashboard-annual-summary-item">
-                  <p className="dashboard-annual-summary-label">
-                    Saldo al corte
-                  </p>
+                  <p className="dashboard-annual-summary-label">Saldo actual</p>
                   <p className="dashboard-annual-summary-value">
                     {money(annualHistory.summary.currentBalance)}
                   </p>
                   <p className="dashboard-annual-summary-note">
-                    {formatDate(annualHistory.asOf)} · corte parcial
+                    Corte: {formatDate(annualHistory.asOf)}
                   </p>
                 </div>
                 <div className="dashboard-annual-summary-item">
-                  <p className="dashboard-annual-summary-label">
-                    Frente al año pasado
-                  </p>
+                  <p className="dashboard-annual-summary-label">Diferencia</p>
                   <p
                     className={cn(
                       "dashboard-annual-summary-value",
@@ -682,22 +677,30 @@ function TreasuryContent({ data }: { data: Treasury }) {
                         "text-muted-foreground",
                     )}
                   >
+                    {annualHistory.summary.direction === "positive" && "+"}
                     {money(annualHistory.summary.difference)}
                   </p>
                   <p className="dashboard-annual-summary-note">
                     {annualHistory.summary.direction === "positive"
-                      ? "Más saldo disponible al corte"
+                      ? `Más que en ${annualHistory.previousYear}`
                       : annualHistory.summary.direction === "negative"
-                        ? "Menos saldo disponible al corte"
-                        : "Mismo saldo al corte"}
+                        ? `Menos que en ${annualHistory.previousYear}`
+                        : "Igual que el año pasado"}
                   </p>
                 </div>
               </div>
               <AnnualCashChart data={annualHistory} />
-              <p className="dashboard-annual-source-note">
+              <p
+                className="dashboard-annual-source-note"
+                title={
+                  annualHistory.source === "demo"
+                    ? "Los datos de esta demo son sintéticos."
+                    : "La comparación usa movimientos bancarios sincronizados."
+                }
+              >
                 {annualHistory.source === "demo"
-                  ? "Datos históricos sintéticos para esta demo."
-                  : "Comparación basada en movimientos bancarios sincronizados."}
+                  ? "Datos de ejemplo"
+                  : "Movimientos sincronizados"}
               </p>
             </div>
           </section>
@@ -1041,5 +1044,26 @@ function Metric({
       <p className="dashboard-metric-value">{value}</p>
       <p className="dashboard-metric-note">{note}</p>
     </div>
+  );
+}
+
+function InfoHint({ label, text }: { label: string; text: string }) {
+  const tooltipId = useId();
+
+  return (
+    <span className="dashboard-info-hint">
+      <button
+        type="button"
+        className="dashboard-info-hint-button"
+        aria-label={label}
+        aria-describedby={tooltipId}
+        title={text}
+      >
+        <Info aria-hidden="true" className="size-4" />
+      </button>
+      <span id={tooltipId} role="tooltip" className="dashboard-info-tooltip">
+        {text}
+      </span>
+    </span>
   );
 }

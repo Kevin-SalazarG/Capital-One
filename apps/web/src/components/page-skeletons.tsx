@@ -215,18 +215,38 @@ export function DashboardSkeleton() {
         </div>
       </section>
       <div className="dashboard-workbench">
+        <header className="dashboard-workbench-header">
+          <div className="min-w-0 space-y-2">
+            <Skeleton className="h-8 w-56 max-w-full rounded-xl" />
+            <Skeleton className="h-4 w-64 max-w-full" />
+          </div>
+          <Skeleton className="h-9 w-28 rounded-full" />
+        </header>
         <section className="dashboard-chart-panel space-y-5">
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-8 w-56" />
-          <Skeleton className="h-4 w-72 max-w-full" />
+          <div className="dashboard-panel-title-row">
+            <Skeleton className="h-8 w-56 max-w-full rounded-xl" />
+            <Skeleton className="size-7 rounded-full" />
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex gap-4">
+              <Skeleton className="h-3 w-20" />
+              <Skeleton className="h-3 w-20" />
+              <Skeleton className="h-3 w-16" />
+            </div>
+            <Skeleton className="h-9 w-24 rounded-full" />
+          </div>
           <Skeleton className="h-[320px] w-full rounded-2xl" />
         </section>
-        <section className="dashboard-plans-panel space-y-3">
-          <Skeleton className="h-8 w-64 max-w-full" />
-          <Skeleton className="h-12 w-full" />
-          {planKeys.map((planKey) => (
-            <Skeleton key={planKey} className="h-36 w-full rounded-2xl" />
-          ))}
+        <section className="dashboard-plans-panel">
+          <header className="dashboard-plans-header">
+            <Skeleton className="h-8 w-52 max-w-full rounded-xl" />
+            <Skeleton className="h-3 w-16" />
+          </header>
+          <div className="dashboard-plan-list">
+            {planKeys.map((planKey) => (
+              <Skeleton key={planKey} className="h-36 w-full rounded-2xl" />
+            ))}
+          </div>
         </section>
       </div>
       <AnnualHistorySkeleton nested />
@@ -246,7 +266,6 @@ export function AnnualChartSkeleton() {
         <Skeleton className="h-11 w-28 rounded-xl" />
       </div>
       <Skeleton className="h-[300px] w-full rounded-2xl" />
-      <Skeleton className="h-3 w-80 max-w-full" />
     </div>
   );
 }
@@ -269,8 +288,10 @@ export function AnnualHistorySkeleton({
     >
       <header className="dashboard-annual-header">
         <div className="min-w-0 space-y-3">
-          <Skeleton className="h-3 w-28" />
-          <Skeleton className="h-8 w-72 max-w-full rounded-xl" />
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-8 w-80 max-w-full rounded-xl" />
+            <Skeleton className="size-7 rounded-full" />
+          </div>
           <Skeleton className="h-4 w-[34rem] max-w-full" />
         </div>
         <Skeleton className="h-9 w-28 rounded-full" />
@@ -289,6 +310,7 @@ export function AnnualHistorySkeleton({
           </div>
         </div>
         <AnnualChartSkeleton />
+        <Skeleton className="mt-3 h-3 w-28" />
       </div>
     </section>
   );

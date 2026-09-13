@@ -4093,24 +4093,47 @@
     border-color: color-mix(in srgb, var(--border) 82%, transparent);
   }
   .dashboard-workbench-header {
-    @apply flex min-w-0 flex-col gap-4 border-b px-5 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-7 sm:py-6 xl:col-span-2;
+    @apply flex min-w-0 flex-col gap-4 border-b px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-6 xl:col-span-2;
     border-color: color-mix(in srgb, var(--border) 78%, transparent);
     background: color-mix(in srgb, var(--card) 92%, var(--muted));
   }
   .dashboard-workbench-title {
-    @apply mt-1 text-2xl font-semibold tracking-[-0.04em];
+    @apply text-2xl font-semibold tracking-[-0.04em];
+  }
+  .dashboard-panel-title-row,
+  .dashboard-annual-title-row {
+    @apply flex min-w-0 items-start gap-3;
+  }
+  .dashboard-panel-title-row > div,
+  .dashboard-annual-title-row > h2 {
+    @apply min-w-0;
+  }
+  .dashboard-info-hint {
+    @apply relative inline-flex shrink-0;
+  }
+  .dashboard-info-hint-button {
+    @apply inline-flex size-7 items-center justify-center rounded-full border bg-background text-muted-foreground transition-colors duration-150 hover:border-primary/35 hover:bg-secondary hover:text-primary;
+    border-color: color-mix(in srgb, var(--border) 76%, transparent);
+  }
+  .dashboard-info-tooltip {
+    @apply pointer-events-none invisible absolute left-0 top-[calc(100%+0.5rem)] z-30 w-72 max-w-[calc(100vw-3rem)] rounded-xl border bg-card p-3 text-xs font-normal leading-5 text-foreground opacity-0 shadow-[0_12px_28px_rgb(20_42_58_/_0.14)] transition-opacity duration-150;
+    border-color: color-mix(in srgb, var(--border) 80%, transparent);
+  }
+  .dashboard-info-hint:hover .dashboard-info-tooltip,
+  .dashboard-info-hint:focus-within .dashboard-info-tooltip {
+    @apply visible opacity-100;
   }
   .dashboard-annual-card {
     @apply min-w-0 overflow-hidden rounded-[26px] border bg-card shadow-[0_14px_42px_rgb(20_42_58_/_0.05)];
     border-color: color-mix(in srgb, var(--border) 82%, transparent);
   }
   .dashboard-annual-header {
-    @apply flex min-w-0 flex-col gap-4 border-b px-5 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-7 sm:py-6;
+    @apply flex min-w-0 flex-col gap-4 border-b px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-6;
     border-color: color-mix(in srgb, var(--border) 78%, transparent);
     background: color-mix(in srgb, var(--card) 92%, var(--muted));
   }
   .dashboard-annual-title {
-    @apply mt-1 text-2xl font-semibold tracking-[-0.04em];
+    @apply text-2xl font-semibold tracking-[-0.04em];
   }
   .dashboard-annual-body {
     @apply min-w-0 p-5 sm:p-7;
@@ -4145,8 +4168,7 @@
     @apply h-[300px] min-w-0 w-full sm:h-[340px];
   }
   .dashboard-annual-source-note {
-    @apply mt-3 border-t pt-3 text-xs leading-relaxed text-muted-foreground;
-    border-color: color-mix(in srgb, var(--border) 74%, transparent);
+    @apply mt-3 text-xs leading-relaxed text-muted-foreground;
   }
   .dashboard-panel {
     @apply min-w-0 rounded-[22px] border bg-card shadow-[0_10px_34px_rgb(20_42_58_/_0.04)];

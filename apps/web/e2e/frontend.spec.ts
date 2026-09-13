@@ -103,7 +103,7 @@ test("owner can prepare a partial advance request and see the demo payment impac
     page.getByRole("region", { name: "Resumen de caja con pago registrado" }),
   ).toContainText("-$7,000.00");
   await expect(
-    page.getByText("Con pago registrado", { exact: true }),
+    page.getByText("Pago registrado", { exact: true }),
   ).toBeVisible();
 });
 
