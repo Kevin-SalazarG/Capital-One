@@ -226,18 +226,18 @@ reescritura del motor de pronóstico ni de la interfaz.
 
 ## Qué sí y qué no priorizar
 
-| Iniciativa | Prioridad | Recomendación |
-|---|---:|---|
-| Importación manual XML | P0 | Mantener como fallback y para onboarding |
-| Facturapi para descarga masiva | P0 | Implementar después de validar el MVP |
-| Complementos de pago y cancelaciones | P0 | Necesarios para que la caja sea confiable |
-| Sincronización automática incremental | P0 | Más valor que un botón de carga única |
-| WhatsApp al responsable de caja | P1 | Empezar con alertas internas |
-| WhatsApp al cliente | P1/P2 | Primero borrador y aprobación humana |
-| SAT Web Service directo | P2 | Solo por costo, escala o independencia |
-| Emisión de CFDI desde Colchón | P2 | Fuera del problema central actual |
-| Cobro automático, crédito o transferencias | Fuera de alcance | No mezclar con el motor de decisión |
-| Machine learning para pronóstico | P2 | Primero validar datos reales y reglas explicables |
+| Iniciativa                                 |        Prioridad | Recomendación                                     |
+| ------------------------------------------ | ---------------: | ------------------------------------------------- |
+| Importación manual XML                     |               P0 | Mantener como fallback y para onboarding          |
+| Facturapi para descarga masiva             |               P0 | Implementar después de validar el MVP             |
+| Complementos de pago y cancelaciones       |               P0 | Necesarios para que la caja sea confiable         |
+| Sincronización automática incremental      |               P0 | Más valor que un botón de carga única             |
+| WhatsApp al responsable de caja            |               P1 | Empezar con alertas internas                      |
+| WhatsApp al cliente                        |            P1/P2 | Primero borrador y aprobación humana              |
+| SAT Web Service directo                    |               P2 | Solo por costo, escala o independencia            |
+| Emisión de CFDI desde Colchón              |               P2 | Fuera del problema central actual                 |
+| Cobro automático, crédito o transferencias | Fuera de alcance | No mezclar con el motor de decisión               |
+| Machine learning para pronóstico           |               P2 | Primero validar datos reales y reglas explicables |
 
 ## Cambios técnicos propuestos en este repositorio
 
