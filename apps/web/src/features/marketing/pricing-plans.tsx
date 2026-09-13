@@ -107,6 +107,7 @@ export function PricingPlans() {
                 data-featured={plan.featured ? "true" : undefined}
                 initial={reducedMotion ? false : { opacity: 0, y: 24 }}
                 whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+                whileHover={reducedMotion ? undefined : { y: -5 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: 0.55,

@@ -1,4 +1,5 @@
 import type { Organization } from "@/lib/api/contracts";
+import treasuryHistory from "./treasury-history.json";
 import treasurySnapshots from "./treasury-snapshots.json";
 import treasurySources from "./treasury-sources.json";
 
@@ -37,6 +38,7 @@ export const DEMO_ORGANIZATION: Organization = {
 };
 
 export const DEMO_DATA: Record<string, unknown> = {
+  ...treasuryHistory,
   ...treasurySnapshots,
   ...treasurySources,
   "bank/accounts": [

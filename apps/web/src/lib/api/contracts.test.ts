@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { DEMO_DATA } from "@/demo/fixtures";
-import { treasurySchema } from "@colchon/treasury/treasury-contract";
+import {
+  annualHistorySchema,
+  treasurySchema,
+} from "@colchon/treasury/treasury-contract";
 import {
   accountSchema,
   connectionSchema,
@@ -13,8 +16,13 @@ import {
 describe("demo contracts", () => {
   it("validates all serialized treasury scenarios", () => {
     for (const [key, value] of Object.entries(DEMO_DATA))
-      if (key.startsWith("treasury"))
+      if (key === "treasury" || key.startsWith("treasury?"))
         expect(treasurySchema.safeParse(value).success).toBe(true);
+  });
+  it("validates the annual history fixture", () => {
+    expect(
+      annualHistorySchema.safeParse(DEMO_DATA["treasury-history"]).success,
+    ).toBe(true);
   });
   it("validates every operational fixture", () => {
     expect(

@@ -200,17 +200,20 @@ function Reveal({
   reducedMotion,
   className,
   delay = 0,
+  hoverY,
 }: {
   children: ReactNode;
   reducedMotion: boolean | null;
   className?: string;
   delay?: number;
+  hoverY?: number;
 }) {
   return (
     <motion.div
       className={className}
       initial={reducedMotion ? false : { opacity: 0, y: 20 }}
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      whileHover={hoverY && !reducedMotion ? { y: hoverY } : undefined}
       viewport={{ once: true, amount: 0.18 }}
       transition={{
         duration: 0.55,
@@ -277,6 +280,10 @@ function CashPreview({
   const selectedPoint = geometry.points[activePoint] ?? firstPoint;
   const selectedDate =
     scenario.dates[activePoint] ?? scenario.dates[0] ?? "Hoy";
+  const selectScenario = (nextScenario: Scenario) => {
+    setActivePoint(nextScenario.riskIndex > -1 ? nextScenario.riskIndex : 3);
+    onSelectScenario(nextScenario.id);
+  };
 
   return (
     <div className="landing-console">
@@ -384,6 +391,8 @@ function CashPreview({
                     top: `${(point.y / 250) * 100}%`,
                   }}
                   onClick={() => setActivePoint(index)}
+                  onMouseEnter={() => setActivePoint(index)}
+                  onFocus={() => setActivePoint(index)}
                   aria-label={`${date}: ${formatBalance(point.value * 1000)}`}
                   aria-pressed={isSelected}
                 >
@@ -427,10 +436,9 @@ function CashPreview({
               role="tab"
               aria-selected={scenario.id === item.id}
               className={scenario.id === item.id ? "is-active" : ""}
-              onClick={() => {
-                setActivePoint(item.riskIndex > -1 ? item.riskIndex : 3);
-                onSelectScenario(item.id);
-              }}
+              onClick={() => selectScenario(item)}
+              onMouseEnter={() => selectScenario(item)}
+              onFocus={() => selectScenario(item)}
             >
               <span className="landing-switcher-dot" aria-hidden="true" />
               {item.label}
@@ -584,6 +592,7 @@ export function LandingPage() {
                   key={block.label}
                   reducedMotion={reducedMotion}
                   delay={index * 0.08}
+                  hoverY={-6}
                   className={`landing-value-block landing-value-block-${index + 1}`}
                 >
                   <div className="landing-value-topline">
@@ -692,6 +701,8 @@ export function LandingPage() {
                     aria-controls={`process-panel-${step.number}`}
                     className={`landing-process-tab ${isActive ? "is-active" : ""}`}
                     onClick={() => setActiveStep(index)}
+                    onMouseEnter={() => setActiveStep(index)}
+                    onFocus={() => setActiveStep(index)}
                   >
                     <span className="landing-process-number">
                       {step.number}
@@ -713,6 +724,7 @@ export function LandingPage() {
               className="landing-process-panel"
               initial={reducedMotion ? false : { opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}
+              whileHover={reducedMotion ? undefined : { y: -4 }}
               transition={{ type: "spring", bounce: 0, duration: 0.42 }}
             >
               <div className="landing-process-panel-icon">
@@ -743,6 +755,7 @@ export function LandingPage() {
         <div className="landing-container landing-audience-grid">
           <Reveal
             reducedMotion={reducedMotion}
+            hoverY={-5}
             className="landing-audience-card"
           >
             <div className="landing-audience-card-topline">
@@ -770,7 +783,11 @@ export function LandingPage() {
             </div>
           </Reveal>
 
-          <Reveal reducedMotion={reducedMotion} className="landing-quote-card">
+          <Reveal
+            reducedMotion={reducedMotion}
+            hoverY={-6}
+            className="landing-quote-card"
+          >
             <Sparkles aria-hidden="true" />
             <blockquote>
               “No necesito otra gráfica. Necesito saber qué pago tengo que

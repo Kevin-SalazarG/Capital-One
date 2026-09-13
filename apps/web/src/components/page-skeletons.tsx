@@ -229,7 +229,68 @@ export function DashboardSkeleton() {
           ))}
         </section>
       </div>
+      <AnnualHistorySkeleton nested />
     </LoadingFrame>
+  );
+}
+
+export function AnnualChartSkeleton() {
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-wrap gap-4">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-20" />
+        </div>
+        <Skeleton className="h-11 w-28 rounded-xl" />
+      </div>
+      <Skeleton className="h-[300px] w-full rounded-2xl" />
+      <Skeleton className="h-3 w-80 max-w-full" />
+    </div>
+  );
+}
+
+export function AnnualHistorySkeleton({
+  nested = false,
+}: {
+  nested?: boolean;
+}) {
+  return (
+    <section
+      className="dashboard-annual-card"
+      {...(nested
+        ? {}
+        : {
+            "aria-label": "Cargando tendencia anual",
+            "aria-busy": true,
+            role: "status",
+          })}
+    >
+      <header className="dashboard-annual-header">
+        <div className="min-w-0 space-y-3">
+          <Skeleton className="h-3 w-28" />
+          <Skeleton className="h-8 w-72 max-w-full rounded-xl" />
+          <Skeleton className="h-4 w-[34rem] max-w-full" />
+        </div>
+        <Skeleton className="h-9 w-28 rounded-full" />
+      </header>
+      <div className="dashboard-annual-body">
+        <div className="dashboard-annual-summary">
+          <div className="dashboard-annual-summary-item">
+            <Skeleton className="h-3 w-28" />
+            <Skeleton className="mt-3 h-8 w-40" />
+            <Skeleton className="mt-2 h-3 w-24" />
+          </div>
+          <div className="dashboard-annual-summary-item">
+            <Skeleton className="h-3 w-36" />
+            <Skeleton className="mt-3 h-8 w-32" />
+            <Skeleton className="mt-2 h-3 w-28" />
+          </div>
+        </div>
+        <AnnualChartSkeleton />
+      </div>
+    </section>
   );
 }
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  annualHistorySchema,
   decisionSchema,
   treasurySchema,
   type Treasury,
@@ -34,7 +35,11 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BusyIcon, EmptyView, ErrorView } from "@/components/feedback";
-import { DashboardSkeleton } from "@/components/page-skeletons";
+import {
+  AnnualChartSkeleton,
+  DashboardSkeleton,
+  AnnualHistorySkeleton,
+} from "@/components/page-skeletons";
 import { useResource, useWorkspace } from "@/features/workspace/workspace";
 import { apiRequest } from "@/lib/api/client";
 import { ApiError, errorMessage } from "@/lib/api/errors";
@@ -52,6 +57,14 @@ const TreasuryChart = dynamic(
   {
     ssr: false,
     loading: () => <Skeleton className="h-[425px] w-full rounded-xl" />,
+  },
+);
+
+const AnnualCashChart = dynamic(
+  () => import("./annual-cash-chart").then((module) => module.AnnualCashChart),
+  {
+    ssr: false,
+    loading: () => <AnnualChartSkeleton />,
   },
 );
 
@@ -131,7 +144,13 @@ function TreasuryContent({ data }: { data: Treasury }) {
     treasurySchema,
     Boolean(stressId),
   );
+  const annualHistoryQuery = useResource(
+    "treasury-history",
+    annualHistorySchema,
+    isDemo,
+  );
   const model = stressId && preview.data ? preview.data : data;
+  const annualHistory = annualHistoryQuery.data ?? null;
   const plan = model.plans.find((item) => item.id === selectedId) ?? null;
   const decision = isDemo ? localDecision : data.decision;
   const stale = decision && decision.inputHash !== data.inputHash;
@@ -609,6 +628,81 @@ function TreasuryContent({ data }: { data: Treasury }) {
           )}
         </section>
       </div>
+
+      {isDemo && annualHistoryQuery.isPending ? (
+        <AnnualHistorySkeleton />
+      ) : (
+        annualHistory && (
+          <section
+            className="dashboard-annual-card"
+            aria-labelledby="annual-history-heading"
+          >
+            <header className="dashboard-annual-header">
+              <div className="min-w-0">
+                <p className="dashboard-panel-kicker">Tendencia anual</p>
+                <h2
+                  id="annual-history-heading"
+                  className="dashboard-annual-title"
+                >
+                  Así va tu caja este año.
+                </h2>
+                <p className="dashboard-panel-description">
+                  Compara el saldo de enero a{" "}
+                  {formatDate(annualHistory.asOf, { month: "long" })} con el
+                  mismo periodo de {annualHistory.previousYear}.
+                </p>
+              </div>
+              <span className="dashboard-period shrink-0">
+                {annualHistory.currentYear} vs {annualHistory.previousYear}
+              </span>
+            </header>
+            <div className="dashboard-annual-body">
+              <div className="dashboard-annual-summary">
+                <div className="dashboard-annual-summary-item">
+                  <p className="dashboard-annual-summary-label">
+                    Saldo al corte · {annualHistory.currentYear}
+                  </p>
+                  <p className="dashboard-annual-summary-value">
+                    {money(annualHistory.summary.currentBalance)}
+                  </p>
+                  <p className="dashboard-annual-summary-note">
+                    {formatDate(annualHistory.asOf)} · corte parcial
+                  </p>
+                </div>
+                <div className="dashboard-annual-summary-item">
+                  <p className="dashboard-annual-summary-label">
+                    Diferencia vs. {annualHistory.previousYear}
+                  </p>
+                  <p
+                    className={cn(
+                      "dashboard-annual-summary-value",
+                      annualHistory.summary.direction === "negative" &&
+                        "text-destructive",
+                      annualHistory.summary.direction === "flat" &&
+                        "text-muted-foreground",
+                    )}
+                  >
+                    {money(annualHistory.summary.difference)}
+                  </p>
+                  <p className="dashboard-annual-summary-note">
+                    {annualHistory.summary.direction === "positive"
+                      ? "Más saldo disponible al corte"
+                      : annualHistory.summary.direction === "negative"
+                        ? "Menos saldo disponible al corte"
+                        : "Mismo saldo al corte"}
+                  </p>
+                </div>
+              </div>
+              <AnnualCashChart data={annualHistory} />
+              <p className="dashboard-annual-source-note">
+                {annualHistory.source === "demo"
+                  ? "Datos históricos sintéticos para esta demo."
+                  : "Comparación basada en movimientos bancarios sincronizados."}
+              </p>
+            </div>
+          </section>
+        )
+      )}
 
       {plan && (
         <section

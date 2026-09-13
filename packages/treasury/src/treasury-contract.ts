@@ -93,3 +93,26 @@ export type Treasury = z.infer<typeof treasurySchema>;
 export type TreasuryPlan = z.infer<typeof planSchema>;
 export type TreasuryDecision = z.infer<typeof decisionSchema>;
 export type Projection = z.infer<typeof projectionSchema>;
+
+const monthSchema = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/);
+export const annualHistoryPointSchema = z.object({
+  month: monthSchema,
+  currentBalance: money,
+  previousBalance: money.nullable(),
+});
+export const annualHistorySchema = z.object({
+  asOf: daySchema,
+  currentYear: z.number().int().min(2000).max(9999),
+  previousYear: z.number().int().min(2000).max(9999),
+  currency: z.string().regex(/^[A-Z]{3}$/),
+  reserve: positiveMoney,
+  source: z.enum(["demo", "bank_transactions"]),
+  points: z.array(annualHistoryPointSchema).min(1).max(12),
+  summary: z.object({
+    currentBalance: money,
+    previousBalance: money.nullable(),
+    difference: money,
+    direction: z.enum(["positive", "negative", "flat"]),
+  }),
+});
+export type AnnualHistory = z.infer<typeof annualHistorySchema>;

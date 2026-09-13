@@ -67,17 +67,20 @@ function SectionReveal({
   className,
   delay = 0,
   reducedMotion,
+  hoverY,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
   reducedMotion: boolean | null;
+  hoverY?: number;
 }) {
   return (
     <motion.div
       className={className}
       initial={reducedMotion ? false : { opacity: 0, y: 24 }}
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      whileHover={hoverY && !reducedMotion ? { y: hoverY } : undefined}
       viewport={{ once: true, amount: 0.16 }}
       transition={{
         duration: 0.6,
@@ -434,6 +437,7 @@ export function SystemPreview() {
         <SectionReveal
           reducedMotion={reducedMotion}
           delay={0.08}
+          hoverY={-4}
           className="landing-system-browser"
         >
           <aside
@@ -461,6 +465,8 @@ export function SystemPreview() {
                     key={module.id}
                     className={`landing-system-rail-link ${isActive ? "is-active" : ""}`}
                     onClick={() => setActiveId(module.id)}
+                    onMouseEnter={() => setActiveId(module.id)}
+                    onFocus={() => setActiveId(module.id)}
                     role="tab"
                     aria-selected={isActive}
                     aria-controls="system-preview-panel"
