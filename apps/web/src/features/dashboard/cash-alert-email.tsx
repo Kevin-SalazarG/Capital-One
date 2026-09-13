@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { useWorkspace } from "@/features/workspace/workspace";
 import { apiRequest } from "@/lib/api/client";
 import { emailDeliverySchema } from "@/lib/api/contracts";
+import { cn } from "@/lib/class-names";
 import { errorMessage } from "@/lib/api/errors";
 import { formatDate, formatMoney } from "@/lib/formatters";
 
@@ -49,6 +50,13 @@ export function CashAlertEmail({
   const protectedPayment =
     data.criticalEvents.find((event) => event.category === "payroll") ??
     data.criticalEvents[0];
+  const protectedPaymentPoint = protectedPayment
+    ? data.baseline.points.find((point) => point.date === protectedPayment.date)
+    : null;
+  const protectedPaymentTitle =
+    protectedPayment?.category === "payroll"
+      ? "Saldo después de la nómina"
+      : "Saldo después del pago";
   const recipientLabel = recipient ?? "responsable de caja";
   const recommendation = action
     ? action.kind === "collect"
@@ -182,7 +190,26 @@ export function CashAlertEmail({
             el {formatDate(riskDate)}. El correo explica qué pago provoca la
             presión y qué puedes revisar antes de que llegue la fecha.
           </p>
-          <div className="dashboard-alert-stats">
+          <div className="dashboard-alert-stats sm:grid-cols-3">
+            {protectedPayment && protectedPaymentPoint && (
+              <div className="dashboard-alert-stat">
+                <p className="text-xs text-muted-foreground">
+                  {protectedPaymentTitle}
+                </p>
+                <p
+                  className={cn(
+                    "dashboard-alert-stat-value",
+                    Number(protectedPaymentPoint.closing) < 0 &&
+                      "text-destructive",
+                  )}
+                >
+                  {money(protectedPaymentPoint.closing)}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {formatDate(protectedPayment.date)} · cierre del día
+                </p>
+              </div>
+            )}
             <div className="dashboard-alert-stat">
               <p className="flex items-center gap-2 text-xs text-muted-foreground">
                 <ShieldAlert aria-hidden="true" className="size-4" />
