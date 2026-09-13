@@ -40,7 +40,9 @@ test("cash alert opens an editable email modal without leaving the dashboard", a
     name: "Revisa el correo antes de enviarlo",
   });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByText("maria@example.com", { exact: true })).toBeVisible();
+  await expect(
+    dialog.getByText("maria@example.com", { exact: true }),
+  ).toBeVisible();
   await expect(dialog.getByLabel("Asunto")).toHaveValue(
     "Colchón: posible faltante el 29 sep",
   );
@@ -51,9 +53,58 @@ test("cash alert opens an editable email modal without leaving the dashboard", a
     dialog.getByRole("button", { name: "Enviar correo", exact: true }),
   ).toBeEnabled();
 
-  await dialog.getByRole("button", { name: "Cerrar", exact: true }).last().click();
+  await dialog
+    .getByRole("button", { name: "Cerrar", exact: true })
+    .last()
+    .click();
   await expect(dialog).toHaveAttribute("data-state", "closed");
   await expect(page).toHaveURL(/\/demo\/dashboard$/);
+});
+
+test("owner can prepare a partial advance request and see the demo payment impact", async ({
+  page,
+}) => {
+  await page.goto("/demo/dashboard");
+  await page
+    .getByRole("button", {
+      name: /Mejor resultado simulado Revisar anticipo con Grupo Alameda/,
+    })
+    .click();
+
+  await page
+    .getByRole("button", { name: "Preparar solicitud de anticipo" })
+    .click();
+  const dialog = page.getByRole("dialog", {
+    name: /Prepara un anticipo para Grupo Alameda/,
+  });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByLabel("Otro monto")).toHaveValue("14000.00");
+  await expect(dialog.getByLabel("Correo del cliente")).toHaveValue(
+    "pagos@grupo-alameda.mx",
+  );
+
+  await dialog.getByRole("button", { name: "Continuar" }).click();
+  await expect(dialog.getByLabel("CLABE receptora")).toHaveValue(
+    "646180157004123456",
+  );
+  await dialog.getByRole("button", { name: "Continuar" }).click();
+  await expect(dialog.getByLabel("Mensaje para el cliente")).toHaveValue(
+    /anticipo parcial de \$14,000\.00/,
+  );
+  await dialog.getByRole("button", { name: "Enviar solicitud" }).click();
+  await expect(dialog).toContainText("Solicitud enviada");
+  await dialog.getByRole("button", { name: "Simular pago parcial" }).click();
+  await expect(dialog).toContainText("Pago parcial recibido");
+  await dialog
+    .getByRole("button", { name: "Cerrar", exact: true })
+    .last()
+    .click();
+  await expect(
+    page.getByRole("region", { name: "Resumen de caja con pago registrado" }),
+  ).toContainText("-$7,000.00");
+  await expect(
+    page.getByText("Con pago registrado", { exact: true }),
+  ).toBeVisible();
 });
 
 test("invoice filters retain complete search text and details are keyboard accessible", async ({

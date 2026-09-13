@@ -14,21 +14,26 @@ import {
 } from "recharts";
 import type { Treasury, Projection } from "@colchon/treasury/treasury-contract";
 import { Table2 } from "lucide-react";
+import { useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { formatDate, formatMoney } from "@/lib/formatters";
 
 export function TreasuryChart({
+  cashOffset = 0,
   data,
   projected,
 }: {
+  cashOffset?: number;
   data: Treasury;
   projected: Projection | null;
 }) {
   const [table, setTable] = useState(false);
+  const reducedMotion = useReducedMotion();
   const currency = data.input.currency;
+  const baselineLabel = cashOffset > 0 ? "Con pago registrado" : "Sin cambios";
   const rows = data.baseline.points.map((point, index) => ({
     date: point.date,
-    baseline: Number(point.closing),
+    baseline: Number(point.closing) + cashOffset,
     plan: projected ? Number(projected.points[index]?.closing) : undefined,
   }));
   const payroll =
@@ -43,7 +48,7 @@ export function TreasuryChart({
               className="w-5 border-t-2 border-dashed border-chart-1"
               aria-hidden="true"
             />
-            Sin cambios
+            {baselineLabel}
           </span>
           {projected && (
             <span className="flex items-center gap-2">
@@ -75,13 +80,13 @@ export function TreasuryChart({
         <div className="overflow-auto rounded-2xl border bg-muted/40">
           <table className="w-full text-left text-sm numeric">
             <caption className="sr-only">
-              Saldos al cierre diario en {currency}. Reserva:{" "}
+              Saldos al cierre diario en {currency}. {baselineLabel}. Reserva:{" "}
               {formatMoney(data.input.reserve, currency)}.
             </caption>
             <thead className="sticky top-0 bg-card">
               <tr>
                 <th className="p-3">Fecha</th>
-                <th className="p-3">Sin cambios</th>
+                <th className="p-3">{baselineLabel}</th>
                 {projected && <th className="p-3">Con plan</th>}
               </tr>
             </thead>
@@ -106,7 +111,7 @@ export function TreasuryChart({
         <div
           className="h-[320px] min-w-0 w-full sm:h-[350px]"
           role="img"
-          aria-label={`Proyección a 30 días. Saldo mínimo sin cambios: ${formatMoney(data.baseline.summary.minimumBalance, currency)}. ${projected ? `Con plan: ${formatMoney(projected.summary.minimumBalance, currency)}.` : ""} Usa Ver tabla para consultar todos los valores.`}
+          aria-label={`Proyección a 30 días. ${baselineLabel}: ${formatMoney(String(Number(data.baseline.summary.minimumBalance) + cashOffset), currency)}. ${projected ? `Con plan: ${formatMoney(projected.summary.minimumBalance, currency)}.` : ""} Usa Ver tabla para consultar todos los valores.`}
         >
           <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <ComposedChart
@@ -141,7 +146,7 @@ export function TreasuryChart({
                 labelFormatter={(label) => formatDate(String(label))}
                 formatter={(value, name) => [
                   formatMoney(String(value), currency),
-                  name === "baseline" ? "Sin cambios" : "Con el plan",
+                  name === "baseline" ? baselineLabel : "Con el plan",
                 ]}
                 contentStyle={{
                   borderRadius: "12px",
@@ -184,7 +189,8 @@ export function TreasuryChart({
                   strokeWidth={3}
                   fill="var(--secondary)"
                   fillOpacity={0.65}
-                  isAnimationActive={false}
+                  isAnimationActive={!reducedMotion}
+                  animationDuration={reducedMotion ? 0 : 450}
                   activeDot={{ r: 5 }}
                 />
               )}
@@ -195,7 +201,8 @@ export function TreasuryChart({
                 strokeWidth={2.5}
                 strokeDasharray="5 5"
                 dot={false}
-                isAnimationActive={false}
+                isAnimationActive={!reducedMotion}
+                animationDuration={reducedMotion ? 0 : 450}
                 activeDot={{ r: 5 }}
               />
             </ComposedChart>

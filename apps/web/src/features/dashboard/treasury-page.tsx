@@ -40,6 +40,11 @@ import { apiRequest } from "@/lib/api/client";
 import { ApiError, errorMessage } from "@/lib/api/errors";
 import { formatDate, formatMoney } from "@/lib/formatters";
 import { cn } from "@/lib/class-names";
+import {
+  AdvanceRequestDialog,
+  PaymentRequestStatus,
+  type PaymentRequestUpdate,
+} from "./advance-request-dialog";
 import { CashAlertEmail } from "./cash-alert-email";
 
 const TreasuryChart = dynamic(
@@ -93,9 +98,7 @@ export function TreasuryPage() {
         <ErrorView error={query.error} retry={() => void query.refetch()} />
       </div>
     );
-  return (
-    <TreasuryContent data={query.data} />
-  );
+  return <TreasuryContent data={query.data} />;
 }
 
 function TreasuryContent({ data }: { data: Treasury }) {
@@ -105,6 +108,8 @@ function TreasuryContent({ data }: { data: Treasury }) {
   const [localDecision, setLocalDecision] = useState<TreasuryDecision | null>(
     null,
   );
+  const [paymentRequest, setPaymentRequest] =
+    useState<PaymentRequestUpdate | null>(null);
   const queryClient = useQueryClient();
   const reducedMotion = useReducedMotion();
   useEffect(() => {
@@ -218,10 +223,28 @@ function TreasuryContent({ data }: { data: Treasury }) {
     (event) => Number(event.amount) > 0,
   );
   const recommendedPlan = data.plans[0] ?? null;
+  const receivedAdvance = paymentRequest?.receivedAmount ?? 0;
+  const adjustedMinimumBalance =
+    Number(model.baseline.summary.minimumBalance) + receivedAdvance;
+  const adjustedCashShortfall = Math.max(
+    0,
+    Number(model.baseline.summary.cashShortfall) - receivedAdvance,
+  );
+  const adjustedReserveShortfall = Math.max(
+    0,
+    Number(model.baseline.summary.reserveShortfall) - receivedAdvance,
+  );
+  const adjustedDaysBelowReserve = model.baseline.points.filter(
+    (point) =>
+      Number(point.closing) + receivedAdvance < Number(model.input.reserve),
+  ).length;
   const firstRisk = model.baseline.summary.firstRiskDate;
   const riskPoint = model.baseline.points.find(
     (point) => point.date === firstRisk,
   );
+  const adjustedRiskPointClosing = riskPoint
+    ? Number(riskPoint.closing) + receivedAdvance
+    : null;
   const worstDateLabel = formatDate(model.baseline.summary.worstDate);
   const heroTitle = payrollRisk
     ? payroll?.category === "payroll"
@@ -301,7 +324,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
               {formatDate(model.baseline.summary.worstDate)}
             </span>
             <span className="dashboard-payroll-risk-value">
-              {money(model.baseline.summary.minimumBalance)}
+              {money(String(adjustedMinimumBalance))}
             </span>
           </div>
           {!payroll && (
@@ -318,7 +341,11 @@ function TreasuryContent({ data }: { data: Treasury }) {
 
       <section
         className="dashboard-signal-grid"
-        aria-label="Resumen de caja sin cambios"
+        aria-label={
+          receivedAdvance > 0
+            ? "Resumen de caja con pago registrado"
+            : "Resumen de caja sin cambios"
+        }
       >
         <Metric
           label="Disponible hoy"
@@ -328,13 +355,13 @@ function TreasuryContent({ data }: { data: Treasury }) {
         />
         <Metric
           label="Saldo mínimo previsto"
-          value={money(model.baseline.summary.minimumBalance)}
+          value={money(String(adjustedMinimumBalance))}
           note={formatDate(model.baseline.summary.worstDate, {
             day: "numeric",
             month: "long",
           })}
           icon={<ArrowDownRight className="size-4" />}
-          risk={Number(model.baseline.summary.minimumBalance) < 0}
+          risk={adjustedMinimumBalance < 0}
         />
         <Metric
           label="Reserva objetivo"
@@ -344,7 +371,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
         />
         <Metric
           label="Días bajo tu reserva"
-          value={String(model.baseline.summary.daysBelowReserve)}
+          value={String(adjustedDaysBelowReserve)}
           note="En los próximos 30 días"
           icon={<CalendarDays className="size-4" />}
         />
@@ -360,6 +387,21 @@ function TreasuryContent({ data }: { data: Treasury }) {
       )}
 
       <div className="dashboard-workbench">
+        <header className="dashboard-workbench-header">
+          <div className="min-w-0">
+            <p className="dashboard-panel-kicker">Centro de decisiones</p>
+            <h2 id="workbench-heading" className="dashboard-workbench-title">
+              Mira el riesgo. Elige qué conversar.
+            </h2>
+            <p className="dashboard-panel-description">
+              Primero identifica cuándo se aprieta la caja; después compara las
+              conversaciones que pueden proteger tu obra.
+            </p>
+          </div>
+          <span className="dashboard-period shrink-0">
+            30 días · {currency}
+          </span>
+        </header>
         <section
           className="dashboard-chart-panel"
           aria-labelledby="cash-heading"
@@ -367,17 +409,20 @@ function TreasuryContent({ data }: { data: Treasury }) {
           <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="dashboard-panel-kicker">Mapa de caja</p>
-              <h2 id="cash-heading" className="dashboard-panel-heading">
+              <h3 id="cash-heading" className="dashboard-panel-heading">
                 El camino de tu caja
-              </h2>
+              </h3>
               <p className="dashboard-panel-description">
                 Avances que entran, nómina y materiales que salen, y cuándo
                 actuar.
               </p>
             </div>
-            <span className="dashboard-period">30 días · {currency}</span>
           </div>
-          <TreasuryChart data={model} projected={plan?.projection ?? null} />
+          <TreasuryChart
+            data={model}
+            projected={plan?.projection ?? null}
+            cashOffset={receivedAdvance}
+          />
           <div
             className={cn(
               "dashboard-chart-insight",
@@ -389,11 +434,15 @@ function TreasuryContent({ data }: { data: Treasury }) {
               {riskPoint ? (
                 <>
                   El {formatDate(riskPoint.date)} terminas con{" "}
-                  <strong>{money(riskPoint.closing)}</strong>, debajo de tu
-                  reserva.{" "}
-                  {Number(riskPoint.closing) >= 0
-                    ? "Eso reduce tu margen, pero no implica un impago."
-                    : "Ese día existe un faltante de efectivo. El aviso llega antes para que la pyme decida qué hacer."}
+                  <strong>
+                    {money(String(adjustedRiskPointClosing ?? 0))}
+                  </strong>
+                  , debajo de tu reserva.{" "}
+                  {receivedAdvance > 0
+                    ? "El monto incluye el pago registrado en esta vista; sincroniza el banco para confirmarlo."
+                    : Number(riskPoint.closing) >= 0
+                      ? "Eso reduce tu margen, pero no implica un impago."
+                      : "Ese día existe un faltante de efectivo. El aviso llega antes para que la pyme decida qué hacer."}
                 </>
               ) : (
                 "No aparece un faltante en este escenario. Los cobros siguen siendo supuestos hasta recibirlos."
@@ -420,6 +469,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
                 onChange={(event) => {
                   setStressId(event.target.value);
                   setSelectedId(null);
+                  setPaymentRequest(null);
                 }}
               >
                 <option value="">Fechas originales</option>
@@ -447,16 +497,20 @@ function TreasuryContent({ data }: { data: Treasury }) {
           aria-labelledby="plans-heading"
         >
           <div className="dashboard-plans-header">
-            <h2 id="plans-heading" className="dashboard-panel-heading">
-              Recomendaciones para tu obra
-            </h2>
-            <span className="shrink-0 text-xs text-muted-foreground">
-              {model.plans.length} recomendaciones modeladas
+            <div>
+              <p className="dashboard-panel-kicker">Acciones sugeridas</p>
+              <h3 id="plans-heading" className="dashboard-panel-heading">
+                Qué puedes revisar
+              </h3>
+            </div>
+            <span className="dashboard-plans-count">
+              {model.plans.length === 1
+                ? "1 opción"
+                : `${model.plans.length} opciones`}
             </span>
           </div>
-          <p className="mb-5 max-w-[42ch] text-sm leading-6 text-muted-foreground">
-            Comparamos alternativas de cobro y pagos con proveedores. Son
-            conversaciones que la pyme debe llevar; no se ejecutan desde aquí.
+          <p className="mb-5 max-w-[32ch] text-sm leading-6 text-muted-foreground">
+            Ordenadas por cuánto pueden proteger el saldo de tu obra.
           </p>
           <fieldset
             className="dashboard-plan-list"
@@ -467,7 +521,10 @@ function TreasuryContent({ data }: { data: Treasury }) {
                 key={item.id}
                 type="button"
                 aria-pressed={plan?.id === item.id}
-                onClick={() => setSelectedId(item.id)}
+                onClick={() => {
+                  setSelectedId(item.id);
+                  setPaymentRequest(null);
+                }}
                 className={cn(
                   "dashboard-plan-card",
                   plan?.id === item.id && "dashboard-plan-card-selected",
@@ -597,10 +654,48 @@ function TreasuryContent({ data }: { data: Treasury }) {
                       El monto y la fecha finales dependen de la conversación.
                       Costo supuesto: {money(action.cost)}.
                     </p>
+                    <div className="dashboard-action-controls">
+                      {action.kind === "collect" ? (
+                        <AdvanceRequestDialog
+                          action={action}
+                          data={data}
+                          onStatusChange={setPaymentRequest}
+                          organizationName={organization.name}
+                        />
+                      ) : (
+                        <details className="dashboard-action-details">
+                          <summary>
+                            <SlidersHorizontal
+                              aria-hidden="true"
+                              className="size-4"
+                            />
+                            Ver cómo abordarlo
+                          </summary>
+                          <div className="dashboard-action-details-body">
+                            <p>
+                              Pide mover este pago del {formatDate(action.from)}{" "}
+                              al {formatDate(action.to)} para no hacer coincidir
+                              la salida con la nómina. Confirma primero la nueva
+                              fecha con el proveedor.
+                            </p>
+                            <p className="mt-2 font-medium text-foreground">
+                              Siguiente paso: contacta a {action.label} y
+                              registra la respuesta en el seguimiento.
+                            </p>
+                          </div>
+                        </details>
+                      )}
+                    </div>
                   </div>
                 </li>
               ))}
             </ol>
+            {paymentRequest && (
+              <PaymentRequestStatus
+                currency={currency}
+                request={paymentRequest}
+              />
+            )}
             <div className="dashboard-selection-cta">
               <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
                 Nómina e impuestos conservan su fecha. Guardar solo registra la
@@ -715,7 +810,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
           <h2 className="mt-1 text-2xl font-semibold tracking-[-0.04em]">
             Pagos de la obra que protegemos
           </h2>
-          <div className="space-y-5">
+          <div className="mt-6 space-y-5">
             {model.criticalEvents.length ? (
               model.criticalEvents.map((event) => (
                 <div key={event.id} className="flex items-center gap-4">
@@ -759,7 +854,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
           <h2 className="mt-1 text-2xl font-semibold tracking-[-0.04em]">
             La brecha de esta obra
           </h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             Si mantienes todas las fechas, necesitas esta liquidez adicional
             desde el inicio para cubrir el peor momento de los próximos 30 días.
           </p>
@@ -769,7 +864,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
                 Para no quedar en negativo
               </p>
               <p className="treasury-number mt-2 text-2xl">
-                {money(model.baseline.summary.cashShortfall)}
+                {money(String(adjustedCashShortfall))}
               </p>
             </div>
             <div>
@@ -777,7 +872,7 @@ function TreasuryContent({ data }: { data: Treasury }) {
                 Para conservar tu reserva
               </p>
               <p className="treasury-number mt-2 text-2xl">
-                {money(model.baseline.summary.reserveShortfall)}
+                {money(String(adjustedReserveShortfall))}
               </p>
             </div>
           </div>

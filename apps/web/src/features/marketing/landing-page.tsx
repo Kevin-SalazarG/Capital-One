@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowRight,
+  ArrowUp,
   ArrowUpRight,
   BanknoteArrowDown,
   Check,
@@ -18,6 +19,9 @@ import {
   WalletCards,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
+import { LandingFaq } from "./landing-faq";
+import { PricingPlans } from "./pricing-plans";
+import { SystemPreview } from "./system-preview";
 
 type ScenarioId = "delay" | "base" | "early";
 
@@ -37,38 +41,62 @@ type Scenario = {
 const scenarios: readonly [Scenario, Scenario, Scenario] = [
   {
     id: "delay",
-    label: "Cobro se retrasa",
-    eyebrow: "Hay tiempo para actuar",
-    headline: "Revisa antes del 18 de septiembre",
+    label: "Escenario original",
+    eyebrow: "Primer cruce el 25 sep",
+    headline: "La nómina de $118,000 queda expuesta",
     tone: "risk",
-    balance: 47800,
-    riskLabel: "Primer día bajo reserva",
-    points: [156, 144, 121, 76, 48, 88, 132],
-    dates: ["Hoy", "13 sep", "15 sep", "18 sep", "20 sep", "23 sep", "26 sep"],
-    riskIndex: 3,
+    balance: -14000,
+    riskLabel: "Brecha de caja",
+    points: [185, 180, 211.6, 163.2, 132.8, 110, -9.2],
+    dates: [
+      "12 sep",
+      "16 sep",
+      "18 sep",
+      "20 sep",
+      "22 sep",
+      "24 sep",
+      "25 sep",
+    ],
+    riskIndex: 6,
   },
   {
     id: "base",
-    label: "Escenario base",
-    eyebrow: "Dentro de tu reserva",
-    headline: "Tu caja conserva margen",
+    label: "Anticipo de Alameda",
+    eyebrow: "Reserva conservada",
+    headline: "Un anticipo evita el faltante",
     tone: "safe",
-    balance: 126400,
-    riskLabel: "Sin cruce de reserva",
-    points: [156, 144, 133, 118, 126, 137, 151],
-    dates: ["Hoy", "13 sep", "15 sep", "18 sep", "20 sep", "23 sep", "26 sep"],
+    balance: 41700,
+    riskLabel: "Plan recomendado",
+    points: [185, 180, 211.6, 163.2, 132.8, 165.7, 164.5],
+    dates: [
+      "12 sep",
+      "16 sep",
+      "18 sep",
+      "20 sep",
+      "22 sep",
+      "24 sep",
+      "25 sep",
+    ],
     riskIndex: -1,
   },
   {
     id: "early",
-    label: "Cobro confirmado",
+    label: "Casa Roble anticipada",
     eyebrow: "Margen recuperado",
-    headline: "Una acción cambia el resultado",
+    headline: "Casa Roble recupera margen",
     tone: "safe",
-    balance: 192500,
-    riskLabel: "Nómina cubierta",
-    points: [156, 144, 121, 108, 136, 164, 181],
-    dates: ["Hoy", "13 sep", "15 sep", "18 sep", "20 sep", "23 sep", "26 sep"],
+    balance: 79800,
+    riskLabel: "Segundo plan modelado",
+    points: [185, 180, 211.6, 163.2, 132.8, 174.9, 173.7],
+    dates: [
+      "12 sep",
+      "16 sep",
+      "18 sep",
+      "20 sep",
+      "22 sep",
+      "24 sep",
+      "25 sep",
+    ],
     riskIndex: -1,
   },
 ];
@@ -142,7 +170,7 @@ function formatBalance(value: number) {
   }).format(value);
 }
 
-function chartGeometry(values: number[]) {
+function chartGeometry(values: number[], reserve: number) {
   const width = 680;
   const height = 250;
   const paddingX = 18;
@@ -162,7 +190,7 @@ function chartGeometry(values: number[]) {
     .join(" ");
   const area = `${line} L ${points.at(-1)?.x ?? width} ${height} L ${points[0]?.x ?? 0} ${height} Z`;
   const reserveY =
-    height - paddingY - ((80 - min) / range) * (height - paddingY * 2);
+    height - paddingY - ((reserve - min) / range) * (height - paddingY * 2);
 
   return { points, line, area, reserveY };
 }
@@ -171,10 +199,12 @@ function Reveal({
   children,
   reducedMotion,
   className,
+  delay = 0,
 }: {
   children: ReactNode;
   reducedMotion: boolean | null;
   className?: string;
+  delay?: number;
 }) {
   return (
     <motion.div
@@ -182,10 +212,47 @@ function Reveal({
       initial={reducedMotion ? false : { opacity: 0, y: 20 }}
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
+  );
+}
+
+function BackToTop({ reducedMotion }: { reducedMotion: boolean | null }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const updateVisibility = () => setVisible(window.scrollY > 520);
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <motion.button
+      type="button"
+      className="landing-back-to-top"
+      aria-label="Volver arriba"
+      onClick={() =>
+        window.scrollTo({
+          top: 0,
+          behavior: reducedMotion ? "auto" : "smooth",
+        })
+      }
+      initial={reducedMotion ? false : { opacity: 0, scale: 0.82, y: 12 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ type: "spring", bounce: 0, duration: 0.38 }}
+    >
+      <ArrowUp aria-hidden="true" />
+      <span>Arriba</span>
+    </motion.button>
   );
 }
 
@@ -202,7 +269,7 @@ function CashPreview({
     scenario.riskIndex > -1 ? scenario.riskIndex : 3,
   );
   const geometry = useMemo(
-    () => chartGeometry(scenario.points),
+    () => chartGeometry(scenario.points, 40),
     [scenario.points],
   );
   const firstPoint = geometry.points[0];
@@ -220,7 +287,7 @@ function CashPreview({
           </span>
           <div>
             <p>Plan de caja</p>
-            <span>Obra Santa Lucía · 30 días</span>
+            <span>Constructora Encino · 30 días</span>
           </div>
         </div>
         <span className="landing-live-status">
@@ -231,7 +298,7 @@ function CashPreview({
       <div className="landing-console-body">
         <div className="landing-console-heading">
           <div>
-            <p className="landing-console-eyebrow">Saldo proyectado</p>
+            <p className="landing-console-eyebrow">Saldo mínimo proyectado</p>
             <strong>{formatBalance(scenario.balance)}</strong>
           </div>
           <div
@@ -375,7 +442,7 @@ function CashPreview({
         <ShieldCheck aria-hidden="true" />
         <span>Tu dinero se queda bajo tu control.</span>
         <span className="landing-console-footer-note">
-          Explora un escenario
+          Datos sintéticos de demo
         </span>
       </div>
     </div>
@@ -408,8 +475,10 @@ export function LandingPage() {
           </Link>
           <nav className="landing-nav-links" aria-label="Navegación principal">
             <a href="#solucion">La solución</a>
+            <a href="#producto">Producto</a>
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#para-quien">Para quién</a>
+            <a href="#planes">Planes</a>
           </nav>
           <div className="landing-nav-actions">
             <Link href="/auth/sign-in" className="landing-nav-login">
@@ -421,6 +490,8 @@ export function LandingPage() {
           </div>
         </div>
       </header>
+
+      <BackToTop reducedMotion={reducedMotion} />
 
       <section
         className="landing-hero"
@@ -512,6 +583,7 @@ export function LandingPage() {
                 <Reveal
                   key={block.label}
                   reducedMotion={reducedMotion}
+                  delay={index * 0.08}
                   className={`landing-value-block landing-value-block-${index + 1}`}
                 >
                   <div className="landing-value-topline">
@@ -556,25 +628,51 @@ export function LandingPage() {
         </div>
       </section>
 
+      <SystemPreview />
+
       <section
         className="landing-process-section"
         id="como-funciona"
         aria-labelledby="process-title"
       >
         <div className="landing-container">
-          <Reveal
-            reducedMotion={reducedMotion}
-            className="landing-section-intro"
-          >
-            <p className="landing-section-label">Del dato a la decisión</p>
-            <h2 id="process-title">
-              Tu operación, <em>con más margen.</em>
-            </h2>
-            <p>
-              Una lectura sencilla para una decisión concreta. En pocos pasos
-              sabes dónde mirar.
-            </p>
-          </Reveal>
+          <div className="landing-process-intro-row">
+            <Reveal
+              reducedMotion={reducedMotion}
+              className="landing-section-intro"
+            >
+              <p className="landing-section-label">Del dato a la decisión</p>
+              <h2 id="process-title">
+                Tu operación, <em>con más margen.</em>
+              </h2>
+              <p>
+                Una lectura sencilla para una decisión concreta. En pocos pasos
+                sabes dónde mirar.
+              </p>
+            </Reveal>
+
+            <Reveal
+              reducedMotion={reducedMotion}
+              delay={0.08}
+              className="landing-process-summary"
+            >
+              <div className="landing-process-summary-topline">
+                <span>El flujo de Colchón</span>
+                <strong>3 pasos</strong>
+              </div>
+              <div className="landing-process-flow">
+                <span>Banco</span>
+                <ArrowRight aria-hidden="true" />
+                <span>CFDI</span>
+                <ArrowRight aria-hidden="true" />
+                <span>Decisión</span>
+              </div>
+              <p>
+                Convierte la información de tu obra en el siguiente movimiento
+                que vale la pena revisar.
+              </p>
+            </Reveal>
+          </div>
 
           <div className="landing-process-layout">
             <div
@@ -686,6 +784,9 @@ export function LandingPage() {
         </div>
       </section>
 
+      <PricingPlans />
+      <LandingFaq />
+
       <section
         className="landing-final-cta"
         id="contacto"
@@ -734,7 +835,11 @@ export function LandingPage() {
           <p>Anticipa la caja de tu obra.</p>
           <div className="landing-footer-links">
             <a href="#solucion">La solución</a>
+            <a href="#producto">Producto</a>
             <a href="#como-funciona">Cómo funciona</a>
+            <a href="#para-quien">Para quién</a>
+            <a href="#planes">Planes</a>
+            <a href="#preguntas">Preguntas</a>
             <Link href="/demo/dashboard">Demo</Link>
           </div>
           <span className="landing-footer-legal">© 2026 Colchón</span>
