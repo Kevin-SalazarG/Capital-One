@@ -1,10 +1,11 @@
-# Roadmap — CFDI, cobranza y notificaciones
+# Roadmap — CFDI, cobranza, efectivo y notificaciones
 
 ## Objetivo
 
 Convertir a Colchón en una herramienta que mantenga actualizado el flujo de
-caja de la PyME con CFDI reales y que avise a la persona correcta cuando exista
-un riesgo de liquidez o una factura por cobrar.
+caja de la PyME con movimientos bancarios, efectivo y CFDI reales, y que avise a
+la persona correcta cuando exista un riesgo de liquidez o una factura por
+cobrar.
 
 La recomendación de implementar Facturapi y WhatsApp es válida para una etapa
 posterior al prototipo. No es necesaria para la demo actual.
@@ -139,6 +140,37 @@ Definition of done:
 - Un complemento de pago no crea una factura duplicada.
 - Un acuerdo de cobro no se cuenta como dinero recibido.
 - El usuario puede corregir la fecha operativa sin alterar el XML fiscal.
+
+### Fase 2.1 — Control de efectivo / caja de obra
+
+Prioridad: P1. Complemento necesario para no dejar fuera los movimientos que
+ocurren fuera de una cuenta bancaria o que todavía no tienen CFDI.
+
+#### MVP
+
+- Crear un libro separado para entradas y salidas de efectivo de la obra.
+- Registrar monto, fecha, motivo, categoría, proyecto y persona responsable.
+- Permitir adjuntar una foto del ticket, recibo u otra evidencia disponible.
+- Marcar el origen como manual/efectivo y el estado como estimado, confirmado o
+  conciliado.
+- Mostrar el saldo de efectivo por separado del saldo bancario; permitir que
+  ambos alimenten el pronóstico con su procedencia visible.
+- Conciliar un depósito o retiro posterior con el movimiento manual para evitar
+  duplicarlo en el flujo.
+- Mantener la evidencia como respaldo operativo sin afirmar automáticamente que
+  el gasto es deducible.
+
+#### Definition of done
+
+- Un usuario puede registrar una entrada o salida de efectivo sin factura.
+- El movimiento aparece en el historial de caja y cambia la proyección según su
+  fecha y estado.
+- Un movimiento marcado como estimado puede confirmarse o corregirse sin perder
+  su historial.
+- Un depósito bancario relacionado puede conciliarse y deja de contarse dos
+  veces.
+- El dashboard distingue efectivo disponible, saldo bancario y saldo total
+  proyectado.
 
 ### Fase 3 — Notificaciones al usuario por WhatsApp
 

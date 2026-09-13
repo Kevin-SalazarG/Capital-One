@@ -318,11 +318,57 @@ export function AnnualHistorySkeleton({
 
 export function InvoicesSkeleton() {
   return (
-    <LoadingFrame label="Cargando facturas" className="page-container">
-      <PageHeaderSkeleton />
-      <NoticeSkeleton />
-      <ListControlsSkeleton />
-      <TableSkeleton columnCount={5} />
+    <LoadingFrame
+      label="Cargando facturas"
+      className="page-container dashboard-page invoices-page space-y-7 pb-14"
+    >
+      <section className="dashboard-hero invoices-hero">
+        <div className="dashboard-hero-copy space-y-4">
+          <Skeleton className="h-8 w-40 rounded-full" />
+          <Skeleton className="h-16 w-full max-w-[28rem] rounded-xl" />
+          <Skeleton className="h-14 w-full max-w-[38rem]" />
+          <div className="flex flex-wrap gap-2">
+            <Skeleton className="h-11 w-32 rounded-full" />
+            <Skeleton className="h-11 w-40 rounded-full" />
+          </div>
+        </div>
+        <div className="dashboard-payroll-card invoices-summary-card">
+          <div className="relative flex items-center gap-3">
+            <Skeleton className="size-11 rounded-2xl bg-white/10" />
+            <Skeleton className="h-3 w-28 bg-white/10" />
+          </div>
+          <Skeleton className="relative mt-8 h-4 w-32 bg-white/10" />
+          <Skeleton className="relative mt-2 h-12 w-52 max-w-full bg-white/10" />
+          <Skeleton className="relative mt-3 h-4 w-40 max-w-full bg-white/10" />
+          <Skeleton className="relative mt-7 h-12 w-full border-t border-white/10 bg-white/10" />
+        </div>
+      </section>
+      <section className="dashboard-panel invoices-panel">
+        <header className="invoices-panel-header">
+          <div className="space-y-3">
+            <Skeleton className="h-3 w-36" />
+            <Skeleton className="h-8 w-64 max-w-full rounded-xl" />
+            <Skeleton className="h-4 w-80 max-w-full" />
+          </div>
+          <Skeleton className="h-9 w-24 rounded-full" />
+        </header>
+        <div className="invoices-board-summary">
+          {["receivable", "payable", "overdue"].map((key) => (
+            <div key={key} className="invoices-board-stat">
+              <Skeleton className="size-8 rounded-xl" />
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <Skeleton className="mx-5 my-5 h-12 rounded-2xl sm:mx-7" />
+        <div className="invoices-content">
+          <ListControlsSkeleton />
+          <TableSkeleton columnCount={5} />
+        </div>
+      </section>
     </LoadingFrame>
   );
 }

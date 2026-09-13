@@ -4305,6 +4305,96 @@
   .dashboard-assumptions {
     @apply scroll-mt-24 px-5 py-3 sm:px-6;
   }
+  .invoices-hero-title {
+    @apply max-w-[17ch];
+  }
+  .invoices-import-button {
+    @apply min-h-11 rounded-full border-primary/20 bg-background px-4 font-semibold shadow-none hover:border-primary/40 hover:bg-secondary hover:text-primary;
+  }
+  .invoices-summary-card {
+    @apply min-h-0;
+  }
+  .invoices-summary-detail {
+    @apply max-w-[34ch] break-words;
+  }
+  .invoices-summary-status {
+    @apply inline-flex items-center gap-1.5 text-xs font-semibold;
+    color: var(--ink-panel-muted);
+  }
+  .invoices-summary-status > span {
+    @apply size-2 rounded-full;
+    background: #8de0b8;
+  }
+  .invoices-summary-risk {
+    @apply items-end;
+  }
+  .invoices-summary-next {
+    @apply text-right text-sm font-semibold;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+  }
+  .invoices-panel {
+    @apply overflow-hidden;
+  }
+  .invoices-panel-header {
+    @apply flex flex-col gap-4 border-b p-5 sm:flex-row sm:items-start sm:justify-between sm:p-7;
+    border-color: color-mix(in srgb, var(--border) 78%, transparent);
+    background: color-mix(in srgb, var(--card) 92%, var(--muted));
+  }
+  .invoices-panel-header > div {
+    @apply min-w-0;
+  }
+  .invoices-panel-count {
+    @apply shrink-0 self-start;
+  }
+  .invoices-board-summary {
+    @apply grid border-b bg-muted/20 sm:grid-cols-3;
+    border-color: color-mix(in srgb, var(--border) 78%, transparent);
+  }
+  .invoices-board-stat {
+    @apply flex min-w-0 items-center gap-3 border-b p-4 last:border-b-0 sm:border-b-0 sm:border-r sm:p-5 sm:last:border-r-0;
+    border-color: color-mix(in srgb, var(--border) 72%, transparent);
+  }
+  .invoices-board-stat-icon {
+    @apply flex size-8 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary;
+  }
+  .invoices-board-stat-icon-inflow {
+    color: var(--success);
+    background: color-mix(in srgb, var(--success) 10%, var(--card));
+  }
+  .invoices-board-stat-icon-outflow {
+    color: var(--primary);
+  }
+  .invoices-board-stat-icon-risk {
+    color: var(--destructive);
+    background: color-mix(in srgb, var(--destructive) 10%, var(--card));
+  }
+  .invoices-board-stat-value {
+    @apply break-words text-lg font-semibold tracking-[-0.035em];
+  }
+  .invoices-board-stat-label {
+    @apply mt-0.5 text-xs text-muted-foreground;
+  }
+  .invoices-panel-notice {
+    @apply mx-5 my-5 flex items-start gap-3 rounded-2xl border px-4 py-3 text-sm leading-6 text-muted-foreground sm:mx-7;
+    border-color: color-mix(in srgb, var(--primary) 14%, var(--border));
+    background: color-mix(in srgb, var(--secondary) 55%, var(--card));
+  }
+  :where(.invoices-panel-notice > svg) {
+    @apply mt-1 text-primary;
+  }
+  .invoices-content {
+    @apply p-5 sm:p-7;
+  }
+  .invoices-controls {
+    @apply mb-6 flex flex-col items-stretch gap-4 sm:flex-row sm:items-end;
+  }
+  .invoices-search-field {
+    @apply min-w-0 flex-1;
+  }
+  .invoices-list {
+    @apply shadow-none;
+  }
   .commitments-hero-title {
     @apply max-w-[17ch];
   }
