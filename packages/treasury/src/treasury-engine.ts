@@ -176,8 +176,8 @@ export function buildTreasury(
           moves.length > 1
             ? "Combinar cobros y acuerdos"
             : first.kind === "collect"
-              ? "Adelantar un cobro"
-              : "Negociar un pago",
+              ? "Revisar un anticipo"
+              : "Negociar un pago con proveedor",
         actions: moves,
         cost: moves
           .reduce((sum, a) => sum.plus(a.cost), new Decimal(0))

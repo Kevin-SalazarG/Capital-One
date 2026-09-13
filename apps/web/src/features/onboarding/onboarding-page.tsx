@@ -89,8 +89,8 @@ export function OnboardingPage() {
   return (
     <div className="page-container">
       <PageHeader
-        title="Prepara tu primera proyección."
-        description="Conecta tus fuentes, revisa los datos y mira los próximos 30 días."
+        title="Prepara la caja de tu constructora."
+        description="Conecta tus fuentes, revisa tus obras y mira los próximos 30 días."
         action={
           <Button asChild variant="outline">
             <Link href={`${basePath}/dashboard`}>Ir al resumen</Link>
@@ -109,7 +109,7 @@ export function OnboardingPage() {
         <div className="max-w-4xl space-y-4">
           <Step
             number={1}
-            title="Conecta tu banco"
+            title="Conecta la cuenta de operación"
             description="Nessie es un banco de prueba. Necesitas el identificador de un cliente con cuentas creadas."
             completed={readyBank}
           >
@@ -146,8 +146,8 @@ export function OnboardingPage() {
           </Step>
           <Step
             number={2}
-            title="Agrega tus facturas"
-            description="Incluye los cobros y pagos que vienen. También puedes continuar solo con tus cuentas."
+            title="Agrega tus estimaciones y materiales"
+            description="Incluye los cobros por avance y los pagos a proveedores que vienen. También puedes continuar solo con tus cuentas."
             completed={readyInvoices}
           >
             <div className="flex flex-wrap gap-3">
@@ -191,7 +191,7 @@ export function OnboardingPage() {
           <Step
             number={3}
             title="Mira tu caja, a futuro"
-            description="Se calcula con tus cuentas, facturas y pagos recurrentes."
+            description="Se calcula con tu cuenta, estimaciones, materiales y nómina recurrente."
             completed={readyForecast}
           >
             {can("forecast:run") ? (

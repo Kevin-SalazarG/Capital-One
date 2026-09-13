@@ -27,7 +27,7 @@ test("demo is a reproducible ledger, not hand-drawn balances", () => {
   assert.equal(model.baseline.summary.reserveShortfall, "54000.00");
   assert.equal(model.baseline.summary.criticalAtRisk, 1);
   const best = present(model.plans[0]);
-  assert.equal(present(best.actions[0]).label, "Hotel Alameda");
+  assert.equal(present(best.actions[0]).label, "Grupo Alameda · Estimación 03");
   assert.equal(best.projection.summary.minimumBalance, "41700.00");
   assert.equal(best.projection.summary.criticalAtRisk, 0);
   assert.ok(treasurySchema.safeParse(model).success);

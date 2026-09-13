@@ -325,7 +325,7 @@ test("authenticated treasury flow: inputs, plans, idempotency, follow-up, stale 
       .from("cfdi_invoices")
       .select("id,due_on")
       .eq("organization_id", organizationId)
-      .eq("counterparty_name", "Hotel Alameda")
+      .eq("counterparty_name", "Grupo Alameda · Estimación 03")
       .single();
     assert.equal(invoice.error, null);
     assert.ok(invoice.data);

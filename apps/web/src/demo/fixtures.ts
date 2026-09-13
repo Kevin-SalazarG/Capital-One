@@ -3,9 +3,9 @@ import treasurySnapshots from "./treasury-snapshots.json";
 import treasurySources from "./treasury-sources.json";
 
 export const DEMO_ORGANIZATION: Organization = {
-  id: "example-taller",
-  name: "Taller Encino",
-  legalName: "Taller Encino S.A. de C.V.",
+  id: "example-constructora",
+  name: "Constructora Encino",
+  legalName: "Constructora Encino S.A. de C.V.",
   rfc: "TEN210315AB1",
   currency: "MXN",
   timeZone: "America/Mexico_City",
@@ -53,7 +53,7 @@ export const DEMO_DATA: Record<string, unknown> = {
   "bank/transactions": [
     {
       id: "t-1",
-      description: "Pago de Casa Roble",
+      description: "Cobro de Casa Roble · estimación 02",
       direction: "inflow",
       amount: "24500.00",
       postedAt: "2026-09-12T15:30:00Z",
@@ -61,7 +61,7 @@ export const DEMO_DATA: Record<string, unknown> = {
     },
     {
       id: "t-2",
-      description: "Maderas del Norte",
+      description: "Maderas del Norte · materiales",
       direction: "outflow",
       amount: "12800.00",
       postedAt: "2026-09-11T17:15:00Z",
@@ -69,7 +69,7 @@ export const DEMO_DATA: Record<string, unknown> = {
     },
     {
       id: "t-3",
-      description: "Estudio Senda",
+      description: "Cobro de Obra Senda · estimación 01",
       direction: "inflow",
       amount: "18000.00",
       postedAt: "2026-09-10T16:00:00Z",
@@ -77,11 +77,11 @@ export const DEMO_DATA: Record<string, unknown> = {
     },
     {
       id: "t-4",
-      description: "Renta del taller",
+      description: "Renta de bodega y patio",
       direction: "outflow",
       amount: "15000.00",
       postedAt: "2026-09-09T14:00:00Z",
-      category: "Renta",
+      category: "Bodega",
     },
     {
       id: "t-5",

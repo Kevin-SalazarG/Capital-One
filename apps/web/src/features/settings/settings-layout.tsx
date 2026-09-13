@@ -18,7 +18,7 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
     <div className="page-container">
       <PageHeader
         title="Todo en su lugar."
-        description="Los datos de tu empresa y las fuentes que alimentan tu plan de caja."
+        description="Los datos de tu constructora y las fuentes que alimentan el plan de caja de tus obras."
       />
       <nav
         aria-label="Configuración"

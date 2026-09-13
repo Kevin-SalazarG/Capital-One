@@ -74,8 +74,8 @@ function InvoicesContent() {
   return (
     <div className="page-container">
       <PageHeader
-        title="Tus cobros y pagos."
-        description="Facturas, vencimientos y saldos pendientes, en un solo lugar."
+        title="Avances, materiales y pagos."
+        description="Estimaciones por cobrar, proveedores y saldos pendientes de tus obras, en un solo lugar."
         action={
           can("cfdi:import") && (
             <Button disabled={isDemo} onClick={() => setImporting(true)}>
@@ -92,7 +92,7 @@ function InvoicesContent() {
             <Input
               id="invoice-search"
               type="search"
-              placeholder="Cliente, proveedor o folio"
+              placeholder="Cliente, obra, proveedor o folio"
               value={filters.get("q")}
               onChange={(event) => filters.setFilter("q", event.target.value)}
             />

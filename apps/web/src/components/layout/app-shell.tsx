@@ -53,7 +53,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       visible: true,
     },
     {
-      label: "Compromisos",
+      label: "Pagos protegidos",
       path: "commitments",
       icon: ShieldCheck,
       visible: can("forecast:configure"),

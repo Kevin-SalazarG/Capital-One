@@ -10,10 +10,10 @@ test("all demo routes render without external API requests", async ({
     await route.abort();
   });
   for (const [path, title] of [
-    ["dashboard", "Tu nómina necesita un plan."],
-    ["commitments", "Los pagos que importan."],
-    ["invoices", "Tus cobros y pagos."],
-    ["bank", "Tu actividad bancaria."],
+    ["dashboard", "Evita que una obra te deje sin nómina."],
+    ["commitments", "Los pagos que sostienen tu obra."],
+    ["invoices", "Avances, materiales y pagos."],
+    ["bank", "La cuenta de operación."],
   ]) {
     await page.goto(`/demo/${path}`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
@@ -55,13 +55,13 @@ test("invoice filters retain complete search text and details are keyboard acces
     "Filtros de facturas, 1 activo",
   );
   const invoice = page.getByRole("link", {
-    name: "Ver detalle de Casa Roble",
+    name: "Ver detalle de Casa Roble · Estimación 02",
     exact: true,
   });
   await invoice.click();
   await expect(page).toHaveURL(/\/demo\/invoices\/i-1$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Casa Roble",
+    "Casa Roble · Estimación 02",
   );
   await expect(
     page.getByText("CFDI-ENCINO-i-1", { exact: true }),
@@ -87,7 +87,7 @@ test("invoice rows and mobile cards open from outside the name and preserve keyb
 }) => {
   await page.goto("/demo/invoices");
   const invoice = page.getByRole("link", {
-    name: "Ver detalle de Casa Roble",
+    name: "Ver detalle de Casa Roble · Estimación 02",
     exact: true,
   });
   const item = page

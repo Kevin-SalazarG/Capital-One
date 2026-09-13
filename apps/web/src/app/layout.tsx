@@ -4,11 +4,11 @@ import "@/app/globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Colchón — Llega a tu próxima nómina",
+    default: "Colchón — Anticipa la caja de tu obra",
     template: "%s · Colchón",
   },
   description:
-    "Anticipa faltantes de caja, compara acuerdos y protege los pagos que no pueden esperar.",
+    "Anticipa faltantes de caja en pequeñas constructoras y recibe un plan de acción antes de poner en riesgo la nómina.",
 };
 
 export default function RootLayout({

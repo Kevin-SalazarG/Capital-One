@@ -52,7 +52,7 @@ function ObligationsContent() {
         <div>
           <h2 className="text-xl font-semibold">Compromisos protegidos</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Renta, nómina y otros compromisos de tu operación.
+            Nómina de cuadrilla, renta, impuestos y otros pagos de tu obra.
           </p>
         </div>
         <Button disabled={isDemo} onClick={() => setAdding(true)}>
@@ -166,7 +166,7 @@ function ObligationDialog({
           >
             <Input
               id="obligation-name"
-              placeholder="Renta del local"
+              placeholder="Nómina de cuadrilla"
               aria-invalid={Boolean(form.formState.errors.name)}
               aria-describedby="obligation-name-error"
               {...form.register("name")}

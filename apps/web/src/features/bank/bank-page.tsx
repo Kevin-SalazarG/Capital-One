@@ -61,7 +61,7 @@ function BankContent() {
   return (
     <div className="page-container">
       <PageHeader
-        title="Tu actividad bancaria."
+        title="La cuenta de operación."
         description="Cuentas y movimientos que dan contexto a tu caja."
         action={
           can("connection:read") && (

@@ -1,23 +1,24 @@
 # Colchón — Experiencia vigente
 
 Última actualización: 2026-09-12. Este documento sustituye el plan de pantallas
-anterior. La decisión central es **cómo llegar a la próxima nómina**, no construir
-un ERP. Ver [enfoque del producto](PRODUCT-DIRECTION.md).
+anterior. La decisión central es **cómo proteger la nómina y los materiales de una obra**
+cuando una estimación puede retrasarse, no construir un ERP. Ver [enfoque del
+producto](PRODUCT-DIRECTION.md).
 
 ## Navegación
 
-| Ruta                                         | Función                                                                            |
-| -------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `/app/[organizationId]/dashboard`            | Plan de caja: horizonte de 30 días, riesgo, comparador, estrés y seguimiento.      |
-| `/app/[organizationId]/commitments`          | Capturar y consultar nómina, impuestos y compromisos recurrentes.                  |
-| `/app/[organizationId]/invoices`             | Buscar, filtrar e importar cuentas por cobrar/pagar.                               |
-| `/app/[organizationId]/invoices/[invoiceId]` | Comprobante y edición de fechas, flexibilidad, costo, categoría y saldo pendiente. |
-| `/app/[organizationId]/bank`                 | Cuentas y movimientos bancarios.                                                   |
-| `/app/[organizationId]/settings/company`     | Empresa, moneda, zona horaria, reserva y gasto diario no calendarizado.            |
-| `/app/[organizationId]/settings/connections` | Configurar y sincronizar Nessie/CFDI.                                              |
-| `/app/[organizationId]/onboarding`           | Preparar las fuentes para el primer plan.                                          |
-| `/app/new`                                   | Crear empresa.                                                                     |
-| `/auth/sign-in`, `/auth/sign-up`             | Autenticación.                                                                     |
+| Ruta                                         | Función                                                                                |
+| -------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `/app/[organizationId]/dashboard`            | Plan de caja: horizonte de 30 días, riesgo, comparador, estrés y seguimiento.          |
+| `/app/[organizationId]/commitments`          | Capturar y consultar nómina de cuadrilla, materiales, impuestos y pagos protegidos.    |
+| `/app/[organizationId]/invoices`             | Buscar, filtrar e importar estimaciones, cuentas por cobrar y facturas de proveedores. |
+| `/app/[organizationId]/invoices/[invoiceId]` | Comprobante y edición de fechas, flexibilidad, costo, categoría y saldo pendiente.     |
+| `/app/[organizationId]/bank`                 | Cuentas y movimientos bancarios.                                                       |
+| `/app/[organizationId]/settings/company`     | Empresa, moneda, zona horaria, reserva y gasto diario no calendarizado.                |
+| `/app/[organizationId]/settings/connections` | Configurar y sincronizar Nessie/CFDI.                                                  |
+| `/app/[organizationId]/onboarding`           | Preparar las fuentes para el primer plan.                                              |
+| `/app/new`                                   | Crear empresa.                                                                         |
+| `/auth/sign-in`, `/auth/sign-up`             | Autenticación.                                                                         |
 
 La demo conserva únicamente dashboard, compromisos, facturas/detalle y banco
 bajo `/demo`. No solicita credenciales ni llama a la API externa.
@@ -30,14 +31,14 @@ desde `main`; no eliminan miembros, conexiones ni registros de la base.
 
 ## Una decisión completa
 
-1. Revisar saldo disponible, mínimo previsto, reserva y fechas protegidas.
-2. Entender el primer cruce y la necesidad de liquidez del peor día.
-3. Comparar hasta tres escenarios condicionados a acuerdos reales.
+1. Revisar saldo disponible, mínimo previsto, reserva y fechas de nómina/materiales.
+2. Entender qué estimación retrasada causa el primer cruce y la necesidad de liquidez del peor día.
+3. Comparar hasta tres conversaciones condicionadas a acuerdos reales.
 4. Seleccionar uno para ver ambas curvas, fechas desplazadas y costos.
 5. Guardarlo y registrar contacto/acuerdo; esto no realiza pagos ni aumenta caja.
 6. Actualizar las fuentes cuando se materialice el movimiento y recalcular.
 
-La prueba “¿Y si un cliente paga tarde?” retrasa siete días un cobro, recalcula
+La prueba “¿Y si una estimación se retrasa?” retrasa siete días un cobro, recalcula
 en el backend y no permite guardar esa simulación como si fuera el escenario
 original. Se muestran estados de carga y error. Si cambian las fuentes, el
 plan guardado conserva su seguimiento pero se marca como desactualizado.

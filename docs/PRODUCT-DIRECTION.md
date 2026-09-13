@@ -1,10 +1,35 @@
-# Colchón: llegar a la nómina con un plan
+# Colchón: proteger la nómina de tu obra
 
-Usuario: dueño o responsable de caja de una pyme con ventas a crédito, pagos recurrentes y poco tiempo para modelar escenarios.
+Usuario: dueño o responsable de caja de una constructora pequeña —o un
+contratista/subcontratista— con una o varias obras activas, cobros por
+estimaciones y poco tiempo para modelar escenarios.
 
-Una decisión: ¿cómo cubro mis compromisos críticos durante los próximos 30 días sin descubrir demasiado tarde un faltante?
+Problema concreto: los materiales y la nómina de la cuadrilla salen antes de
+que el cliente pague la estimación. Un retraso de una o dos semanas puede dejar
+la cuenta sin margen justo antes del pago de nómina.
 
-Flujo: detectar el primer riesgo → explicar qué cobros y pagos lo causan → comparar planes → guardar un plan → registrar contacto/acuerdo → actualizar las fuentes y recalcular. Ninguna acción ejecuta dinero ni modifica silenciosamente una factura.
+Una decisión: ¿qué debo revisar hoy para que un atraso de una estimación no
+ponga en riesgo la nómina de mi obra?
+
+Flujo: detectar el primer riesgo → explicar qué estimación y pagos lo causan →
+enviar un aviso al responsable de la pyme → comparar recomendaciones → guardar
+un seguimiento → actualizar las fuentes y recalcular. El dueño contacta al
+cliente o al proveedor; ninguna acción ejecuta dinero ni modifica
+silenciosamente una factura.
+
+## Aviso que recibe la pyme
+
+Cuando la proyección cruza la reserva o cae en negativo, Colchón prepara un
+correo para el responsable de caja. Incluye el día del posible faltante, el
+monto, la nómina o pago que queda expuesto, el último día razonable para revisar
+la situación y una recomendación concreta: confirmar una estimación, conversar
+un anticipo parcial o negociar con un proveedor.
+
+El correo no se envía al cliente y no intenta cobrar automáticamente. El dueño
+decide qué hacer. Un acuerdo tampoco se cuenta como dinero recibido: solo una
+entrada verificada en el banco cambia la caja real. En la demo, el botón abre un
+borrador `mailto:` para que la persona lo apruebe; una integración de correo es
+un siguiente paso de producción.
 
 NestJS ejecuta el motor. La demo presenta instantáneas calculadas previamente con el mismo motor; una prueba verifica su equivalencia, sin ejecutar reglas de pronóstico en el navegador. Usa aritmética decimal; mueve un evento sin duplicarlo; mantiene nómina, impuestos y pagos protegidos en su fecha; cobra los costos declarados; evalúa cada día del horizonte. Ordena hasta tres alternativas por días críticos insolventes, faltante máximo de reserva, costo y número de acciones. Busca movimientos individuales y pares sobre hasta doce candidatos; no afirma un óptimo global ni probabilidad de éxito.
 

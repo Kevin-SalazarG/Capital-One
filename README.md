@@ -1,7 +1,7 @@
 # Colchón
 
-Plan de caja para llegar a la próxima nómina: detecta faltantes, compara acuerdos
-de cobro/pago y registra el seguimiento sin ejecutar dinero.
+Plan de caja para constructoras pequeñas: anticipa el faltante que puede provocar
+una estimación retrasada y ayuda a proteger nómina y materiales sin ejecutar dinero.
 
 Monorepo con Next.js, NestJS, Supabase y el `nessie-node-sdk` local.
 El frontend solo presenta la información; la autenticación, permisos, ingesta, normalización,
@@ -63,8 +63,9 @@ No agregues claves de proveedores ni de Supabase al frontend.
 - Aplicación: [localhost:3001](http://localhost:3001).
 - Ejemplo sin credenciales: [demo](http://localhost:3001/demo/dashboard).
 - Flujo inicial: crear empresa → conectar un cliente de Nessie → sincronizar →
-  importar facturas XML/JSON → registrar nómina/compromisos → revisar fechas y
-  flexibilidad de las facturas → comparar planes.
+  importar estimaciones y facturas XML/JSON → registrar nómina de cuadrilla,
+  materiales y otros pagos protegidos → revisar fechas y flexibilidad → comparar
+  conversaciones posibles.
 - El cliente de Nessie debe existir y tener cuentas. La demo del servidor de
   CFDI usa MXN; una empresa en USD debe importar facturas en USD.
 

@@ -1,12 +1,15 @@
-# Entrega: plan para llegar a la nómina
+# Entrega: proteger la caja de una constructora
 
 ## Rama y alcance
 
-`feature/build-payroll-protection`, creada desde `main`. Sigue el formato
+`feature/focus-construction-cashflow`, creada desde la rama de protección de nómina
+que parte de `main`. Sigue el formato
 `tipo/acción-en-kebab-case` de `Github.md`. No se publica ni despliega automáticamente.
 
-El producto concentra el reto en una decisión: anticipar el faltante de caja,
-comparar acuerdos factibles y acompañar al dueño hasta el seguimiento del plan.
+El producto se centra en una constructora pequeña: anticipar el faltante que
+puede causar una estimación retrasada, comparar conversaciones factibles y
+avisar a la pyme para que su equipo contacte a la contraparte. Colchón no
+promete cobros ni ejecuta pagos.
 Ver [dirección de producto](PRODUCT-DIRECTION.md) y [rutas vigentes](Frontend.md).
 
 ## Prueba rápida
@@ -17,13 +20,14 @@ pnpm --filter @colchon/treasury build
 pnpm --filter @colchon/web dev
 ```
 
-Abrir [demo del plan](http://localhost:3001/demo/dashboard). Seleccionar Hotel
-Alameda, comparar la curva y la tabla, guardar el plan, registrar un acuerdo y
-probar un retraso. Las fuentes son sintéticas y las fechas son fijas.
+Abrir [demo del plan](http://localhost:3001/demo/dashboard). Revisar la
+estimación de Grupo Alameda, comparar la curva y la tabla, abrir el borrador del
+aviso para la pyme, guardar la recomendación, registrar un seguimiento y probar
+un atraso de estimación. Las fuentes son sintéticas y las fechas son fijas.
 
 El caso de ejemplo empieza con $185,000 MXN. Sin acuerdos, el mínimo es
-−$14,000 y la reserva objetivo $40,000. Adelantar el cobro de Hotel Alameda
-de $55,700, bajo las fechas y el costo declarados, lleva el mínimo simulado a
+−$14,000 y la reserva objetivo $40,000. Revisar un anticipo de Grupo Alameda
+por $55,700, bajo las fechas y el costo declarados, lleva el mínimo simulado a
 $41,700. Esto **no ejecuta el anticipo ni garantiza que el cliente acepte**.
 
 ## Revisión de Code.md

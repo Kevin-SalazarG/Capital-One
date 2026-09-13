@@ -70,7 +70,7 @@ function ConnectionsContent() {
         <div>
           <h2 className="text-xl font-semibold">Conexiones</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Las fuentes que alimentan tu caja.
+            Las fuentes que alimentan el plan de caja de tus obras.
           </p>
         </div>
         {can("connection:create") && (

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("owner compares, saves and follows an agreement without manufacturing cash", async ({
+test("owner reviews a construction recommendation without manufacturing cash", async ({
   page,
 }) => {
   await page.goto("/demo/dashboard");
@@ -10,7 +10,7 @@ test("owner compares, saves and follows an agreement without manufacturing cash"
   await expect(metrics).toContainText("-$14,000.00");
   await page
     .getByRole("button", {
-      name: /Mejor resultado simulado Cobrar a Hotel Alameda/,
+      name: /Mejor resultado simulado Revisar anticipo con Grupo Alameda/,
     })
     .click();
   await expect(
@@ -22,10 +22,10 @@ test("owner compares, saves and follows an agreement without manufacturing cash"
   await expect(payroll).toContainText("$46,500.00");
   await page.getByRole("button", { name: "Ver gráfica", exact: true }).click();
   await page
-    .getByRole("button", { name: "Elegir este plan", exact: true })
+    .getByRole("button", { name: "Guardar recomendación", exact: true })
     .click();
   const state = page.getByRole("combobox", {
-    name: "Estado del acuerdo con Hotel Alameda",
+    name: "Estado del acuerdo con Grupo Alameda · Estimación 03",
   });
   await state.selectOption("contacted");
   await expect(state).toHaveValue("contacted");
@@ -41,25 +41,29 @@ test("stress recalculates offline, cannot be saved, and resets to original dates
   page,
 }) => {
   await page.goto("/demo/dashboard");
-  await page.getByText("¿Y si un cliente paga tarde?", { exact: true }).click();
+  await page
+    .getByText("Simular un atraso de estimación", { exact: true })
+    .click();
   const receipt = page.getByLabel(
-    "Retrasa un cobro 7 días. No modifica tus facturas.",
+    "Mueve una estimación 7 días para medir el impacto. No modifica tus facturas.",
   );
   await receipt.selectOption("alameda");
   await expect(page.getByRole("status")).toContainText(
     "Prueba de estrés activa",
   );
   await expect(
-    page.getByRole("button", { name: /Cobrar a Hotel Alameda/ }),
+    page.getByRole("button", { name: /Revisar anticipo con Grupo Alameda/ }),
   ).toHaveCount(0);
   await page.getByRole("button", { name: /Mejor resultado simulado/ }).click();
   await expect(
-    page.getByRole("button", { name: "Elegir este plan", exact: true }),
+    page.getByRole("button", { name: "Guardar recomendación", exact: true }),
   ).toBeDisabled();
   await receipt.selectOption("");
-  await page.getByRole("button", { name: /Cobrar a Hotel Alameda/ }).click();
+  await page
+    .getByRole("button", { name: /Revisar anticipo con Grupo Alameda/ })
+    .click();
   await expect(
-    page.getByRole("button", { name: "Elegir este plan", exact: true }),
+    page.getByRole("button", { name: "Guardar recomendación", exact: true }),
   ).toBeEnabled();
 });
 
@@ -94,12 +98,14 @@ test("reduced motion and larger text keep the decision flow usable", async ({
   await page.evaluate(() => {
     document.documentElement.style.fontSize = "24px";
   });
-  const plan = page.getByRole("button", { name: /Cobrar a Hotel Alameda/ });
+  const plan = page.getByRole("button", {
+    name: /Revisar anticipo con Grupo Alameda/,
+  });
   await plan.focus();
   await page.keyboard.press("Enter");
   await expect(plan).toHaveAttribute("aria-pressed", "true");
   await expect(
-    page.getByRole("button", { name: "Elegir este plan", exact: true }),
+    page.getByRole("button", { name: "Guardar recomendación", exact: true }),
   ).toBeVisible();
   expect(
     await page.evaluate(

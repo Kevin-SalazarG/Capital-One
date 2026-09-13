@@ -45,6 +45,7 @@ import { apiRequest } from "@/lib/api/client";
 import { ApiError, errorMessage } from "@/lib/api/errors";
 import { formatDate, formatMoney } from "@/lib/formatters";
 import { cn } from "@/lib/class-names";
+import { CashAlertEmail } from "./cash-alert-email";
 
 const TreasuryChart = dynamic(
   () => import("./treasury-chart").then((module) => module.TreasuryChart),
@@ -85,7 +86,7 @@ export function TreasuryPage() {
         <h1 className="page-title mb-8">Primero, pongamos tu caja en orden.</h1>
         <EmptyView
           title="Prepara tu primer plan"
-          description="Conecta una cuenta de débito o ahorro en la moneda de tu empresa, agrega tus cobros y registra tu próxima nómina."
+          description="Conecta una cuenta de operación, agrega tus estimaciones y registra la nómina de tu cuadrilla."
         >
           <Button asChild>
             <Link href={`${basePath}/onboarding`}>
@@ -120,7 +121,7 @@ function TreasuryContent({
   refreshing: boolean;
   refresh: () => void;
 }) {
-  const { organization, basePath, isDemo, can } = useWorkspace();
+  const { organization, email, basePath, isDemo, can } = useWorkspace();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [stressId, setStressId] = useState("");
   const [localDecision, setLocalDecision] = useState<TreasuryDecision | null>(
@@ -138,7 +139,7 @@ function TreasuryContent({
       if (parsed.success) setLocalDecision(parsed.data);
     } catch {
       toast.warning(
-        "No pudimos recuperar el plan de esta demo. Puedes elegirlo de nuevo.",
+        "No pudimos recuperar la recomendación de esta demo. Puedes guardarla de nuevo.",
       );
     }
   }, [isDemo]);
@@ -159,7 +160,7 @@ function TreasuryContent({
       sessionStorage.setItem("colchon-demo-decision-v2", JSON.stringify(next));
     } catch {
       toast.warning(
-        "El plan funciona en esta vista, pero tu navegador no permite conservarlo al recargar.",
+        "La recomendación funciona en esta vista, pero tu navegador no permite conservarla al recargar.",
       );
     }
   }
@@ -191,8 +192,8 @@ function TreasuryContent({
         });
       toast.success(
         isDemo
-          ? "Plan guardado en esta demo"
-          : "Plan guardado para seguimiento",
+          ? "Recomendación guardada en esta demo"
+          : "Recomendación guardada para seguimiento",
       );
     },
     onError: (error) => toast.error(errorMessage(error)),
@@ -238,6 +239,7 @@ function TreasuryContent({
   const receiptOptions = data.input.events.filter(
     (event) => Number(event.amount) > 0,
   );
+  const recommendedPlan = data.plans[0] ?? null;
   const firstRisk = model.baseline.summary.firstRiskDate;
   const riskPoint = model.baseline.points.find(
     (point) => point.date === firstRisk,
@@ -277,18 +279,18 @@ function TreasuryContent({
           <h1 className="treasury-heading">
             {payrollRisk
               ? payroll?.category === "payroll"
-                ? "Tu nómina necesita un plan."
-                : "Tu pago crítico necesita un plan."
+                ? "Evita que una obra te deje sin nómina."
+                : "Evita que una obra te deje sin caja."
               : hasRisk
-                ? "Tu reserva necesita atención."
-                : "Tu caja tiene margen."}
+                ? "La caja de tu obra necesita atención."
+                : "Anticipa la caja de tus obras."}
           </h1>
           <p className="mt-4 max-w-[56ch] text-base leading-relaxed text-muted-foreground">
             {payrollRisk
-              ? `El ${formatDate(payroll?.date ?? data.input.asOf)} el cierre proyectado no alcanza para todos tus pagos. Comparemos cómo llegar.`
+              ? `La estimación que esperas y la nómina no caen el mismo día. El ${formatDate(payroll?.date ?? data.input.asOf)} el cierre proyectado no alcanza; te avisamos a tiempo para decidir qué revisar.`
               : hasRisk
-                ? "Anticipa el punto más ajustado del mes y decide qué acuerdos vale la pena buscar."
-                : "Revisa tus compromisos y prueba qué pasaría si un cliente se retrasa."}
+                ? "Anticipa el punto más ajustado de la obra y decide qué conversación vale la pena abrir."
+                : "Revisa tus avances, nómina y materiales para saber cuándo tienes que actuar."}
           </p>
         </div>
         <div className="min-w-0 rounded-2xl border bg-card px-6 py-5 xl:w-[310px] xl:shrink-0">
@@ -302,9 +304,9 @@ function TreasuryContent({
           <p className="text-sm text-muted-foreground">
             {payroll
               ? payroll.category === "payroll"
-                ? "Próxima nómina"
-                : "Próximo pago protegido"
-              : "Tu próximo compromiso"}
+                ? "Próxima nómina de obra"
+                : "Próximo pago de obra"
+              : "Tu próximo compromiso de obra"}
           </p>
           <p className="treasury-number mt-1 text-[1.9rem]">
             {payroll
@@ -314,7 +316,7 @@ function TreasuryContent({
           <p className="mt-2 text-sm text-muted-foreground">
             {payroll
               ? `${formatDate(payroll.date, { day: "numeric", month: "long" })} · ${payroll.label}`
-              : "Agrega nómina y pagos esenciales."}
+              : "Agrega nómina de cuadrilla y pagos esenciales."}
           </p>
           {!payroll && (
             <Link
@@ -362,6 +364,15 @@ function TreasuryContent({
         />
       </section>
 
+      {hasRisk && (
+        <CashAlertEmail
+          data={data}
+          organizationName={organization.name}
+          plan={recommendedPlan}
+          recipient={email}
+        />
+      )}
+
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_350px]">
         <section
           className="treasury-surface min-w-0 p-5 sm:p-7"
@@ -376,7 +387,8 @@ function TreasuryContent({
                 El camino de tu caja
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Lo que entra, lo que sale y el momento de actuar.
+                Avances que entran, nómina y materiales que salen, y cuándo
+                actuar.
               </p>
             </div>
             <span className="rounded-lg bg-muted px-3 py-2 text-xs font-medium">
@@ -399,7 +411,7 @@ function TreasuryContent({
                   reserva.{" "}
                   {Number(riskPoint.closing) >= 0
                     ? "Eso reduce tu margen, pero no implica un impago."
-                    : "Ese día existe un faltante de efectivo."}
+                    : "Ese día existe un faltante de efectivo. El aviso llega antes para que la pyme decida qué hacer."}
                 </>
               ) : (
                 "No aparece un faltante en este escenario. Los cobros siguen siendo supuestos hasta recibirlos."
@@ -409,14 +421,15 @@ function TreasuryContent({
           <details className="mt-5 border-t pt-3">
             <summary className="treasury-summary">
               <SlidersHorizontal className="size-4" />
-              ¿Y si un cliente paga tarde?
+              Simular un atraso de estimación
             </summary>
             <div className="mt-3 space-y-3">
               <label
                 htmlFor="stress-receipt"
                 className="block text-sm text-muted-foreground"
               >
-                Retrasa un cobro 7 días. No modifica tus facturas.
+                Mueve una estimación 7 días para medir el impacto. No modifica
+                tus facturas.
               </label>
               <select
                 id="stress-receipt"
@@ -453,15 +466,15 @@ function TreasuryContent({
               id="plans-heading"
               className="text-xl font-semibold tracking-tight"
             >
-              Tus opciones
+              Recomendaciones para tu obra
             </h2>
             <span className="text-xs text-muted-foreground">
-              {model.plans.length} opciones modeladas
+              {model.plans.length} recomendaciones modeladas
             </span>
           </div>
           <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
-            Primero cubrimos pagos críticos. Después comparamos faltante, costo
-            y esfuerzo.
+            Comparamos alternativas de cobro y pagos con proveedores. Son
+            conversaciones que la pyme debe llevar; no se ejecutan desde aquí.
           </p>
           <fieldset className="space-y-3" aria-label="Comparar planes">
             {model.plans.map((item, index) => (
@@ -501,8 +514,8 @@ function TreasuryContent({
                 </div>
                 <p className="text-base font-semibold">
                   {item.actions.length === 1
-                    ? `${item.actions[0]?.kind === "collect" ? "Cobrar a" : "Acordar con"} ${item.actions[0]?.label}`
-                    : "Combinar dos acuerdos"}
+                    ? `${item.actions[0]?.kind === "collect" ? "Revisar anticipo con" : "Negociar con"} ${item.actions[0]?.label}`
+                    : "Combinar dos conversaciones"}
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">
                   {item.actions.length}{" "}
@@ -511,7 +524,7 @@ function TreasuryContent({
                 </p>
                 <div className="mt-4 flex items-end justify-between gap-3 border-t pt-3">
                   <span className="text-xs text-muted-foreground">
-                    Saldo mínimo con plan
+                    Saldo mínimo si ocurre
                   </span>
                   <span className="treasury-number text-lg">
                     {money(item.projection.summary.minimumBalance)}
@@ -525,13 +538,13 @@ function TreasuryContent({
               <CircleOff className="size-6 text-muted-foreground" />
               <p className="font-medium">
                 {hasRisk
-                  ? "No hay movimientos elegibles"
+                  ? "No hay recomendaciones calculables"
                   : "No necesitas mover fechas"}
               </p>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {hasRisk
-                  ? "Agrega fechas posibles de cobro o negociación en tus facturas. No inventamos acuerdos ni movemos pagos protegidos."
-                  : "Prueba un retraso para explorar qué tan resistente es tu caja."}
+                  ? "Agrega fechas posibles de cobro o negociación en las facturas de tus obras. No inventamos acuerdos ni movemos pagos protegidos."
+                  : "Prueba un atraso para explorar qué tan resistente es la caja de tu obra."}
               </p>
               <Button asChild variant="outline">
                 <Link href={`${basePath}/invoices`}>Revisar facturas</Link>
@@ -544,7 +557,7 @@ function TreasuryContent({
               className="mt-2 w-full"
               onClick={() => setSelectedId(null)}
             >
-              Ver solo escenario sin cambios
+              Ver solo escenario original
             </Button>
           )}
         </section>
@@ -564,7 +577,7 @@ function TreasuryContent({
                 id="selected-heading"
                 className="text-2xl font-semibold tracking-tight"
               >
-                Un plan, con números claros.
+                Tu siguiente conversación, con números claros.
               </h2>
             </div>
             <div className="rounded-xl bg-secondary px-4 py-3 text-primary">
@@ -586,15 +599,16 @@ function TreasuryContent({
                   <div className="min-w-0">
                     <h3 className="font-semibold">
                       {action.kind === "collect"
-                        ? "Solicitar anticipo a"
-                        : "Negociar nueva fecha con"}{" "}
+                        ? "Revisar anticipo de"
+                        : "Proponer nueva fecha con"}{" "}
                       {action.label}
                     </h3>
                     <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                      Mover {money(action.amount)} del {formatDate(action.from)}{" "}
-                      al {formatDate(action.to)}. Costo supuesto:{" "}
-                      {money(action.cost)}. Requiere aceptación de la
-                      contraparte.
+                      {action.kind === "collect"
+                        ? `Revisar si puedes recibir hasta ${money(action.amount)} de este cobro antes del ${formatDate(action.to)}.`
+                        : `Proponer mover ${money(action.amount)} del ${formatDate(action.from)} al ${formatDate(action.to)}.`}{" "}
+                      El monto y la fecha finales dependen de la conversación.
+                      Costo supuesto: {money(action.cost)}.
                     </p>
                   </div>
                 </li>
@@ -602,8 +616,8 @@ function TreasuryContent({
             </ol>
             <div className="border-t pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-                Nómina e impuestos conservan su fecha. El saldo real y las
-                facturas no cambian al guardar.
+                Nómina e impuestos conservan su fecha. Guardar solo registra la
+                recomendación: el saldo real y las facturas no cambian.
               </p>
               <Button
                 className="h-auto min-h-12 w-full whitespace-normal"
@@ -616,8 +630,8 @@ function TreasuryContent({
               >
                 {choose.isPending ? <BusyIcon /> : <FileCheck2 />}
                 {decision?.planId === plan.id && !stale
-                  ? "Volver a guardar plan"
-                  : "Elegir este plan"}
+                  ? "Volver a guardar recomendación"
+                  : "Guardar recomendación"}
               </Button>
             </div>
           </div>
@@ -632,10 +646,12 @@ function TreasuryContent({
           <div className="mb-5 flex flex-wrap justify-between gap-4">
             <div>
               <p className="mb-2 text-sm font-medium text-primary">
-                {isDemo ? "Guardado en esta sesión de demo" : "Plan guardado"}
+                {isDemo
+                  ? "Aviso guardado en esta sesión de demo"
+                  : "Recomendación guardada"}
               </p>
               <h2 id="followup-heading" className="text-xl font-semibold">
-                De la decisión al acuerdo
+                Después del aviso, tú decides
               </h2>
             </div>
             <span className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -645,7 +661,7 @@ function TreasuryContent({
                   (status) => status === "agreed",
                 ).length
               }{" "}
-              de {decision.plan.actions.length} acuerdos
+              de {decision.plan.actions.length} seguimientos
             </span>
           </div>
           {stale && (
@@ -679,7 +695,7 @@ function TreasuryContent({
                   </div>
                 </div>
                 <label className="min-w-48 text-xs text-muted-foreground">
-                  Estado del acuerdo con {action.label}
+                  Seguimiento con {action.label}
                   <select
                     aria-label={`Estado del acuerdo con ${action.label}`}
                     className="treasury-select mt-1"
@@ -693,18 +709,18 @@ function TreasuryContent({
                       })
                     }
                   >
-                    <option value="pending">Por contactar</option>
-                    <option value="contacted">Contacto realizado</option>
-                    <option value="agreed">Acuerdo confirmado</option>
+                    <option value="pending">Por revisar</option>
+                    <option value="contacted">Hablé con la contraparte</option>
+                    <option value="agreed">Me confirmaron</option>
                   </select>
                 </label>
               </div>
             ))}
           </div>
           <p className="mt-4 border-t pt-4 text-sm leading-relaxed text-muted-foreground">
-            Confirmar un acuerdo no confirma un cobro. Cuando ocurra, sincroniza
-            el banco y actualiza el saldo pendiente de la factura para
-            recalcular.
+            Marcar una conversación como confirmada no confirma un cobro. Cuando
+            ocurra, sincroniza el banco y actualiza el saldo pendiente de la
+            factura para recalcular.
           </p>
         </section>
       )}
@@ -712,7 +728,7 @@ function TreasuryContent({
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="treasury-surface p-5 sm:p-7">
           <h2 className="mb-5 text-xl font-semibold tracking-tight">
-            Lo que protegemos
+            Pagos de la obra que protegemos
           </h2>
           <div className="space-y-5">
             {model.criticalEvents.length ? (
@@ -740,7 +756,8 @@ function TreasuryContent({
               ))
             ) : (
               <p className="text-sm text-muted-foreground">
-                Registra tu próxima nómina y los pagos que no pueden moverse.
+                Registra la nómina de tu cuadrilla y los pagos que no pueden
+                moverse.
               </p>
             )}
           </div>
@@ -748,17 +765,17 @@ function TreasuryContent({
             href={`${basePath}/commitments`}
             className="mt-5 flex min-h-11 items-center gap-2 text-sm font-semibold text-primary"
           >
-            Revisar compromisos
+            Revisar pagos protegidos
             <ChevronRight className="size-4" />
           </Link>
         </section>
         <section className="treasury-surface p-5 sm:p-7">
           <h2 className="mb-3 text-xl font-semibold tracking-tight">
-            Sin esconder el faltante
+            La brecha de esta obra
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             Si mantienes todas las fechas, necesitas esta liquidez adicional
-            desde el inicio para cubrir el peor momento de los 30 días.
+            desde el inicio para cubrir el peor momento de los próximos 30 días.
           </p>
           <div className="mt-6 grid grid-cols-2 gap-5">
             <div>
@@ -779,8 +796,9 @@ function TreasuryContent({
             </div>
           </div>
           <p className="mt-5 border-t pt-4 text-xs leading-relaxed text-muted-foreground">
-            Son necesidades de liquidez, no una oferta de crédito. Crear una
-            reserva en pantalla no agrega dinero a tu cuenta.
+            Es una necesidad de liquidez, no una oferta de crédito. Crear una
+            reserva en pantalla no agrega dinero a tu cuenta; la recomendación
+            solo te da tiempo para gestionar la obra.
           </p>
         </section>
       </div>
@@ -795,6 +813,8 @@ function TreasuryContent({
         </summary>
         <div className="space-y-4 pb-3 pt-4">
           <p className="text-sm leading-relaxed text-muted-foreground">
+            Este escenario representa una constructora pequeña: cobros por
+            estimaciones de obra, nómina de cuadrilla y pagos de materiales.{" "}
             Gasto operativo adicional: {money(data.input.dailyOperatingExpense)}{" "}
             al día. No incluye los compromisos ya registrados. Las fechas son
             supuestos de caja, no probabilidades de cobro.
