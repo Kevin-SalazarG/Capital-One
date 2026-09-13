@@ -14,7 +14,7 @@
     "format:check": "prettier --check .",
     "check:encoding": "node scripts/check-encoding.mjs",
     "lint": "pnpm --filter @colchon/treasury lint && pnpm --filter @colchon/api lint && pnpm --filter nessie-node-sdk lint",
-    "typecheck": "pnpm --filter @colchon/treasury build && pnpm --filter nessie-node-sdk build && pnpm --filter @colchon/api typecheck && pnpm --filter nessie-node-sdk typecheck",
+    "typecheck": "pnpm --filter @colchon/treasury build && pnpm --filter nessie-node-sdk build && pnpm --filter @colchon/api build && pnpm --filter @colchon/api typecheck && pnpm --filter nessie-node-sdk typecheck",
     "build": "pnpm --filter @colchon/treasury build && pnpm --filter nessie-node-sdk build && pnpm --filter @colchon/api build",
     "test:unit": "pnpm --filter @colchon/treasury test && pnpm --filter @colchon/api test:unit",
     "test:integration": "pnpm build && pnpm --filter @colchon/api test:integration",
